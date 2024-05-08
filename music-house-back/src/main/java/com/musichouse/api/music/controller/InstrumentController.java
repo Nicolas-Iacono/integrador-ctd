@@ -46,6 +46,6 @@ public class InstrumentController {
     @DeleteMapping("/delete/instrument/{idInstrument}")
     public ResponseEntity<String> deleteInstrument(@PathVariable Long idInstrument) {
         instrumentService.deleteInstrument(idInstrument);
-        return new ResponseEntity<>("Instrumento eliminado con éxito", HttpStatus.OK);
+        return new ResponseEntity<>("Instrument deleted successfully", HttpStatus.OK);
     }
 }

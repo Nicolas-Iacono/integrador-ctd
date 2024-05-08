@@ -2,6 +2,7 @@ package com.musichouse.api.music.service;
 
 import com.musichouse.api.music.dto.dto_entrance.CategoryDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.CategoryDtoExit;
+import com.musichouse.api.music.dto.dto_modify.CategoryDtoModify;
 import com.musichouse.api.music.interfaces.CategoryInterface;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class CategoryService implements CategoryInterface {
     }
 
     @Override
-    public CategoryDtoExit updateCategory(CategoryDtoEntrance categoryDtoEntrance) {
+    public CategoryDtoExit updateCategory(CategoryDtoModify categoryDtoModify) {
         return null;
     }
 

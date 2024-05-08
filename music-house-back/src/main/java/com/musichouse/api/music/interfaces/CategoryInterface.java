@@ -2,6 +2,7 @@ package com.musichouse.api.music.interfaces;
 
 import com.musichouse.api.music.dto.dto_entrance.CategoryDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.CategoryDtoExit;
+import com.musichouse.api.music.dto.dto_modify.CategoryDtoModify;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface CategoryInterface {
 
     CategoryDtoExit getCategoryById(Long idCategory);
 
-    CategoryDtoExit updateCategory(CategoryDtoEntrance categoryDtoEntrance);
+    CategoryDtoExit updateCategory(CategoryDtoModify categoryDtoModify);
 
     void deleteCategory(Long idCategory);
 

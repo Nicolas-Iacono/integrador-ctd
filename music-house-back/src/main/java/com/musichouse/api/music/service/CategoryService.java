@@ -6,6 +6,7 @@ import com.musichouse.api.music.interfaces.CategoryInterface;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class CategoryService implements CategoryInterface {
     @Override

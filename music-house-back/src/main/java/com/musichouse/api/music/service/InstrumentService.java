@@ -1,6 +1,6 @@
 package com.musichouse.api.music.service;
 
-import com.musichouse.api.music.dto.dto_entrance.InstrumentsDtoEntrance;
+import com.musichouse.api.music.dto.dto_entrance.InstrumentDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.InstrumentDtoExit;
 import com.musichouse.api.music.dto.dto_modify.InstrumentDtoModify;
 import com.musichouse.api.music.interfaces.InstrumentInterface;
@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class InstrumentService implements InstrumentInterface {
     @Override
-    public InstrumentDtoExit createInstrument(InstrumentsDtoEntrance instrumentsDtoEntrance) {
+    public InstrumentDtoExit createInstrument(InstrumentDtoEntrance instrumentsDtoEntrance) {
         return null;
     }
 

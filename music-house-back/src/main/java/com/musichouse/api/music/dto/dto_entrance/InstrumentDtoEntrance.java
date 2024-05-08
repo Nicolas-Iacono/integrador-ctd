@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class InstrumentsDtoEntrance {
+public class InstrumentDtoEntrance {
 
     @NotBlank(message = "El nombre del instrumento es obligatorio")
     @Size(max = 100, message = "El nombre del instrumento debe tener como máximo {max} caracteres")

@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -26,4 +27,7 @@ public class InstrumentDtoEntrance {
     private BigDecimal rentalPrice;
     @NotNull(message = "el ID de la categoria no deve estar en blanco")
     private Long idCategory;
+    @NotNull(message = "Debe cargar al menos una imagen al crear el instrumento")
+    private List<String> imageUrls;
+
 }

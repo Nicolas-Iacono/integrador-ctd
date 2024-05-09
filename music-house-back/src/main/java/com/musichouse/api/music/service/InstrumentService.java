@@ -4,6 +4,7 @@ import com.musichouse.api.music.dto.dto_entrance.InstrumentDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.InstrumentDtoExit;
 import com.musichouse.api.music.dto.dto_modify.InstrumentDtoModify;
 import com.musichouse.api.music.entity.Category;
+import com.musichouse.api.music.entity.ImageUrls;
 import com.musichouse.api.music.entity.Instruments;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.InstrumentInterface;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -31,6 +33,14 @@ public class InstrumentService implements InstrumentInterface {
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró la categoría con el ID proporcionado"));
         Instruments instrument = mapper.map(instrumentsDtoEntrance, Instruments.class);
         instrument.setCategory(category);
+        List<ImageUrls> imageUrls = instrumentsDtoEntrance.getImageUrls().stream()
+                .map(url -> {
+                    ImageUrls imageUrl = new ImageUrls();
+                    imageUrl.setImageUrl(url);
+                    imageUrl.setInstrument(instrument);
+                    return imageUrl;
+                }).collect(Collectors.toList());
+        instrument.setImageUrls(imageUrls);
         Instruments instrumentSave = instrumentRepository.save(instrument);
         InstrumentDtoExit instrumentDtoExit = mapper.map(instrumentSave, InstrumentDtoExit.class);
         return instrumentDtoExit;
@@ -75,4 +85,6 @@ public class InstrumentService implements InstrumentInterface {
             throw new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado");
         }
     }
+
+
 }

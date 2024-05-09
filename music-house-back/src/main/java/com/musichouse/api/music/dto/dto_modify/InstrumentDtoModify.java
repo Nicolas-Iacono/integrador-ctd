@@ -1,6 +1,8 @@
 package com.musichouse.api.music.dto.dto_modify;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.musichouse.api.music.entity.ImageUrls;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -10,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -26,4 +29,7 @@ public class InstrumentDtoModify {
     @NotNull(message = "El precio de alquiler es obligatorio")
     @PositiveOrZero(message = "El precio de alquiler debe ser positivo o cero")
     private BigDecimal rentalPrice;
+    @NotNull(message = "Deve caragar la primer iamgen al crear el instrumento")
+    @Valid
+    private List<ImageUrls> imageUrl;
 }

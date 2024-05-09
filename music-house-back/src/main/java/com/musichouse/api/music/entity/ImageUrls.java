@@ -35,6 +35,8 @@ public class ImageUrls {
      * FetchType.EAGER indica que la carga de la entidad Instrument se realiza de forma inmediata junto con la carga de ImageUrl.
      */
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "instrument_id")
+    @JoinColumn(name = "id_instrument")
     private Instruments instrument;
+
+
 }

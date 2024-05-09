@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,5 +57,5 @@ public class Instruments {
      * Lista de URLs de imágenes asociadas al instrumento.
      */
     @OneToMany(mappedBy = "instrument", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<ImageUrls> imageUrl;
+    private List<ImageUrls> imageUrls = new ArrayList<>();
 }

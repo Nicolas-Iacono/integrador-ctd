@@ -16,5 +16,5 @@ public class InstrumentDtoExit {
     private String description;
     private BigDecimal rentalPrice;
     private CategoryDtoExit category;
-    private List<ImagesDtoExit> imageUrl;
+    private List<ImagesUrlsDtoExit> imageUrls;
 }

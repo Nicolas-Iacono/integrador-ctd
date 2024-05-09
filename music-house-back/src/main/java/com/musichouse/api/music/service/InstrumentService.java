@@ -4,11 +4,11 @@ import com.musichouse.api.music.dto.dto_entrance.InstrumentDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.InstrumentDtoExit;
 import com.musichouse.api.music.dto.dto_modify.InstrumentDtoModify;
 import com.musichouse.api.music.entity.Category;
-import com.musichouse.api.music.entity.Instrument;
+import com.musichouse.api.music.entity.Instruments;
+import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.InstrumentInterface;
 import com.musichouse.api.music.repository.CategoryRepository;
 import com.musichouse.api.music.repository.InstrumentRepository;
-import com.musichouse.api.music.util.JsonPrinter;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -26,44 +26,53 @@ public class InstrumentService implements InstrumentInterface {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public InstrumentDtoExit createInstrument(InstrumentDtoEntrance instrumentsDtoEntrance) {
-        LOGGER.info("createInstrument " + JsonPrinter.toString(instrumentsDtoEntrance));
-
-        // Verifica que el ID de la categoría no sea nulo
-        if (instrumentsDtoEntrance.getIdCategory() == null) {
-            throw new IllegalArgumentException("ID de categoría no puede ser nulo");
-        }
-
-        // Obtiene la categoría desde la base de datos utilizando su ID
+    public InstrumentDtoExit createInstrument(InstrumentDtoEntrance instrumentsDtoEntrance) throws ResourceNotFoundException {
         Category category = categoryRepository.findById(instrumentsDtoEntrance.getIdCategory())
-                .orElseThrow(() -> new IllegalArgumentException("No se encontró la categoría con el ID proporcionado"));
-
-        Instrument instrument = mapper.map(instrumentsDtoEntrance, Instrument.class);
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró la categoría con el ID proporcionado"));
+        Instruments instrument = mapper.map(instrumentsDtoEntrance, Instruments.class);
         instrument.setCategory(category);
-
-        Instrument instrumentSave = instrumentRepository.save(instrument);
+        Instruments instrumentSave = instrumentRepository.save(instrument);
         InstrumentDtoExit instrumentDtoExit = mapper.map(instrumentSave, InstrumentDtoExit.class);
-        LOGGER.info("createInstrument " + JsonPrinter.toString(instrumentDtoExit));
         return instrumentDtoExit;
     }
 
     @Override
     public List<InstrumentDtoExit> getAllInstruments() {
-        return List.of();
+        List<InstrumentDtoExit> instrumentDtoExits = instrumentRepository.findAll().stream()
+                .map(instrument -> mapper.map(instrument, InstrumentDtoExit.class)).toList();
+        return instrumentDtoExits;
     }
 
     @Override
-    public InstrumentDtoExit getInstrumentById(Long idInstrument) {
-        return null;
+    public InstrumentDtoExit getInstrumentById(Long idInstrument) throws ResourceNotFoundException {
+        Instruments instrument = instrumentRepository.findById(idInstrument).orElse(null);
+        InstrumentDtoExit instrumentDtoExit = null;
+        if (instrument != null) {
+            instrumentDtoExit = mapper.map(instrument, InstrumentDtoExit.class);
+        } else {
+            throw new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado");
+        }
+        return instrumentDtoExit;
     }
 
     @Override
-    public InstrumentDtoExit updateInstrument(InstrumentDtoModify instrumentDtoModify) {
-        return null;
+    public InstrumentDtoExit updateInstrument(InstrumentDtoModify instrumentDtoModify) throws ResourceNotFoundException {
+        Instruments instrumentsToUpdate = instrumentRepository.findById(instrumentDtoModify.getIdInstrument())
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado"));
+        // Actualizar solo los campos necesarios
+        instrumentsToUpdate.setName(instrumentDtoModify.getName());
+        instrumentsToUpdate.setDescription(instrumentDtoModify.getDescription());
+        instrumentsToUpdate.setRentalPrice(instrumentDtoModify.getRentalPrice());
+        instrumentRepository.save(instrumentsToUpdate);
+        return mapper.map(instrumentsToUpdate, InstrumentDtoExit.class);
     }
 
     @Override
-    public void deleteInstrument(Long idInstrument) {
-
+    public void deleteInstrument(Long idInstrument) throws ResourceNotFoundException {
+        if (instrumentRepository.findById(idInstrument).orElse(null) != null) {
+            instrumentRepository.deleteById(idInstrument);
+        } else {
+            throw new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado");
+        }
     }
 }

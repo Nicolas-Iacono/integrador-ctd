@@ -13,10 +13,10 @@ import java.util.List;
  */
 @Entity
 @Data
-@Table(name = "instrument")
+@Table(name = "INSTRUMENTS")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Instrument {
+public class Instruments {
     /**
      * Identificador único del instrumento.
      */
@@ -55,6 +55,6 @@ public class Instrument {
     /**
      * Lista de URLs de imágenes asociadas al instrumento.
      */
-    @OneToMany(mappedBy = "instrument", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ImageUrl> imageUrl;
+    @OneToMany(mappedBy = "instrument", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<ImageUrls> imageUrl;
 }

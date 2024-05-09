@@ -19,13 +19,13 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @PostMapping("/create/category")
+    @PostMapping("/create")
     public ResponseEntity<CategoryDtoExit> createCategory(@RequestBody @Valid CategoryDtoEntrance categoryDtoEntrance) {
         CategoryDtoExit categoryDtoExit = categoryService.createCategory(categoryDtoEntrance);
         return new ResponseEntity<>(categoryDtoExit, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all/category")
+    @GetMapping("/all")
     public ResponseEntity<List<CategoryDtoExit>> allCategory() {
         List<CategoryDtoExit> categoryDtoExits = categoryService.getAllCategories();
         return new ResponseEntity<>(categoryDtoExits, HttpStatus.OK);
@@ -37,13 +37,13 @@ public class CategoryController {
         return ResponseEntity.ok(categoryDtoExit);
     }
 
-    @PutMapping("/update/category")
+    @PutMapping("/update")
     public ResponseEntity<CategoryDtoExit> updateCategory(@RequestBody @Valid CategoryDtoModify categoryDtoModify) {
         CategoryDtoExit categoryDtoExit = categoryService.updateCategory(categoryDtoModify);
         return ResponseEntity.ok(categoryDtoExit);
     }
 
-    @DeleteMapping("/delete/category/{idCategory}")
+    @DeleteMapping("/delete/{idCategory}")
     public ResponseEntity<String> deleteCategory(@PathVariable Long idCategory) {
         categoryService.deleteCategory(idCategory);
         return ResponseEntity.ok("Category deleted successfully");

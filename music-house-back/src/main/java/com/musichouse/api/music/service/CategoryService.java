@@ -6,7 +6,6 @@ import com.musichouse.api.music.dto.dto_modify.CategoryDtoModify;
 import com.musichouse.api.music.entity.Category;
 import com.musichouse.api.music.interfaces.CategoryInterface;
 import com.musichouse.api.music.repository.CategoryRepository;
-import com.musichouse.api.music.util.JsonPrinter;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -24,11 +23,9 @@ public class CategoryService implements CategoryInterface {
 
     @Override
     public CategoryDtoExit createCategory(CategoryDtoEntrance categoryDtoEntrance) {
-        LOGGER.info("createCategory" + JsonPrinter.toString(categoryDtoEntrance));
         Category category = mapper.map(categoryDtoEntrance, Category.class);
         Category categorySaved = categoryRepository.save(category);
         CategoryDtoExit categoryDtoExit = mapper.map(categorySaved, CategoryDtoExit.class);
-        LOGGER.info("createCategory" + JsonPrinter.toString(categoryDtoExit));
         return categoryDtoExit;
     }
 

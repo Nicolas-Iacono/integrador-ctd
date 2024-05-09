@@ -11,17 +11,17 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Data
-@Table(name = "images_url")
+@Table(name = "IMAGE_URLS")
 @AllArgsConstructor
 @NoArgsConstructor
-public class ImageUrl {
+public class ImageUrls {
     /**
      * Identificador único de la imagen.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_images")
-    private Long idImages;
+    @Column(name = "id_image")
+    private Long idImage;
 
     /**
      * URL de la imagen.
@@ -36,5 +36,5 @@ public class ImageUrl {
      */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "instrument_id")
-    private Instrument instrument;
+    private Instruments instrument;
 }

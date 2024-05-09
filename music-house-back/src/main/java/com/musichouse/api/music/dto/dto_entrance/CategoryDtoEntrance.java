@@ -15,6 +15,4 @@ public class CategoryDtoEntrance {
     private String name;
     @Size(max = 255, message = "La descripción de la categoría debe tener como máximo {max} caracteres")
     private String description;
-
-
 }

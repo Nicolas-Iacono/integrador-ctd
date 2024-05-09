@@ -20,10 +20,10 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class InstrumentService implements InstrumentInterface {
-    private  static final Logger LOGGER= LoggerFactory.getLogger(InstrumentService.class);
-    private  final InstrumentRepository instrumentRepository;
-    private  final ModelMapper mapper;
-    private  final CategoryRepository categoryRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(InstrumentService.class);
+    private final InstrumentRepository instrumentRepository;
+    private final ModelMapper mapper;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public InstrumentDtoExit createInstrument(InstrumentDtoEntrance instrumentsDtoEntrance) {

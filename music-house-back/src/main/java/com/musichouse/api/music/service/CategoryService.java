@@ -18,16 +18,17 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class CategoryService implements CategoryInterface {
-    private  static final Logger LOGGER= LoggerFactory.getLogger(CategoryService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CategoryService.class);
     private final CategoryRepository categoryRepository;
-    private  final ModelMapper mapper;
+    private final ModelMapper mapper;
+
     @Override
     public CategoryDtoExit createCategory(CategoryDtoEntrance categoryDtoEntrance) {
-        LOGGER.info("createCategory"+ JsonPrinter.toString(categoryDtoEntrance));
-        Category category=mapper.map(categoryDtoEntrance, Category.class);
-        Category categorySaved=categoryRepository.save(category);
-        CategoryDtoExit categoryDtoExit=mapper.map(categorySaved, CategoryDtoExit.class);
-        LOGGER.info("createCategory"+ JsonPrinter.toString(categoryDtoExit));
+        LOGGER.info("createCategory" + JsonPrinter.toString(categoryDtoEntrance));
+        Category category = mapper.map(categoryDtoEntrance, Category.class);
+        Category categorySaved = categoryRepository.save(category);
+        CategoryDtoExit categoryDtoExit = mapper.map(categorySaved, CategoryDtoExit.class);
+        LOGGER.info("createCategory" + JsonPrinter.toString(categoryDtoExit));
         return categoryDtoExit;
     }
 

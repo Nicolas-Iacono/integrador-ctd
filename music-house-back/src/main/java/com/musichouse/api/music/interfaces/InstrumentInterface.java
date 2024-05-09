@@ -11,9 +11,9 @@ public interface InstrumentInterface {
 
     List<InstrumentDtoExit> getAllInstruments();
 
-    InstrumentDtoExit getInstrumentById(Long dInstrument);
+    InstrumentDtoExit getInstrumentById(Long idInstrument);
 
     InstrumentDtoExit updateInstrument(InstrumentDtoModify instrumentDtoModify);
 
-    void deleteInstrument(Long dInstrument);
+    void deleteInstrument(Long idInstrument);
 }

@@ -22,12 +22,12 @@ public class Category {
     /**
      * Nombre de la categoría.
      */
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(name = "name", length = 100)
     private String name;
 
     /**
      * Descripción de la categoría.
      */
-    @Column(name = "description", nullable = false, length = 255)
+    @Column(name = "description",length = 255)
     private String description;
 }

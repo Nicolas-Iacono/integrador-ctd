@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-
-/**
- * Representa un instrumento musical disponible para alquiler.
- */
+import java.util.List;
 
 /**
  * Representa un instrumento musical disponible para alquiler.
@@ -49,15 +46,15 @@ public class Instrument {
     private BigDecimal rentalPrice;
 
     /**
-     * URL de la imagen del instrumento.
-     */
-    @Column(name = "image_url", length = 255)
-    private String imageUrl;
-
-    /**
      * Categoría a la que pertenece el instrumento.
      */
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_category")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "id_category", referencedColumnName = "id_category", nullable = false)
     private Category category;
+
+    /**
+     * Lista de URLs de imágenes asociadas al instrumento.
+     */
+    @OneToMany(mappedBy = "instrument", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ImageUrl> imageUrl;
 }

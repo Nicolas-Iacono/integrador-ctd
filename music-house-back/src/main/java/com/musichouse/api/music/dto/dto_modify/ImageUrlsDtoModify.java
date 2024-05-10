@@ -1,9 +1,17 @@
 package com.musichouse.api.music.dto.dto_modify;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ImageUrlsDtoModify {
     @NotNull(message = "El id de la Imagen Urls es obligatorio")
     private Long idImage;

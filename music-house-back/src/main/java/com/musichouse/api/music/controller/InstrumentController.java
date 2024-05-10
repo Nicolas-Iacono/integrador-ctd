@@ -1,5 +1,6 @@
 package com.musichouse.api.music.controller;
 
+import com.musichouse.api.music.dto.dto_entrance.ImageUrlsDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.InstrumentDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.InstrumentDtoExit;
 import com.musichouse.api.music.dto.dto_modify.InstrumentDtoModify;
@@ -49,4 +50,5 @@ public class InstrumentController {
         instrumentService.deleteInstrument(idInstrument);
         return new ResponseEntity<>("Instrument deleted successfully", HttpStatus.OK);
     }
+
 }

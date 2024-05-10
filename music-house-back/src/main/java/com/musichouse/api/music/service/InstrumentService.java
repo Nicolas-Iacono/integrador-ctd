@@ -10,6 +10,7 @@ import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.InstrumentInterface;
 import com.musichouse.api.music.repository.CategoryRepository;
 import com.musichouse.api.music.repository.InstrumentRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ public class InstrumentService implements InstrumentInterface {
     private final InstrumentRepository instrumentRepository;
     private final ModelMapper mapper;
     private final CategoryRepository categoryRepository;
-
+@Transactional
     @Override
     public InstrumentDtoExit createInstrument(InstrumentDtoEntrance instrumentsDtoEntrance) throws ResourceNotFoundException {
         Category category = categoryRepository.findById(instrumentsDtoEntrance.getIdCategory())
@@ -39,12 +40,14 @@ public class InstrumentService implements InstrumentInterface {
                     imageUrl.setImageUrl(url);
                     imageUrl.setInstrument(instrument);
                     return imageUrl;
-                }).collect(Collectors.toList());
+                }).toList();
         instrument.setImageUrls(imageUrls);
         Instruments instrumentSave = instrumentRepository.save(instrument);
         InstrumentDtoExit instrumentDtoExit = mapper.map(instrumentSave, InstrumentDtoExit.class);
         return instrumentDtoExit;
     }
+
+
 
     @Override
     public List<InstrumentDtoExit> getAllInstruments() {

@@ -1,5 +1,6 @@
 package com.musichouse.api.music.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,6 +57,7 @@ public class Instruments {
     /**
      * Lista de URLs de imágenes asociadas al instrumento.
      */
+    @JsonManagedReference
     @OneToMany(mappedBy = "instrument", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ImageUrls> imageUrls = new ArrayList<>();
 }

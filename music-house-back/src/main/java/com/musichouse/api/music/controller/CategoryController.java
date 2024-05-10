@@ -3,6 +3,8 @@ package com.musichouse.api.music.controller;
 import com.musichouse.api.music.dto.dto_entrance.CategoryDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.CategoryDtoExit;
 import com.musichouse.api.music.dto.dto_modify.CategoryDtoModify;
+import com.musichouse.api.music.exception.CategoryAssociatedException;
+import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -32,20 +34,27 @@ public class CategoryController {
     }
 
     @GetMapping("/search/{idCategory}")
-    public ResponseEntity<CategoryDtoExit> searchCategoryById(@PathVariable Long idCategory) {
+    public ResponseEntity<CategoryDtoExit> searchCategoryById(@PathVariable Long idCategory) throws ResourceNotFoundException {
         CategoryDtoExit categoryDtoExit = categoryService.getCategoryById(idCategory);
         return ResponseEntity.ok(categoryDtoExit);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<CategoryDtoExit> updateCategory(@RequestBody @Valid CategoryDtoModify categoryDtoModify) {
+    public ResponseEntity<CategoryDtoExit> updateCategory(@RequestBody @Valid CategoryDtoModify categoryDtoModify) throws ResourceNotFoundException {
         CategoryDtoExit categoryDtoExit = categoryService.updateCategory(categoryDtoModify);
         return ResponseEntity.ok(categoryDtoExit);
     }
 
     @DeleteMapping("/delete/{idCategory}")
     public ResponseEntity<String> deleteCategory(@PathVariable Long idCategory) {
-        categoryService.deleteCategory(idCategory);
-        return ResponseEntity.ok("Category deleted successfully");
+        try {
+            categoryService.deleteCategory(idCategory);
+            return ResponseEntity.ok("Category deleted successfully");
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category not found");
+        } catch (CategoryAssociatedException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Cannot delete category as it is associated with instruments");
+        }
     }
 }

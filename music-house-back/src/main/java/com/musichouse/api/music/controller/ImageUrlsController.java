@@ -3,9 +3,9 @@ package com.musichouse.api.music.controller;
 import com.musichouse.api.music.dto.dto_entrance.ImageUrlsDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.ImagesUrlsDtoExit;
 import com.musichouse.api.music.dto.dto_modify.ImageUrlsDtoModify;
-import com.musichouse.api.music.entity.ImageUrls;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.ImageUrlsService;
+import com.musichouse.api.music.util.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,9 +22,18 @@ public class ImageUrlsController {
     private final ImageUrlsService imageUrlsService;
 
     @PostMapping("/addImage")
-    public ResponseEntity<ImagesUrlsDtoExit> createImageUrls(@RequestBody @Valid ImageUrlsDtoEntrance imageUrlsDtoEntrance) throws ResourceNotFoundException {
-        ImagesUrlsDtoExit imagesUrlsDtoExit = imageUrlsService.addImageUrls(imageUrlsDtoEntrance);
-        return new ResponseEntity<>(imagesUrlsDtoExit, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse<ImagesUrlsDtoExit>> createImageUrls(@RequestBody @Valid ImageUrlsDtoEntrance imageUrlsDtoEntrance) {
+        try {
+            ImagesUrlsDtoExit imagesUrlsDtoExit = imageUrlsService.addImageUrls(imageUrlsDtoEntrance);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>("Imágenes agregadas exitosamente.", imagesUrlsDtoExit));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("No se encontró la categoría o el instrumento asociado.", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
+        }
     }
 
     @GetMapping("/all")
@@ -46,12 +55,16 @@ public class ImageUrlsController {
     }
 
     @DeleteMapping("/delete/{idImage}")
-    public ResponseEntity<?> deleteImageUrls(@PathVariable Long idImage) {
+    public ResponseEntity<ApiResponse<String>> deleteImageUrls(@PathVariable Long idImage) {
         try {
             imageUrlsService.deleteImageUrls(idImage);
-            return ResponseEntity.ok("Image Urls force deleted successfully");
+            return ResponseEntity.ok(new ApiResponse<>("Urls de imagen eliminadas exitosamente.", null));
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
         }
     }
 }

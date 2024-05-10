@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 public class ImagesUrlsDtoExit {
     private Long idImage;
     private String imageUrl;
-    private Long idInstrument;
+
+
 }

@@ -1,6 +1,5 @@
 package com.musichouse.api.music.dto.dto_entrance;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -15,7 +14,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class InstrumentDtoEntrance {
     @NotBlank(message = "El nombre del instrumento es obligatorio")
     @Size(max = 100, message = "El nombre del instrumento debe tener como máximo {max} caracteres")

@@ -10,7 +10,6 @@ import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.InstrumentInterface;
 import com.musichouse.api.music.repository.CategoryRepository;
 import com.musichouse.api.music.repository.InstrumentRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -18,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -27,7 +25,7 @@ public class InstrumentService implements InstrumentInterface {
     private final InstrumentRepository instrumentRepository;
     private final ModelMapper mapper;
     private final CategoryRepository categoryRepository;
-@Transactional
+
     @Override
     public InstrumentDtoExit createInstrument(InstrumentDtoEntrance instrumentsDtoEntrance) throws ResourceNotFoundException {
         Category category = categoryRepository.findById(instrumentsDtoEntrance.getIdCategory())
@@ -46,7 +44,6 @@ public class InstrumentService implements InstrumentInterface {
         InstrumentDtoExit instrumentDtoExit = mapper.map(instrumentSave, InstrumentDtoExit.class);
         return instrumentDtoExit;
     }
-
 
 
     @Override
@@ -72,7 +69,6 @@ public class InstrumentService implements InstrumentInterface {
     public InstrumentDtoExit updateInstrument(InstrumentDtoModify instrumentDtoModify) throws ResourceNotFoundException {
         Instruments instrumentsToUpdate = instrumentRepository.findById(instrumentDtoModify.getIdInstrument())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado"));
-        // Actualizar solo los campos necesarios
         instrumentsToUpdate.setName(instrumentDtoModify.getName());
         instrumentsToUpdate.setDescription(instrumentDtoModify.getDescription());
         instrumentsToUpdate.setRentalPrice(instrumentDtoModify.getRentalPrice());

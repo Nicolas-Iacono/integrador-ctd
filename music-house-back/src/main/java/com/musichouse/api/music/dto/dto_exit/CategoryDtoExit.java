@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDtoExit {
+
     private Long idCategory;
-    private String name;
+    private String categoryName;
     private String description;
+
+
 }

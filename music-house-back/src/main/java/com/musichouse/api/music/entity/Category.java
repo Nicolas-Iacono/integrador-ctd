@@ -22,8 +22,8 @@ public class Category {
     /**
      * Nombre de la categoría.
      */
-    @Column(name = "name", length = 100)
-    private String name;
+    @Column(name = "category_name", length = 100, unique = true)
+    private String categoryName;
 
     /**
      * Descripción de la categoría.

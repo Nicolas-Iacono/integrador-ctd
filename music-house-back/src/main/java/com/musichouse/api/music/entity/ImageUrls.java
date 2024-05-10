@@ -1,6 +1,5 @@
 package com.musichouse.api.music.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,8 +35,7 @@ public class ImageUrls {
      * Esta relación es ManyToOne, lo que significa que muchas imágenes pueden pertenecer a un solo instrumento.
      * FetchType.EAGER indica que la carga de la entidad Instrument se realiza de forma inmediata junto con la carga de ImageUrl.
      */
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id_instrument")
     @ToString.Exclude
     private Instruments instrument;

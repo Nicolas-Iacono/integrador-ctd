@@ -58,7 +58,7 @@ public class CategoryService implements CategoryInterface {
     public CategoryDtoExit updateCategory(CategoryDtoModify categoryDtoModify) throws ResourceNotFoundException {
         Category categoryToUpdate = categoryRepository.findById(categoryDtoModify.getIdCategory())
                 .orElseThrow(() -> new ResourceNotFoundException("Category with id " + categoryDtoModify.getIdCategory() + " not found"));
-        categoryToUpdate.setName(categoryDtoModify.getName());
+        categoryToUpdate.setCategoryName(categoryDtoModify.getName());
         categoryToUpdate.setDescription(categoryDtoModify.getDescription());
         categoryRepository.save(categoryToUpdate);
         return mapper.map(categoryToUpdate, CategoryDtoExit.class);

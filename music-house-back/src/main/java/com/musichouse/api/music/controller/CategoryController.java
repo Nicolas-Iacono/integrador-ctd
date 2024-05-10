@@ -6,8 +6,10 @@ import com.musichouse.api.music.dto.dto_modify.CategoryDtoModify;
 import com.musichouse.api.music.exception.CategoryAssociatedException;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.CategoryService;
+import com.musichouse.api.music.util.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +24,18 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping("/create")
-    public ResponseEntity<CategoryDtoExit> createCategory(@RequestBody @Valid CategoryDtoEntrance categoryDtoEntrance) {
-        CategoryDtoExit categoryDtoExit = categoryService.createCategory(categoryDtoEntrance);
-        return new ResponseEntity<>(categoryDtoExit, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse<CategoryDtoExit>> createCategory(@RequestBody @Valid CategoryDtoEntrance categoryDtoEntrance) {
+        try {
+            CategoryDtoExit categoryDtoExit = categoryService.createCategory(categoryDtoEntrance);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>("Categoría creada exitosamente.", categoryDtoExit));
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>("La categoría ya existe en la base de datos.", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
+        }
     }
 
     @GetMapping("/all")

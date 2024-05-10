@@ -4,13 +4,12 @@ package com.musichouse.api.music.interfaces;
 import com.musichouse.api.music.dto.dto_entrance.ImageUrlsDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.ImagesUrlsDtoExit;
 import com.musichouse.api.music.dto.dto_modify.ImageUrlsDtoModify;
-import com.musichouse.api.music.entity.ImageUrls;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 
 import java.util.List;
 
 public interface ImageUrlsInterface {
-    ImagesUrlsDtoExit  addImageUrls(ImageUrlsDtoEntrance imageUrlsDtoEntrance) throws ResourceNotFoundException;
+    ImagesUrlsDtoExit addImageUrls(ImageUrlsDtoEntrance imageUrlsDtoEntrance) throws ResourceNotFoundException;
 
     List<ImagesUrlsDtoExit> getAllImageUrls();
 

@@ -27,18 +27,22 @@ public class ImageUrlsService implements ImageUrlsInterface {
 
     @Override
     public ImagesUrlsDtoExit addImageUrls(ImageUrlsDtoEntrance imageUrlsDtoEntrance) throws ResourceNotFoundException {
-        Instruments instrument = instrumentRepository.findById(imageUrlsDtoEntrance.getIdInstrument())
+        Long instrumentId = imageUrlsDtoEntrance.getIdInstrument();
+        if (instrumentId == null) {
+            throw new IllegalArgumentException("El ID del instrumento no puede ser nulo");
+        }
+        Instruments instrument = instrumentRepository.findById(instrumentId)
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado"));
         ImageUrls image = new ImageUrls();
         image.setImageUrl(imageUrlsDtoEntrance.getImageUrl());
         image.setInstrument(instrument);
-        instrument.getImageUrls().add(image);
-        instrumentRepository.save(instrument);
-
-        // Realizar el mapeo de ImageUrls a ImagesUrlsDtoExit
-        return mapper.map(image, ImagesUrlsDtoExit.class);
+        ImageUrls savedImage = imageUrlsRepository.save(image);
+        Long idImage = savedImage.getIdImage();
+        ImagesUrlsDtoExit imageDtoExit = new ImagesUrlsDtoExit();
+        imageDtoExit.setIdImage(idImage);
+        imageDtoExit.setImageUrl(savedImage.getImageUrl());
+        return imageDtoExit;
     }
-
 
     @Override
     public List<ImagesUrlsDtoExit> getAllImageUrls() {
@@ -50,14 +54,10 @@ public class ImageUrlsService implements ImageUrlsInterface {
     @Override
     public ImagesUrlsDtoExit getImageUrlsById(Long idImage) throws ResourceNotFoundException {
         ImageUrls imageUrls = imageUrlsRepository.findById(idImage).orElse(null);
-        ImagesUrlsDtoExit imagesUrlsDtoExit = null;
-        if (imageUrls != null) {
-            imagesUrlsDtoExit = mapper.map(imageUrls, ImagesUrlsDtoExit.class);
-        } else {
+        if (imageUrls == null) {
             throw new ResourceNotFoundException("Imagen no encontrada con ID " + idImage);
         }
-
-        return imagesUrlsDtoExit;
+        return mapper.map(imageUrls, ImagesUrlsDtoExit.class);
     }
 
     @Override
@@ -71,26 +71,10 @@ public class ImageUrlsService implements ImageUrlsInterface {
 
     @Override
     public void deleteImageUrls(Long idImage) throws ResourceNotFoundException {
-        LOGGER.info("Intentando eliminar la imagen con ID: {}", idImage);
-
-        // Buscar la imagen por su ID
         ImageUrls imageUrlsToDelete = imageUrlsRepository.findById(idImage)
                 .orElseThrow(() -> new ResourceNotFoundException("Imagen no encontrada con ID " + idImage));
-
-        LOGGER.info("Imagen encontrada para eliminación: {}", imageUrlsToDelete);
-
-        // Obtener el instrumento asociado a la imagen
-        Instruments instrument = imageUrlsToDelete.getInstrument();
-
-        // Remover la imagen del instrumento
-        if (instrument != null) {
-            instrument.getImageUrls().remove(imageUrlsToDelete);
-            instrumentRepository.save(instrument);
-        }
-
-        // Eliminar la imagen
-        imageUrlsRepository.delete(imageUrlsToDelete);
-
-        LOGGER.info("Imagen eliminada correctamente");
+        imageUrlsRepository.deleteById(idImage);
     }
+
+
 }

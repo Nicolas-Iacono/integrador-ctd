@@ -1,11 +1,11 @@
 package com.musichouse.api.music.controller;
 
-import com.musichouse.api.music.dto.dto_entrance.ImageUrlsDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.InstrumentDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.InstrumentDtoExit;
 import com.musichouse.api.music.dto.dto_modify.InstrumentDtoModify;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.InstrumentService;
+import com.musichouse.api.music.util.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,9 +22,15 @@ public class InstrumentController {
     private final InstrumentService instrumentService;
 
     @PostMapping("/create")
-    public ResponseEntity<InstrumentDtoExit> createInstrument(@Valid @RequestBody InstrumentDtoEntrance instrumentsDtoEntrance) throws ResourceNotFoundException {
-        InstrumentDtoExit createdInstrument = instrumentService.createInstrument(instrumentsDtoEntrance);
-        return new ResponseEntity<>(createdInstrument, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse<InstrumentDtoExit>> createInstrument(@Valid @RequestBody InstrumentDtoEntrance instrumentDtoEntrance) {
+        try {
+            InstrumentDtoExit instrumentDtoExit = instrumentService.createInstrument(instrumentDtoEntrance);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>("Instrumento creado exitosamente.", instrumentDtoExit));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("El idCategory no se encuentra en la DB", null));
+        }
     }
 
     @GetMapping("/all")
@@ -46,9 +52,17 @@ public class InstrumentController {
     }
 
     @DeleteMapping("/delete/{idInstrument}")
-    public ResponseEntity<String> deleteInstrument(@PathVariable Long idInstrument) throws ResourceNotFoundException {
-        instrumentService.deleteInstrument(idInstrument);
-        return new ResponseEntity<>("Instrument deleted successfully", HttpStatus.OK);
+    public ResponseEntity<ApiResponse<String>> deleteInstrument(@PathVariable Long idInstrument) {
+        try {
+            instrumentService.deleteInstrument(idInstrument);
+            return ResponseEntity.ok(new ApiResponse<>("Instrumento eliminado exitosamente.", null));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("El instrumento con el ID proporcionado no se encontró.", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
+        }
     }
 
 }

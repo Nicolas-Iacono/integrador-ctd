@@ -1,6 +1,3 @@
-
 export const Instrument = () => {
-  return (
-    <div>Instrument</div>
-  )
+  return <div>Instrument</div>
 }

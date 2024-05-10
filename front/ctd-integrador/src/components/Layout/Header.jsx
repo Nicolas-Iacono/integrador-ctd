@@ -8,7 +8,6 @@ import Container from '@mui/material/Container'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
-import TextField from '@mui/material/TextField'
 
 import { HeaderWrapper } from './HeaderWrapper'
 import {
@@ -21,21 +20,34 @@ import { LogoWrapper } from './LogoWrapper'
 import { MenuWrapper } from './MenuWrapper'
 import { ContrastInput } from './ContrastInput'
 
-const pages = ['Inicio', 'Instrumentos', 'Acerca de', 'Contáctanos']
+import { Link, useLocation } from 'react-router-dom'
+
+import '../styles/header.styles.css'
+
+const pages = [
+  { to: '/', text: 'Inicio' },
+  { to: '/instruments', text: 'Instrumentos' },
+  { to: '/about', text: 'Acerca de' },
+  { to: '/contact', text: 'Contáctanos' },
+]
 const settings = ['Crear Cuenta', 'Iniciar sesión']
 
 export const Header = () => {
+  const [isMenuOpen, setIsMenuopen] = useState(false)
   const [anchorElNav, setAnchorElNav] = useState(null)
-  const [anchorElUser, setAnchorElUser] = useState(null)
+  const { pathname } = useLocation()
+  const showButtonsAndSearch = pathname === '/'
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
+    setIsMenuopen(!isMenuOpen)
   }
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget)
   }
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (event) => {
+    setIsMenuopen(!isMenuOpen)
     setAnchorElNav(null)
   }
 
@@ -60,33 +72,36 @@ export const Header = () => {
             </IconButton>
             <Menu
               id="menu-appbar"
-              anchorEl={anchorElNav}
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'left',
+                horizontal: 'right',
               }}
+              anchorEl={anchorElNav}
               keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
+              open={isMenuOpen}
               onClose={handleCloseNavMenu}
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {pages.map((page, index) => (
+                <MenuItem
+                  key={`menu-nav-${index}`}
+                  onClick={handleCloseNavMenu}
+                >
+                  <Typography textAlign="center">
+                    <Link to={page.to} className="option-link">
+                      {page.text}
+                    </Link>
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
           </MenuWrapper>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {pages.map((page, index) => (
               <Button
-                key={page}
+                key={`menu-option-${index}`}
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
@@ -97,7 +112,9 @@ export const Header = () => {
                   padding: '0 .6rem',
                 }}
               >
-                {page}
+                <Link to={page.to} className="nav-link">
+                  {page.text}
+                </Link>
               </Button>
             ))}
           </Box>
@@ -105,7 +122,9 @@ export const Header = () => {
             <Logo />
           </LogoWrapper>
         </UpperStyledToolbar>
-        <MiddleStyledToolbar>
+        <MiddleStyledToolbar
+          sx={{ display: `${showButtonsAndSearch ? 'flex' : 'none'}` }}
+        >
           <Box
             sx={{
               flexGrow: 0,
@@ -145,7 +164,9 @@ export const Header = () => {
             </Tooltip>
           </Box>
         </MiddleStyledToolbar>
-        <LowerStyledToolbar>
+        <LowerStyledToolbar
+          sx={{ display: `${showButtonsAndSearch ? 'flex' : 'none'}` }}
+        >
           <ContrastInput label="Encuentra tu instrumento favorito" />
         </LowerStyledToolbar>
       </Container>

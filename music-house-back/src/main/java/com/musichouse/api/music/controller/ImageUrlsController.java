@@ -54,10 +54,10 @@ public class ImageUrlsController {
         return ResponseEntity.ok(imagesUrlsDtoExit);
     }
 
-    @DeleteMapping("/delete/{idImage}")
-    public ResponseEntity<ApiResponse<String>> deleteImageUrls(@PathVariable Long idImage) {
+    @DeleteMapping("/delete/{idInstrument}/{idImage}")
+    public ResponseEntity<ApiResponse<String>> deleteImageUrls(@PathVariable Long idInstrument, @PathVariable Long idImage) {
         try {
-            imageUrlsService.deleteImageUrls(idImage);
+            imageUrlsService.deleteImageUrls(idInstrument, idImage);
             return ResponseEntity.ok(new ApiResponse<>("Urls de imagen eliminadas exitosamente.", null));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

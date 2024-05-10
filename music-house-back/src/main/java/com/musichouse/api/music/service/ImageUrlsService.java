@@ -9,6 +9,7 @@ import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.ImageUrlsInterface;
 import com.musichouse.api.music.repository.ImageUrlsRepository;
 import com.musichouse.api.music.repository.InstrumentRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class ImageUrlsService implements ImageUrlsInterface {
     private final static Logger LOGGER = LoggerFactory.getLogger(ImageUrlsService.class);
     private final ImageUrlsRepository imageUrlsRepository;
@@ -70,11 +72,10 @@ public class ImageUrlsService implements ImageUrlsInterface {
     }
 
     @Override
-    public void deleteImageUrls(Long idImage) throws ResourceNotFoundException {
-        ImageUrls imageUrlsToDelete = imageUrlsRepository.findById(idImage)
-                .orElseThrow(() -> new ResourceNotFoundException("Imagen no encontrada con ID " + idImage));
-        imageUrlsRepository.deleteById(idImage);
+    public void deleteImageUrls(Long idInstrument, Long idImage) throws ResourceNotFoundException {
+        Instruments instrument = instrumentRepository.findById(idInstrument)
+                .orElseThrow(() -> new ResourceNotFoundException("Instrumento no encontrado con ID " + idInstrument));
+        imageUrlsRepository.deleteImageByIdAndInstrumentId(idImage, idInstrument);
+
     }
-
-
 }

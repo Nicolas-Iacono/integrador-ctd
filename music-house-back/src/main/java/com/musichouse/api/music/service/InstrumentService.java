@@ -30,7 +30,10 @@ public class InstrumentService implements InstrumentInterface {
     public InstrumentDtoExit createInstrument(InstrumentDtoEntrance instrumentsDtoEntrance) throws ResourceNotFoundException {
         Category category = categoryRepository.findById(instrumentsDtoEntrance.getIdCategory())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró la categoría con el ID proporcionado"));
-        Instruments instrument = mapper.map(instrumentsDtoEntrance, Instruments.class);
+        Instruments instrument = new Instruments();
+        instrument.setName(instrumentsDtoEntrance.getName());
+        instrument.setDescription(instrumentsDtoEntrance.getDescription());
+        instrument.setRentalPrice(instrumentsDtoEntrance.getRentalPrice());
         instrument.setCategory(category);
         List<ImageUrls> imageUrls = instrumentsDtoEntrance.getImageUrls().stream()
                 .map(url -> {

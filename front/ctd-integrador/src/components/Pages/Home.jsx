@@ -1,8 +1,9 @@
-import * as React from 'react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { TematicsWrapper } from '../common/TematicsWrapper'
 import { TematicCard } from '../common/TematicCard'
 import { useAppStates } from '../utils/global.context'
+
+import '../styles/home.styles.css'
 
 export const Home = () => {
   const { state } = useAppStates()

@@ -1,5 +1,4 @@
 import { styled } from '@mui/material/styles'
-import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 
 export const TematicTitle = styled(Typography)(({ theme }) => ({

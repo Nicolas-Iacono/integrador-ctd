@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Home } from './components/Pages/Home'
+import { Instrument } from './components/Pages/Instrument'
 import { Instruments } from './components/Pages/Instruments'
 import { About } from './components/Pages/About'
 import { Contact } from './components/Pages/Contact'
@@ -17,7 +18,7 @@ export const App = () => {
             <Route path="/instruments" element={<Instruments />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/instrument/:id" element={<Contact />} />
+            <Route path="/instrument/:id" element={<Instrument />} />
           </Route>
         </Routes>
       </ContextProvider>

@@ -1,17 +1,16 @@
 import CssBaseline from '@mui/material/CssBaseline'
-import { TematicsWrapper } from '../common/TematicsWrapper'
-import { TematicCard } from '../common/TematicCard'
+import TematicCard from "../Common/TematicCard"
 import { useAppStates } from '../utils/global.context'
-
-import '../styles/home.styles.css'
+import TematicsWrapper from '../Common/TematicsWrapper'
+import styles from  '../styles/home.module.css'
 
 export const Home = () => {
   const { state } = useAppStates()
 
   return (
-    <main>
+    <main className={styles.cuerpoMain}>
       <CssBaseline />
-      <TematicsWrapper>
+      <TematicsWrapper> 
         {state.tematics?.map((tematic, index) => (
           <TematicCard
             key={`tematic-card-${index}`}

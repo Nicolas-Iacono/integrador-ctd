@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 
-export const TematicTitle = styled(Typography)(({ theme }) => ({
+const TematicTitle = styled(Typography)(({ theme }) => ({
   height: 300,
   display: 'flex',
   alignItems: 'center',
@@ -14,3 +14,5 @@ export const TematicTitle = styled(Typography)(({ theme }) => ({
     fontSize: '3rem',
   },
 }))
+
+export default TematicTitle

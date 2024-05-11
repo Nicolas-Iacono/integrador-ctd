@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles'
 import Container from '@mui/material/Container'
 
-export const TematicsWrapper = styled(Container)(({ theme }) => ({
+const TematicsWrapper = styled(Container)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -17,3 +17,4 @@ export const TematicsWrapper = styled(Container)(({ theme }) => ({
     paddingTop: 390,
   },
 }))
+export default TematicsWrapper

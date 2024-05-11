@@ -1,8 +1,8 @@
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
-import { TematicTitle } from './TematicTitle'
+import TematicTitle from '../Common/TematicTitle';
 
-export const TematicCard = ({ title, imageUrl }) => {
+const TematicCard = ({ title, imageUrl }) => {
   return (
     <Card sx={{ flex: 1 }}>
       <CardMedia
@@ -17,3 +17,5 @@ export const TematicCard = ({ title, imageUrl }) => {
     </Card>
   )
 }
+
+export default TematicCard;

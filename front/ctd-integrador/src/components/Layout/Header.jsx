@@ -13,7 +13,7 @@ import { HeaderWrapper } from './HeaderWrapper'
 import {
   UpperStyledToolbar,
   MiddleStyledToolbar,
-  LowerStyledToolbar,
+  LowerStyledToolbar
 } from './StyledToolbar'
 import { Logo } from '../Images/Logo'
 import { LogoWrapper } from './LogoWrapper'
@@ -28,7 +28,7 @@ const pages = [
   { to: '/', text: 'Inicio' },
   { to: '/instruments', text: 'Instrumentos' },
   { to: '/about', text: 'Acerca de' },
-  { to: '/contact', text: 'Contáctanos' },
+  { to: '/contact', text: 'Contáctanos' }
 ]
 const settings = ['Crear Cuenta', 'Iniciar sesión']
 
@@ -48,7 +48,6 @@ export const Header = () => {
 
   const handleCloseNavMenu = (event) => {
     setIsMenuopen(!isMenuOpen)
-    setAnchorElNav(null)
   }
 
   const handleCloseUserMenu = () => {
@@ -74,14 +73,13 @@ export const Header = () => {
               id="menu-appbar"
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right',
+                horizontal: 'right'
               }}
               anchorEl={anchorElNav}
               keepMounted
               open={isMenuOpen}
-              onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: 'block', md: 'none' }
               }}
             >
               {pages.map((page, index) => (
@@ -102,14 +100,13 @@ export const Header = () => {
             {pages.map((page, index) => (
               <Button
                 key={`menu-option-${index}`}
-                onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
                   color: 'white',
                   display: 'block',
                   fontSize: '1.3rem',
                   fontWeight: 'bold',
-                  padding: '0 .6rem',
+                  padding: '0 .6rem'
                 }}
               >
                 <Link to={page.to} className="nav-link">
@@ -129,15 +126,11 @@ export const Header = () => {
             sx={{
               flexGrow: 0,
               padding: '.5rem .5rem',
-              display: { xs: 'none', md: 'block' },
+              display: { xs: 'none', md: 'block' }
             }}
           >
             <Tooltip title="Crear cuenta">
-              <Button
-                onClick={handleOpenUserMenu}
-                variant="contained"
-                sx={{ borderRadius: '1rem' }}
-              >
+              <Button variant="contained" sx={{ borderRadius: '1rem' }}>
                 <Typography textAlign="center" sx={{ fontWeight: 'bold' }}>
                   Crear cuenta
                 </Typography>
@@ -148,15 +141,11 @@ export const Header = () => {
             sx={{
               flexGrow: 0,
               padding: '.5rem .5rem',
-              display: { xs: 'none', md: 'block' },
+              display: { xs: 'none', md: 'block' }
             }}
           >
             <Tooltip title="Iniciar sesión">
-              <Button
-                onClick={handleOpenUserMenu}
-                variant="contained"
-                sx={{ borderRadius: '1rem' }}
-              >
+              <Button variant="contained" sx={{ borderRadius: '1rem' }}>
                 <Typography textAlign="center" sx={{ fontWeight: 'bold' }}>
                   Iniciar sesión
                 </Typography>

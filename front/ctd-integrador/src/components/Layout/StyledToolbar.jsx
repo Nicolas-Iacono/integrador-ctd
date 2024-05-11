@@ -5,7 +5,7 @@ export const UpperStyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: 'flex-start',
   flexDirection: 'row-reverse',
   paddingTop: theme.spacing(1),
-  paddingBottom: theme.spacing(2),
+  paddingBottom: theme.spacing(1),
 
   [theme.breakpoints.up('md')]: {
     flexDirection: 'row',
@@ -16,7 +16,7 @@ export const MiddleStyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: 'flex-start',
   flexDirection: 'row-reverse',
   paddingTop: theme.spacing(1),
-  paddingBottom: theme.spacing(2),
+  paddingBottom: theme.spacing(1),
 }))
 
 export const LowerStyledToolbar = styled(Toolbar)(({ theme }) => ({
@@ -24,5 +24,5 @@ export const LowerStyledToolbar = styled(Toolbar)(({ theme }) => ({
   flexDirection: 'row',
   justifyContent: 'center',
   paddingTop: theme.spacing(1),
-  paddingBottom: theme.spacing(2),
+  paddingBottom: theme.spacing(1),
 }))

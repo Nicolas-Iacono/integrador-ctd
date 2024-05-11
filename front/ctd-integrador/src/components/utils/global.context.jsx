@@ -10,6 +10,11 @@ import { actions } from './actions'
 const initialState = {
   instruments: [],
   favorites: [],
+  tematics: [
+    { name: 'Alternativo', image: '/src/assets/alternative.svg' },
+    { name: 'Clásico', image: '/src/assets/classic.svg' },
+    { name: 'Ancestral', image: '/src/assets/ancestral.svg' },
+  ],
 }
 
 const ContextGlobal = createContext()

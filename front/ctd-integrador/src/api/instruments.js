@@ -7,7 +7,7 @@ const instruments = [
         "rentalPrice": 1200.34,
         "category": {
             "idCategory": 1,
-            "name": "VIENTO",
+            "categoryName": "VIENTO",
             "description": " percusión incluye una amplia variedad de instrumentos musicales que se tocan golpeándolos, frotándolos o agitándolos para producir sonidos"
         },
         "imageUrls": [
@@ -40,7 +40,7 @@ const instruments = [
         "rentalPrice": 1200.34,
         "category": {
             "idCategory": 1,
-            "name": "VIENTO",
+            "categoryName": "VIENTO",
             "description": " percusión incluye una amplia variedad de instrumentos musicales que se tocan golpeándolos, frotándolos o agitándolos para producir sonidos"
         },
         "imageUrls": [
@@ -77,9 +77,9 @@ export const getInstrumentById = (id) => {
 }
     
 export const getInstruments1 = () => {
-  return useFetch('http://localhost:8080/api/instruments/all', [])
+  return useFetch('http://localhost:8080/api/instrument/all', [])
 }
 
 export const getInstrumentById1 = (id) => {
-  return useFetch(`http://localhost:8080/api/instruments/${id}`, {})
+  return useFetch(`http://localhost:8080/api/instrument/search/${id}`, {})
 }

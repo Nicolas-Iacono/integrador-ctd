@@ -125,12 +125,15 @@ export const Header = () => {
           <Box
             sx={{
               flexGrow: 0,
-              padding: '.5rem .5rem',
+              padding: '.5rem',
               display: { xs: 'none', md: 'block' }
             }}
           >
             <Tooltip title="Crear cuenta">
-              <Button variant="contained" sx={{ borderRadius: '1rem' }}>
+              <Button
+                variant="contained"
+                sx={{ borderRadius: '1rem', padding: '.5rem .5rem' }}
+              >
                 <Typography textAlign="center" sx={{ fontWeight: 'bold' }}>
                   Crear cuenta
                 </Typography>
@@ -140,12 +143,15 @@ export const Header = () => {
           <Box
             sx={{
               flexGrow: 0,
-              padding: '.5rem .5rem',
+              padding: '.5rem',
               display: { xs: 'none', md: 'block' }
             }}
           >
             <Tooltip title="Iniciar sesión">
-              <Button variant="contained" sx={{ borderRadius: '1rem' }}>
+              <Button
+                variant="contained"
+                sx={{ borderRadius: '1rem', padding: '.5rem .5rem' }}
+              >
                 <Typography textAlign="center" sx={{ fontWeight: 'bold' }}>
                   Iniciar sesión
                 </Typography>

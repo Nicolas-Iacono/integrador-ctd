@@ -1,9 +1,9 @@
 .MuiDivider-root {
-  color: #7D7373;
-  border-color: #7D7373 !important;
+  color: #7d7373;
+  border-color: #7d7373 !important;
 }
 
-img {
+.instrument-image {
   width: 100%;
   display: block;
   margin-left: auto;

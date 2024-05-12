@@ -1,6 +1,6 @@
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
-import TematicTitle from '../Common/TematicTitle'
+import TematicTitle from '../common/TematicTitle'
 
 export const TematicCard = ({ title, imageUrl }) => {
   return (

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 import '../styles/product.styles.css'
 
-export const ProductCard = ({ name, imageUrl, id }) => {
+const ProductCard = ({ name, imageUrl, id }) => {
   return (
     <ProductWrapper>
       <Link to={`/instrument/${id}`} className="product-link">
@@ -24,3 +24,5 @@ export const ProductCard = ({ name, imageUrl, id }) => {
     </ProductWrapper>
   )
 }
+
+export default ProductCard

@@ -6,11 +6,16 @@ import { About } from './components/Pages/About'
 import { Contact } from './components/Pages/Contact'
 import { Layout } from './components/Layout/Layout'
 import { ContextProvider } from './components/utils/global.context'
+import {AgregarInstrumento} from './components/Pages/AgregarInstrumento'
+import { HeaderVisibilityProvider } from './components/utils/context/HeaderVisibilityGlobal'
 import './App.css'
+
+
 
 export const App = () => {
   return (
     <BrowserRouter>
+    <HeaderVisibilityProvider>
       <ContextProvider>
         <Routes>
           <Route element={<Layout />}>
@@ -19,9 +24,11 @@ export const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/instrument/:id" element={<Instrument />} />
+            <Route path= "/agregarinstrumento" element={<AgregarInstrumento />}/>
           </Route>
         </Routes>
       </ContextProvider>
+      </HeaderVisibilityProvider>
     </BrowserRouter>
   )
 }

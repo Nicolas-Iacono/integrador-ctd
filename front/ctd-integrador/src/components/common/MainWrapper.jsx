@@ -18,3 +18,5 @@ export const MainWrapper = styled(Container)(({ theme }) => ({
     paddingTop: 320
   }
 }))
+
+export default MainWrapper

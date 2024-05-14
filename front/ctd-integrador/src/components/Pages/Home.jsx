@@ -3,16 +3,15 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
-import { MainWrapper } from '../common/MainWrapper'
-import { TematicCard } from '../common/TematicCard'
-import { ProductsWrapper } from '../common/ProductsWrapper'
-import { ProductCard } from '../common/ProductCard'
 import { useAppStates } from '../utils/global.context'
 import { getInstruments } from '../../api/instruments'
 import { actions } from '../utils/actions'
 
 import '../styles/home.styles.css'
-
+import MainWrapper from '../common/MainWrapper'
+import TematicCard from '../common/TematicCard'
+import ProductWrapper from '../common/ProductsWrapper'
+import ProductCard from '../common/ProductCard'
 export const Home = () => {
   const { state, dispatch } = useAppStates()
   const [instruments] = getInstruments()
@@ -52,7 +51,7 @@ export const Home = () => {
             Best Sellers
           </Typography>
         </Box>
-        <ProductsWrapper>
+        <ProductWrapper>
           {state.instruments?.map((instrument, index) => (
             <ProductCard
               key={`product-card-${index}`}
@@ -61,7 +60,7 @@ export const Home = () => {
               id={instrument.idInstrument}
             />
           ))}
-        </ProductsWrapper>
+        </ProductWrapper>
       </Container>
     </main>
   )

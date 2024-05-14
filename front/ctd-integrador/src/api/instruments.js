@@ -68,6 +68,8 @@ const instruments = [
     }
 ]
 
+export const uniqueCategories = Array.from(new Set(instruments.map(instr => JSON.stringify(instr.category)))).map(cat => JSON.parse(cat));
+
 export const getInstruments = () => {
     return [instruments]
 }

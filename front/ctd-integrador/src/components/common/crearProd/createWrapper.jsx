@@ -14,12 +14,12 @@ export const CreateWrapper = styled(Grid)(({ theme, isHeaderVisible}) => ({
   paddingBottom: '2rem',
   width:'100%',
   height:'120vh',
-  
 
 
 
   [theme.breakpoints.up('md')]: {
     paddingTop: isHeaderVisible ? 320 : 50,
+
     transition: 'padding-top 1s ease-in-out',
   }
 }))

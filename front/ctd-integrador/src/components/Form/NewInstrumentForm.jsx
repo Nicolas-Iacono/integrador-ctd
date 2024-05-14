@@ -11,7 +11,7 @@ import {
   Typography,
   Grid
 } from '@mui/material';
-
+import styles from '../styles/crearInstrumento.module.css'
 import { getInstruments } from '../../api/instruments';
 
 const NewInstrumentForm = () => {
@@ -31,7 +31,7 @@ const NewInstrumentForm = () => {
   const [themes, setThemes] = useState([]);
 
   useEffect(() => {
-    // Fetch categories and themes from the API (Replace with your API endpoints)
+    
     const fetchCategories = async () => {
       try {
         const response = await fetch(getInstruments);
@@ -68,13 +68,20 @@ const NewInstrumentForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Grid
-        container
-        spacing={2}
-        sx={{ padding: 2 }}
-      >
-        <Grid item xs={12} md={6}>
+    <Grid
+    container
+    spacing={2}
+    sx={{ padding: 2,width: '60%', height:'100%', overflow:'hidden'
+    }}
+    
+  >
+    <form onSubmit={handleSubmit} className={styles.formulario}>
+    
+    <Grid sx={{display:'flex', flexDirection:'row'}}>
+
+        <Grid item xs={12} md={6} sx={{ padding: 2, width: '60%', height:'100%'
+        }}>
+
           <Typography variant="h6">Registrar Instrumento</Typography>
           <FormControl fullWidth margin="normal">
             <TextField
@@ -140,7 +147,7 @@ const NewInstrumentForm = () => {
             />
           </FormControl>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} sx={{ padding: 2,width: '50%', height:'100%'}}>
           <Typography variant="h6">Asignar Categoría</Typography>
           <FormControl fullWidth margin="normal">
             <InputLabel id="category-label">Categoría</InputLabel>
@@ -176,8 +183,8 @@ const NewInstrumentForm = () => {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12}>
-          <Box
+        </Grid>
+        <Box
             sx={{
               width: '100%',
               display: 'flex',
@@ -190,9 +197,9 @@ const NewInstrumentForm = () => {
               Enviar
             </Button>
           </Box>
-        </Grid>
-      </Grid>
+     
     </form>
+    </Grid>
   );
 };
 

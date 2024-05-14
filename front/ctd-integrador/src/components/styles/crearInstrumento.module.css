@@ -1,5 +1,10 @@
 .cuerpo{
   height: 100%;
-  background-color: aquamarine;
   margin-top: 300px;
+}
+.formulario{
+  display: flex;
+  flex-direction: column;
+  background-color: column;
+  justify-content: space-around;
 }

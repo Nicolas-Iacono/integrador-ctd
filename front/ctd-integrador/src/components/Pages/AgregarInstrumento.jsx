@@ -20,9 +20,12 @@ export const AgregarInstrumento = () => {
             height: '70%',
             border: '3px solid black',
             borderRadius: '10px',
+            display:'flex',
+            alignItems:'center',
+            justifyContent:'center',
           }}
         >
-          <NewInstrumentForm />
+          <NewInstrumentForm className={styles.formulario}/>
         </Grid>
       </FormWrapper>
     </CreateWrapper>

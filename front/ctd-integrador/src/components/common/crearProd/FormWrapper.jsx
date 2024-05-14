@@ -12,7 +12,6 @@ const FormWrapper = styled(Grid)(({ theme }) => ({
   paddingTop: 1,
   width:'100%',
   height:'100%',
-
   [theme.breakpoints.up('sm')]: {
     flexDirection: 'column'
   },

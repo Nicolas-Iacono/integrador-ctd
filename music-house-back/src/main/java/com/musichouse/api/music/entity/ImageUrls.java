@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.util.Date;
 
 
 /**
@@ -38,7 +41,15 @@ public class ImageUrls {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_instrument")
     @ToString.Exclude
-    private Instruments instrument;
+    private Instrument instrument;
 
+    /**
+     * Anotación que marca el campo como una fecha de creación automática.
+     * Hibernate asigna automáticamente la fecha y hora actual al insertar la entidad en la base de datos.
+     */
+    @CreationTimestamp
+    @Temporal(TemporalType.DATE)
+    @Column(name = "regist_date")
+    private Date registDate;
 
 }

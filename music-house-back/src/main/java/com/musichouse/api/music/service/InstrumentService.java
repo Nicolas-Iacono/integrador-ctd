@@ -5,11 +5,13 @@ import com.musichouse.api.music.dto.dto_exit.InstrumentDtoExit;
 import com.musichouse.api.music.dto.dto_modify.InstrumentDtoModify;
 import com.musichouse.api.music.entity.Category;
 import com.musichouse.api.music.entity.ImageUrls;
-import com.musichouse.api.music.entity.Instruments;
+import com.musichouse.api.music.entity.Instrument;
+import com.musichouse.api.music.entity.Theme;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.InstrumentInterface;
 import com.musichouse.api.music.repository.CategoryRepository;
 import com.musichouse.api.music.repository.InstrumentRepository;
+import com.musichouse.api.music.repository.ThemeRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -25,16 +27,22 @@ public class InstrumentService implements InstrumentInterface {
     private final InstrumentRepository instrumentRepository;
     private final ModelMapper mapper;
     private final CategoryRepository categoryRepository;
+    private final ThemeRepository themeRepository;
 
     @Override
     public InstrumentDtoExit createInstrument(InstrumentDtoEntrance instrumentsDtoEntrance) throws ResourceNotFoundException {
         Category category = categoryRepository.findById(instrumentsDtoEntrance.getIdCategory())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró la categoría con el ID proporcionado"));
-        Instruments instrument = new Instruments();
+        Theme theme = themeRepository.findById(instrumentsDtoEntrance.getIdTheme())
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró la tematica con el ID proporcionado"));
+        Instrument instrument = new Instrument();
         instrument.setName(instrumentsDtoEntrance.getName());
         instrument.setDescription(instrumentsDtoEntrance.getDescription());
         instrument.setRentalPrice(instrumentsDtoEntrance.getRentalPrice());
+        instrument.setWeight(instrumentsDtoEntrance.getWeight());
+        instrument.setMeasures(instrumentsDtoEntrance.getMeasures());
         instrument.setCategory(category);
+        instrument.setTheme(theme);
         List<ImageUrls> imageUrls = instrumentsDtoEntrance.getImageUrls().stream()
                 .map(url -> {
                     ImageUrls imageUrl = new ImageUrls();
@@ -43,7 +51,7 @@ public class InstrumentService implements InstrumentInterface {
                     return imageUrl;
                 }).toList();
         instrument.setImageUrls(imageUrls);
-        Instruments instrumentSave = instrumentRepository.save(instrument);
+        Instrument instrumentSave = instrumentRepository.save(instrument);
         InstrumentDtoExit instrumentDtoExit = mapper.map(instrumentSave, InstrumentDtoExit.class);
         return instrumentDtoExit;
     }
@@ -58,7 +66,7 @@ public class InstrumentService implements InstrumentInterface {
 
     @Override
     public InstrumentDtoExit getInstrumentById(Long idInstrument) throws ResourceNotFoundException {
-        Instruments instrument = instrumentRepository.findById(idInstrument).orElse(null);
+        Instrument instrument = instrumentRepository.findById(idInstrument).orElse(null);
         InstrumentDtoExit instrumentDtoExit = null;
         if (instrument != null) {
             instrumentDtoExit = mapper.map(instrument, InstrumentDtoExit.class);
@@ -70,11 +78,13 @@ public class InstrumentService implements InstrumentInterface {
 
     @Override
     public InstrumentDtoExit updateInstrument(InstrumentDtoModify instrumentDtoModify) throws ResourceNotFoundException {
-        Instruments instrumentsToUpdate = instrumentRepository.findById(instrumentDtoModify.getIdInstrument())
+        Instrument instrumentsToUpdate = instrumentRepository.findById(instrumentDtoModify.getIdInstrument())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado"));
         instrumentsToUpdate.setName(instrumentDtoModify.getName());
         instrumentsToUpdate.setDescription(instrumentDtoModify.getDescription());
         instrumentsToUpdate.setRentalPrice(instrumentDtoModify.getRentalPrice());
+        instrumentsToUpdate.setWeight(instrumentDtoModify.getWeight());
+        instrumentsToUpdate.setMeasures(instrumentDtoModify.getMeasures());
         instrumentRepository.save(instrumentsToUpdate);
         return mapper.map(instrumentsToUpdate, InstrumentDtoExit.class);
     }
@@ -87,6 +97,5 @@ public class InstrumentService implements InstrumentInterface {
             throw new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado");
         }
     }
-
 
 }

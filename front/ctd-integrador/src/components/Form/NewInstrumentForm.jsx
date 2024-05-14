@@ -12,8 +12,9 @@ import {
   Grid
 } from '@mui/material';
 import styles from '../styles/crearInstrumento.module.css'
-import { getInstruments } from '../../api/instruments';
-
+import { getInstruments, getInstruments1 } from '../../api/instruments';
+import CategorySelect from './CategorySelect';
+import ThemeSelect from './ThemeSelect';
 const NewInstrumentForm = () => {
   const initialFormData = {
     idInstrument: '',
@@ -30,31 +31,7 @@ const NewInstrumentForm = () => {
   const [categories, setCategories] = useState([]);
   const [themes, setThemes] = useState([]);
 
-  useEffect(() => {
-    
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch(getInstruments);
-        const data = await response.json();
-        setCategories(data.category.categoryName);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
 
-    const fetchThemes = async () => {
-      try {
-        const response = await fetch(getInstruments);
-        const data = await response.json();
-        setThemes(data.category.categoryName);
-      } catch (error) {
-        console.error("Error fetching themes:", error);
-      }
-    };
-
-    fetchCategories();
-    fetchThemes();
-  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -83,17 +60,7 @@ const NewInstrumentForm = () => {
         }}>
 
           <Typography variant="h6">Registrar Instrumento</Typography>
-          <FormControl fullWidth margin="normal">
-            <TextField
-              label="ID Instrumento"
-              name="idInstrument"
-              value={formData.idInstrument}
-              onChange={handleChange}
-              required
-              type="text"
-              color="primary"
-            />
-          </FormControl>
+          
           <FormControl fullWidth margin="normal">
             <TextField
               label="Nombre"
@@ -151,36 +118,12 @@ const NewInstrumentForm = () => {
           <Typography variant="h6">Asignar Categoría</Typography>
           <FormControl fullWidth margin="normal">
             <InputLabel id="category-label">Categoría</InputLabel>
-            <Select
-              labelId="category-label"
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              required
-            >
-              {categories.map((category) => (
-                <MenuItem key={category.id} value={category.id}>
-                  {category.name}
-                </MenuItem>
-              ))}
-            </Select>
+            <CategorySelect value={formData.category}/>
           </FormControl>
           <Typography variant="h6">Asignar Tema</Typography>
           <FormControl fullWidth margin="normal">
             <InputLabel id="theme-label">Tema</InputLabel>
-            <Select
-              labelId="theme-label"
-              name="theme"
-              value={formData.theme}
-              onChange={handleChange}
-              required
-            >
-              {themes.map((theme) => (
-                <MenuItem key={theme.id} value={theme.id}>
-                  {theme.name}
-                </MenuItem>
-              ))}
-            </Select>
+            <ThemeSelect value={formData.theme}/>
           </FormControl>
         </Grid>
         </Grid>
@@ -204,7 +147,6 @@ const NewInstrumentForm = () => {
 };
 
 // Render the form to the DOM
-ReactDOM.render(<NewInstrumentForm />, document.getElementById('root'));
 
 
 export default NewInstrumentForm

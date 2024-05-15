@@ -1,0 +1,11 @@
+.cuerpo {
+  height: 100%;
+  margin-top: 300px;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  background-color: column;
+  justify-content: space-around;
+}

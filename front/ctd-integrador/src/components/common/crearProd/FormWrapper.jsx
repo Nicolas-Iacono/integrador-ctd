@@ -1,16 +1,17 @@
 import { styled } from '@mui/material/styles'
-import Container from '@mui/material/Container'
+import { Grid } from '@mui/material'
 
- const ProductsWrapper = styled(Container)(({ theme }) => ({
+const FormWrapper = styled(Grid)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-around',
-  flexWrap: 'wrap',
+  alignItems: 'center',
   gap: '1rem',
   paddingTop: 1,
-
+  width: '100%',
+  height: '100%',
   [theme.breakpoints.up('sm')]: {
-    flexDirection: 'row'
+    flexDirection: 'column'
   },
 
   [theme.breakpoints.up('md')]: {
@@ -18,4 +19,4 @@ import Container from '@mui/material/Container'
   }
 }))
 
-export default ProductsWrapper
+export default FormWrapper

@@ -5,3 +5,5 @@ export const ProductWrapper = styled(Card)(({ theme }) => ({
   boxShadow: 'none',
   cursor: 'pointer'
 }))
+
+export default ProductWrapper

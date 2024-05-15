@@ -68,18 +68,41 @@ const instruments = [
     }
 ]
 
+/**
+ * Acceso a DB en localhost
+ */
 export const getInstruments = () => {
-    return [instruments]
-}
-
-export const getInstrumentById = (id) => {
-    return [instruments[0]]
-}
-    
-export const getInstruments1 = () => {
   return useFetch('http://localhost:8080/api/instrument/all', [])
 }
 
-export const getInstrumentById1 = (id) => {
+export const getInstrumentById = (id) => {
   return useFetch(`http://localhost:8080/api/instrument/search/${id}`, {})
+}
+
+export const getCategories = () => {
+    return useFetch('http://localhost:8080/api/category/all')
+}
+
+export const getThemes = () => {
+    return useFetch('http://localhost:8080/api/theme/all')
+}
+
+/**
+ * Acceso a DB en internet
+ */
+
+export const getInstruments1 = () => {
+    return [instruments]
+}
+
+export const getInstrumentById1 = (id) => {
+    return [instruments[0]]
+}
+
+export const getCategories1 = () => {
+    return useFetch('https://loyal-art-production.up.railway.app/api/category/all')
+}
+
+export const getThemes1 = () => {
+    return useFetch('https://loyal-art-production.up.railway.app/api/theme/all')
 }

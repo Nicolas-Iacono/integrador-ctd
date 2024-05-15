@@ -3,19 +3,21 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
-import { MainWrapper } from '../common/MainWrapper'
-import { TematicCard } from '../common/TematicCard'
-import { ProductsWrapper } from '../common/ProductsWrapper'
-import { ProductCard } from '../common/ProductCard'
 import { useAppStates } from '../utils/global.context'
-import { getInstruments } from '../../api/instruments'
+import { getInstruments, getInstruments1 } from '../../api/instruments'
 import { actions } from '../utils/actions'
+import MainWrapper from '../common/MainWrapper'
+import TematicCard from '../common/TematicCard'
+import ProductsWrapper from '../common/ProductsWrapper'
+import ProductCard from '../common/ProductCard'
 
 import '../styles/home.styles.css'
 
 export const Home = () => {
   const { state, dispatch } = useAppStates()
   const [instruments] = getInstruments()
+  // Usar cuando el front no esté conectado a backend localhost
+  // const [instruments] = getInstruments1()
 
   useEffect(() => {
     dispatch({ type: actions.UPDATE_INSTRUMENTS, payload: instruments })

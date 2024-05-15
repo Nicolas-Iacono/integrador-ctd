@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
@@ -21,7 +21,7 @@ import { MenuWrapper } from './MenuWrapper'
 import { ContrastInput } from './ContrastInput'
 
 import { Link, useLocation } from 'react-router-dom'
-
+import { useHeaderVisibility } from '../utils/context/HeaderVisibilityGlobal'
 import '../styles/header.styles.css'
 
 const pages = [
@@ -33,6 +33,9 @@ const pages = [
 const settings = ['Crear Cuenta', 'Iniciar sesión']
 
 export const Header = () => {
+  const [prevScroll, setPrevScroll] = useState(0)
+  const [visible, setVisible] = useState(true)
+  const { toggleHeaderVisibility } = useHeaderVisibility();
   const [isMenuOpen, setIsMenuopen] = useState(false)
   const [anchorElNav, setAnchorElNav] = useState(null)
   const { pathname } = useLocation()
@@ -53,9 +56,29 @@ export const Header = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
   }
-
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+      const isHeaderVisible = prevScroll > currentScroll;
+      setVisible(
+        (prevScroll > currentScroll  && prevScroll  - currentScroll > 70) || currentScroll < 10
+      )
+      toggleHeaderVisibility(isHeaderVisible);
+      setPrevScroll(currentScroll)
+      
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [prevScroll, toggleHeaderVisibility]);
+  
+  const headerStyle = {
+    transition: 'top 1.2s',
+    top: visible ? '0' : '-300px'
+  };
   return (
-    <HeaderWrapper>
+    <HeaderWrapper style={headerStyle}>
       <Container maxWidth="xl">
         <UpperStyledToolbar disableGutters>
           <MenuWrapper>

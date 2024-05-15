@@ -1,41 +1,39 @@
+import { Select, MenuItem } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { getThemes, getThemes1 } from '../../api/instruments'
 
-import { Select,  MenuItem, Tooltip } from '@mui/material';
-import React, { useEffect, useState } from 'react'
-
-const ThemeSelect = () => {
-  const [themes, setThemes] = useState([]);
-  const [loading, setLoading] = useState(true);
+const ThemeSelect = ({ onChange }) => {
+  const [loading, setLoading] = useState(true)
+  const [selectedTheme, setSelectedTheme] = useState('')
+  const [themes] = getThemes()
+  // Usar cuando el front no esté conectado a backend localhost
+  // const [themes] = getThemes1()
 
   useEffect(() => {
-    const fetchThemes = async () => {
-      try {
-        const response = await fetch("https://loyal-art-production.up.railway.app/api/theme/all")
-        if(!response.ok) {
-          throw new Error("Something went wrong")
-        }
-        const data = await response.json();
-        setThemes(data)
-      }catch (e) {
-        console.error('Error ' , e);
-      }finally{
-        setLoading(false)
-      }
-    };
-    fetchThemes();
-  }, [])
-    if (loading) {
-      return <p>Loading...</p>;
-    }
-console.log(themes)
+    setLoading(false)
+  }, [themes])
+
+  useEffect(() => {
+    if (typeof onChange === 'function')
+      onChange({
+        target: { name: 'theme', value: selectedTheme.idTheme }
+      })
+  }, [selectedTheme])
+
+  if (loading) {
+    return <p>Loading...</p>
+  }
+
+  const handleThemeChange = (event) => {
+    setSelectedTheme(event.target.value)
+  }
+
   return (
-    <Select>
-      {themes.map(theme => (
-        <Tooltip key={theme.idTheme} title={theme.description} placement="right">
-          <MenuItem key={theme.idTheme} value={theme.idTheme}>
-            {theme.themeName}
-          </MenuItem>
-        </Tooltip>
-        
+    <Select value={selectedTheme} onChange={handleThemeChange}>
+      {themes?.map((theme, index) => (
+        <MenuItem key={`theme-select-${index}`} value={theme}>
+          {theme.themeName}
+        </MenuItem>
       ))}
     </Select>
   )

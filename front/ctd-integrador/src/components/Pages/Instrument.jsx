@@ -43,10 +43,10 @@ export const Instrument = () => {
         <InstrumentDetailWrapper>
           <Box
             sx={{
-              width: { xs: '100%', md: '45%' },
+              width: { xs: '100%', md: '40%' },
               display: 'flex',
               flexDirection: 'column',
-              gap: 2,
+              gap: 1,
               minHeight: '15rem'
             }}
           >
@@ -67,7 +67,7 @@ export const Instrument = () => {
                 fontWeight: 'lighter'
               }}
             >
-              Tipo: {instrumentSelected?.category?.name}
+              Medida: {instrumentSelected?.measures}
             </Typography>
             <Typography
               variant="h6"
@@ -76,11 +76,29 @@ export const Instrument = () => {
                 fontWeight: 'lighter'
               }}
             >
-              Temática: {instrumentSelected?.tematic}
+              Peso: {instrumentSelected?.weight}
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                textAlign: 'left',
+                fontWeight: 'lighter'
+              }}
+            >
+              Tipo: {instrumentSelected?.category?.categoryName}
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                textAlign: 'left',
+                fontWeight: 'lighter'
+              }}
+            >
+              Temática: {instrumentSelected?.theme?.themeName}
             </Typography>
             <Divider />
           </Box>
-          <Box sx={{ width: { xs: '100%', md: '45%' }, cursor: 'pointer' }}>
+          <Box sx={{ width: { xs: '100%', md: '40%' }, cursor: 'pointer' }}>
             <Tooltip title="Ver más imágenes">
               <Button onClick={() => setShowGallery(true)}>
                 <img

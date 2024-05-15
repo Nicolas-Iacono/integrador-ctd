@@ -8,10 +8,14 @@ import '../styles/product.styles.css'
 
 const ProductCard = ({ name, imageUrl, id }) => {
   return (
-    <ProductWrapper>
+    <ProductWrapper sx={{ width: { md: '13rem' }, flexGrow: 1 }}>
       <Link to={`/instrument/${id}`} className="product-link">
         <CardMedia
-          sx={{ height: 300, cursor: 'pointer' }}
+          sx={{
+            height: 300,
+            cursor: 'pointer',
+            backgroundSize: 'contain !important'
+          }}
           image={imageUrl}
           alt={name}
         />

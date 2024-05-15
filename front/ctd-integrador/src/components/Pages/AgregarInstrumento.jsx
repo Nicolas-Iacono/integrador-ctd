@@ -11,24 +11,25 @@ export const AgregarInstrumento = () => {
   const { isHeaderVisible } = useHeaderVisibility()
 
   return (
-    <CreateWrapper isHeaderVisible={isHeaderVisible}>
-      <FormWrapper>
-        <Typography sx={{ fontSize: '35px' }}>Crear Instrumento</Typography>
-        <Grid
-          sx={{
-            width: '80%',
-            height: '70%',
-            border: '3px solid black',
-            borderRadius: '10px',
-            display:'flex',
-            alignItems:'center',
-            justifyContent:'center',
-          }}
-        >
-          <NewInstrumentForm className={styles.formulario}/>
-        </Grid>
-      </FormWrapper>
-    </CreateWrapper>
+    <main>
+      <CreateWrapper isHeaderVisible={isHeaderVisible}>
+        <FormWrapper>
+          <Typography sx={{ fontSize: '35px' }}>Crear Instrumento</Typography>
+          <Grid
+            sx={{
+              width: '80%',
+              border: '3px solid black',
+              borderRadius: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <NewInstrumentForm className={styles.formulario} />
+          </Grid>
+        </FormWrapper>
+      </CreateWrapper>
+    </main>
   )
 }
 

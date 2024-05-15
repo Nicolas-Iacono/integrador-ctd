@@ -6,7 +6,7 @@ import { HeaderWrapper } from '../Layout/HeaderWrapper'
 import { MainWrapper } from './MainWrapper'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
-import '../styles/instrumentGaller.styles.css'
+import '../styles/instrumentGallery.styles.css'
 
 const srcset = (image, size, rows = 1, cols = 1) => {
   const urlHasParams = /\?/.test(image)
@@ -23,11 +23,14 @@ export const InstrumentGallery = ({ itemData }) => {
   const matches = useMediaQuery((theme) => theme.breakpoints.up('md'))
 
   return (
-    <Container>
+    <Container sx={{ backgroundColor: '#F2F2F2', height: '100%' }}>
       <HeaderWrapper />
       <MainWrapper>
         <ImageList
-          sx={{ width: { sx: '100%', md: '70%' }, height: 500 }}
+          sx={{
+            width: { xs: '100%', md: '70%' },
+            height: 500
+          }}
           variant="quilted"
           cols={4}
           rowHeight={121}
@@ -37,6 +40,11 @@ export const InstrumentGallery = ({ itemData }) => {
               key={`gallery-image-${index}`}
               cols={matches ? (index === 0 ? 2 : 1) : 4}
               rows={matches ? (index === 0 ? 4 : 2) : 4}
+              sx={{
+                display: 'grid',
+                backgroundColor: 'white',
+                margin: '.5rem'
+              }}
             >
               <img
                 className="instrument-gallery-image"

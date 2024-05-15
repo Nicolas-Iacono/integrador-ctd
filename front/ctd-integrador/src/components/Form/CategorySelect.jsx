@@ -1,47 +1,39 @@
+import { Select, MenuItem } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { getCategories, getCategories1 } from '../../api/instruments'
 
-import { Select,  MenuItem, Tooltip } from '@mui/material';
-import React, { useEffect, useState } from 'react'
-
-const CategorySelect = () => {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState('');
-
+const CategorySelect = ({ onChange }) => {
+  const [loading, setLoading] = useState(true)
+  const [selectedCategory, setSelectedCategory] = useState('')
+  const [categories] = getCategories()
+  // Usar cuando el front no esté conectado a backend localhost
+  // const [categories] = getCategories1()
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch("https://loyal-art-production.up.railway.app/api/category/all")
-        if(!response.ok) {
-          throw new Error("Something went wrong")
-        }
-        const data = await response.json();
-        setCategories(data)
-      }catch (e) {
-        console.error('Error ' , e);
-      }finally{
-        setLoading(false)
-      }
-    };
-    fetchCategories();
-  }, [])
-    if (loading) {
-      return <p>Loading...</p>;
-    }
-    const handleCategoryChange = (event) => {
-      setSelectedCategory(event.target.value);
-    };
- 
+    setLoading(false)
+  }, [categories])
+
+  useEffect(() => {
+    if (typeof onChange === 'function')
+      onChange({
+        target: { name: 'category', value: selectedCategory.idCategory }
+      })
+  }, [selectedCategory])
+
+  if (loading) {
+    return <p>Loading...</p>
+  }
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value)
+  }
 
   return (
     <Select value={selectedCategory} onChange={handleCategoryChange}>
-      {categories.map(category => (
-        <Tooltip key={category.id} title={category.description} placement="right">
-          <MenuItem key={category.id} value={category.id}>
-            {category.categoryName}
-          </MenuItem>
-        </Tooltip>
-        
+      {categories?.map((category, index) => (
+        <MenuItem key={`category-select-${index}`} value={category}>
+          {category.categoryName}
+        </MenuItem>
       ))}
     </Select>
   )

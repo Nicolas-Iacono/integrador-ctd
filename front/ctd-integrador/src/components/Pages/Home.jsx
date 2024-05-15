@@ -4,17 +4,20 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import { useAppStates } from '../utils/global.context'
-import { getInstruments } from '../../api/instruments'
+import { getInstruments, getInstruments1 } from '../../api/instruments'
 import { actions } from '../utils/actions'
-
-import '../styles/home.styles.css'
 import MainWrapper from '../common/MainWrapper'
 import TematicCard from '../common/TematicCard'
-import ProductWrapper from '../common/ProductsWrapper'
+import ProductsWrapper from '../common/ProductsWrapper'
 import ProductCard from '../common/ProductCard'
+
+import '../styles/home.styles.css'
+
 export const Home = () => {
   const { state, dispatch } = useAppStates()
   const [instruments] = getInstruments()
+  // Usar cuando el front no esté conectado a backend localhost
+  // const [instruments] = getInstruments1()
 
   useEffect(() => {
     dispatch({ type: actions.UPDATE_INSTRUMENTS, payload: instruments })
@@ -51,7 +54,7 @@ export const Home = () => {
             Best Sellers
           </Typography>
         </Box>
-        <ProductWrapper>
+        <ProductsWrapper>
           {state.instruments?.map((instrument, index) => (
             <ProductCard
               key={`product-card-${index}`}
@@ -60,7 +63,7 @@ export const Home = () => {
               id={instrument.idInstrument}
             />
           ))}
-        </ProductWrapper>
+        </ProductsWrapper>
       </Container>
     </main>
   )

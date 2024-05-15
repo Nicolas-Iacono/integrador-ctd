@@ -1,8 +1,9 @@
-.cuerpo{
+.cuerpo {
   height: 100%;
   margin-top: 300px;
 }
-.formulario{
+
+.formulario {
   display: flex;
   flex-direction: column;
   background-color: column;

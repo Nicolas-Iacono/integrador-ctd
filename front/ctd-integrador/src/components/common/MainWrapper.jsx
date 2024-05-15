@@ -6,7 +6,7 @@ export const MainWrapper = styled(Container)(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'center',
   flexWrap: 'wrap',
-  gap: '1rem',
+  gap: '.5rem',
   paddingTop: 150,
   paddingBottom: '3rem',
 

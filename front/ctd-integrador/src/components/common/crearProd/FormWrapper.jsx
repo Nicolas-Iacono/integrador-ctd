@@ -1,17 +1,15 @@
 import { styled } from '@mui/material/styles'
-import Container from '@mui/material/Container'
 import { Grid } from '@mui/material'
-
 
 const FormWrapper = styled(Grid)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-around',
-  alignItems:'center',
+  alignItems: 'center',
   gap: '1rem',
   paddingTop: 1,
-  width:'100%',
-  height:'100%',
+  width: '100%',
+  height: '100%',
   [theme.breakpoints.up('sm')]: {
     flexDirection: 'column'
   },

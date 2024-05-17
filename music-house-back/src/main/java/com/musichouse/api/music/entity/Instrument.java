@@ -51,7 +51,7 @@ public class Instrument {
     /**
      * Altura del instrumento en centímetros.
      */
-    @Column(name = "measures", nullable = false,length = 100)
+    @Column(name = "measures", nullable = false, length = 100)
     private String measures;
 
     /**

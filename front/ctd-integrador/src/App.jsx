@@ -7,6 +7,7 @@ import { Contact } from './components/Pages/Contact'
 import { Layout } from './components/Layout/Layout'
 import { ContextProvider } from './components/utils/global.context'
 import {AgregarInstrumento} from './components/Pages/AgregarInstrumento'
+import { CrearUsuario } from './components/Pages/CrearUsuario'
 import { HeaderVisibilityProvider } from './components/utils/context/HeaderVisibilityGlobal'
 import './App.css'
 
@@ -18,6 +19,7 @@ export const App = () => {
     <HeaderVisibilityProvider>
       <ContextProvider>
         <Routes>
+          <Route path='/crearUsuario' element={<CrearUsuario/>}/>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/instruments" element={<Instruments />} />

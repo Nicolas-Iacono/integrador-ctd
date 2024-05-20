@@ -43,11 +43,8 @@ const ContainerForm = styled(Grid)(({ theme }) => ({
         flexDirection: 'column',
      width: '100%',
      marginLeft: '0px',
-      },
+      }
     
-      // [theme.breakpoints.up('md')]: {
-      //   paddingTop: 320
-      // }
     }))
 
  

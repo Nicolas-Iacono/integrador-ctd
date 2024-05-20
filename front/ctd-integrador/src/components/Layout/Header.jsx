@@ -157,17 +157,16 @@ export const Header = () => {
               display: { xs: 'none', md: 'block' }
             }}
           >
-            <Tooltip title="Crear cuenta">
+            {/* <Tooltip title="Crear cuenta">
               <Button
                 variant="contained"
                 sx={{ borderRadius: '1rem', padding: '.5rem .5rem' }}
-                onClick={() => navigationTo('/crearUsuario')}
               >
                 <Typography textAlign="center" sx={{ fontWeight: 'bold' }}>
                   Crear cuenta
                 </Typography>
               </Button>
-            </Tooltip>
+            </Tooltip> */}
           </Box>
           <Box
             sx={{
@@ -180,6 +179,8 @@ export const Header = () => {
               <Button
                 variant="contained"
                 sx={{ borderRadius: '1rem', padding: '.5rem .5rem' }}
+                onClick={() => navigationTo('/autentificacion')}
+
               >
                 <Typography textAlign="center" sx={{ fontWeight: 'bold' }}>
                   Iniciar sesión

@@ -14,6 +14,47 @@ import Link from '@mui/material/Link'
 import { styled } from '@mui/material/styles'
 import { blue } from '@mui/material/colors'
 
+const ContainerForm = styled(Grid)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  width: '100vw',
+  height:'80vh',
+  marginTop: '30px',
+  justifyContent: 'center',
+  alignItems:'flex-end',
+  padding:'0px',
+
+  
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'row',
+    },
+  
+    // [theme.breakpoints.up('md')]: {
+    //   paddingTop: 320
+    // }
+  }))
+  const ContainerBottom = styled(Grid)(({ theme }) => ({
+     width: '100%',
+      height: '100px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column',
+  
+    
+      [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+     width: '100%',
+     marginLeft: '0px',
+      },
+    
+      // [theme.breakpoints.up('md')]: {
+      //   paddingTop: 320
+      // }
+    }))
+
+ 
+
 const NewUser = () => {
   const initialFormData = {
     name: '',
@@ -31,6 +72,9 @@ const NewUser = () => {
     repeatPassword: '',
     general: ''
   }
+  const initialSuccessState = {
+    repeatPassword : ''
+  }
 
   const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
     color: blue[100],
@@ -41,15 +85,23 @@ const NewUser = () => {
       fontSize: 24
     }
   }))
-
+  
   const [formData, setFormData] = useState(initialFormData)
   const [accept, setAccept] = useState(false)
   const [errors, setErrors] = useState(initialErrorState)
-
+  const [success, setSuccess] = useState(initialSuccessState)
+  
   const handleChange = (event) => {
     const { name, value } = event.target
     setFormData({ ...formData, [name]: value })
     setErrors({ ...errors, [name]: '', general: '' })
+
+
+      if(name === 'repeatPassword' && formData.password === value ){
+        setSuccess({ ...success, repeatPassword:'Las password son identicas'})
+      }else{
+        setSuccess({ ...success, repeatPassword: '' });
+      }
   }
 
   const handleCheckBoxChange = (e) => {
@@ -102,35 +154,27 @@ const NewUser = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Grid
-        container
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          width: '100vw',
-          marginTop: '30px',
-          justifyContent: 'flex-end'
-        }}
-      >
+   <ContainerForm>
+
         <Grid
           item
           xs={12}
           md={6}
           sx={{
             padding: 3,
-            width: '45%',
+            width:{md:'40%',xs:'70%'},
             height: '100%',
             display: 'flex',
             flexDirection: 'column',
+            justifyContent:'center',
             gap: '20px',
-            backgroundColor:'red'
           }}
         >
           <Typography variant="h3" sx={{ fontWeight: 'light' }}>
             Crear una cuenta
           </Typography>
 
-          <Grid sx={{ width: '80%', marginLeft: '100px' }}>
+          <Grid sx={{ width: '100%',display:'flex',flexDirection:'column',justifyContent:'center', alignItems:'center' }}>
             <FormControl fullWidth margin="normal">
               <TextField
                 placeholder="Nombre"
@@ -178,7 +222,7 @@ const NewUser = () => {
                 type="password"
                 color="primary"
                 error={Boolean(errors.password)}
-                helperText={errors.password}
+                helperText={errors.password  || (success.repeatPassword  &&<span style={{ color: 'green'}}>{success.repeatPassword}</span>)}
               />
             </FormControl>
             <FormControl fullWidth margin="normal">
@@ -190,7 +234,7 @@ const NewUser = () => {
                 type="password"
                 color="primary"
                 error={Boolean(errors.repeatPassword)}
-                helperText={errors.repeatPassword}
+                helperText={errors.repeatPassword  || (success.repeatPassword  &&<span style={{ color: 'green' }}>{success.repeatPassword}</span>)}
               />
             </FormControl>
             <FormControlLabel
@@ -209,17 +253,7 @@ const NewUser = () => {
               </Typography>
             )}
           </Grid>
-          <Box
-            sx={{
-              width: '80%',
-              height: '50px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginLeft: '100px',
-              flexDirection: 'column'
-            }}
-          >
+          <ContainerBottom>
             <Button variant="contained" color="primary" type="submit">
               Registrar
             </Button>
@@ -230,9 +264,10 @@ const NewUser = () => {
             >
               {'Ya tengo una cuenta'}
             </Link>
-          </Box>
+          </ContainerBottom>
         </Grid>
-      </Grid>
+   </ContainerForm>
+      
     </form>
   )
 }

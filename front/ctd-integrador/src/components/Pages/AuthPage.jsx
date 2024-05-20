@@ -7,20 +7,26 @@ import BoxLogoSuperior from '../common/crearUsuario/BoxLogoSuperior'
 import { Logo } from '../Images/Logo'
 import NewUser from '../Form/formCrearUsuario/NewUser'
 import BoxFormUnder from '../common/crearUsuario/BoxFormUnder'
-
+import { useNavigate, Link } from 'react-router-dom'
 const AuthPage = () => {
-  const [showLogin, setShowLogin] = useState(true) // Corrige el error tipográfico aquí
+  const navigate = useNavigate()
+
+  const [showLogin, setShowLogin] = useState(true)
   const handleSwitch = (e) => {
     e.preventDefault()
     setShowLogin(!showLogin)
-    
-    console.log(showLogin)
+  }
+
+  const homeNavigate = () => {
+    navigate('/')
   }
 
   return (
     <MainCrearUsuario>
       <BoxLogoSuperior>
-        <Logo />
+        <Link to='/' onClick={homeNavigate}>
+          <Logo />
+        </Link>
       </BoxLogoSuperior>
       <TransitionGroup>
         <CSSTransition

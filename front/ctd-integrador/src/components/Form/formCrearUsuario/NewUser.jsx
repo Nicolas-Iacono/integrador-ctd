@@ -55,7 +55,7 @@ const ContainerForm = styled(Grid)(({ theme }) => ({
 
  
 
-const NewUser = () => {
+const NewUser = ({onSwitch}) => {
   const initialFormData = {
     name: '',
     username: '',
@@ -153,6 +153,7 @@ const NewUser = () => {
   }
 
   return (
+    <>
     <form onSubmit={handleSubmit}>
    <ContainerForm>
 
@@ -258,9 +259,10 @@ const NewUser = () => {
               Registrar
             </Button>
             <Link
-              href="#"
+              href=""
               underline="always"
               sx={{ color: 'white', marginTop: '10px' }}
+              onClick={onSwitch}
             >
               {'Ya tengo una cuenta'}
             </Link>
@@ -269,6 +271,8 @@ const NewUser = () => {
    </ContainerForm>
       
     </form>
+    </>
+
   )
 }
 

@@ -20,10 +20,10 @@ import { LogoWrapper } from './LogoWrapper'
 import { MenuWrapper } from './MenuWrapper'
 import { ContrastInput } from './ContrastInput'
 
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useHeaderVisibility } from '../utils/context/HeaderVisibilityGlobal'
 import '../styles/header.styles.css'
-
+import {  } from 'react-router-dom'
 const pages = [
   { to: '/', text: 'Inicio' },
   { to: '/instruments', text: 'Instrumentos' },
@@ -40,6 +40,11 @@ export const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState(null)
   const { pathname } = useLocation()
   const showButtonsAndSearch = pathname === '/'
+  const navigate = useNavigate();
+
+  const navigationTo = (location)=>{
+    navigate(location)
+  }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
@@ -156,6 +161,7 @@ export const Header = () => {
               <Button
                 variant="contained"
                 sx={{ borderRadius: '1rem', padding: '.5rem .5rem' }}
+                onClick={() => navigationTo('/crearUsuario')}
               >
                 <Typography textAlign="center" sx={{ fontWeight: 'bold' }}>
                   Crear cuenta

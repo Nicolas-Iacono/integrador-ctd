@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Entity
 @Data
-@Table(name = "INSTRUMENTS")
+@Table(name = "INSTRUMENT")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Instrument {

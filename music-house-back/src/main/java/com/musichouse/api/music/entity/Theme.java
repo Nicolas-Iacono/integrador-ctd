@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "THEMES")
+@Table(name = "THEME")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Theme {

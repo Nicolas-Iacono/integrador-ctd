@@ -52,7 +52,7 @@ const ContainerForm = styled(Grid)(({ theme }) => ({
 
  
 
-const Login = ({theme}) => {
+const Login = ({theme, onSwitch}) => {
   const initialFormData = {
     email: '',
     password: ''
@@ -90,6 +90,12 @@ const Login = ({theme}) => {
       console.log(formData)
       // Aquí puedes enviar los datos del formulario a través de una función prop o realizar otras acciones
     }
+
+    
+  const handleSwitch = () => {
+    e.preventDefault();
+    onSwitch();
+  };
 
 
   }
@@ -150,6 +156,7 @@ const Login = ({theme}) => {
               href="#"
               underline="always"
               sx={{ color: 'white', marginTop: '10px' }}
+              onClick={onSwitch}
             >
               {'Todavia no tengo una cuenta'}
             </Link>

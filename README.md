@@ -1,6 +1,100 @@
 # integrador-ctd
 app de reserva de instrumentos musicales
 # DTOs de Entrada
+# Clases DTO de Entrada para Usuario, Dirección, Teléfono, Categoría, Temática, Instrumento e Imágenes
+
+## CategoryDtoEntrance
+
+Esta clase DTO representa los datos de entrada para una categoría en el sistema.
+
+### Atributos
+
+- **categoryName**: `String`
+  - **Requerido**: Sí
+  - **Longitud**: máximo 100 caracteres.
+  - **Descripción**: Nombre de la categoría.
+
+- **description**: `String`
+  - **Longitud**: máximo 255 caracteres.
+  - **Descripción**: Descripción de la categoría.
+
+---
+
+## ThemeDtoEntrance
+
+Esta clase DTO representa los datos de entrada para una temática en el sistema.
+
+### Atributos
+
+- **themeName**: `String`
+  - **Requerido**: Sí
+  - **Longitud**: máximo 100 caracteres.
+  - **Descripción**: Nombre de la temática.
+
+- **description**: `String`
+  - **Longitud**: máximo 255 caracteres.
+  - **Descripción**: Descripción de la temática.
+
+---
+
+## InstrumentDtoEntrance
+
+Esta clase DTO representa los datos de entrada para un instrumento en el sistema.
+
+### Atributos
+
+- **name**: `String`
+  - **Requerido**: Sí
+  - **Longitud**: máximo 100 caracteres.
+  - **Descripción**: Nombre del instrumento.
+
+- **description**: `String`
+  - **Longitud**: máximo 255 caracteres.
+  - **Descripción**: Descripción del instrumento.
+
+- **rentalPrice**: `BigDecimal`
+  - **Requerido**: Sí
+  - **Restricciones**: Debe ser positivo o cero.
+  - **Descripción**: Precio de alquiler del instrumento.
+
+- **weight**: `BigDecimal`
+  - **Requerido**: Sí
+  - **Restricciones**: Debe ser positivo o cero.
+  - **Descripción**: Peso del instrumento.
+
+- **measures**: `String`
+  - **Requerido**: Sí
+  - **Descripción**: Medidas del instrumento.
+
+- **idCategory**: `Long`
+  - **Requerido**: Sí
+  - **Descripción**: ID de la categoría a la que pertenece el instrumento.
+
+- **idTheme**: `Long`
+  - **Requerido**: Sí
+  - **Descripción**: ID de la temática a la que pertenece el instrumento.
+
+- **imageUrls**: `List<String>`
+  - **Requerido**: Sí
+  - **Descripción**: Lista de URLs de las imágenes del instrumento.
+
+---
+
+## ImageUrlsDtoEntrance
+
+Esta clase DTO representa los datos de entrada para las URLs de las imágenes de un instrumento en el sistema.
+
+### Atributos
+
+- **idInstrument**: `Long`
+  - **Requerido**: Sí
+  - **Descripción**: ID del instrumento al que pertenece la imagen.
+
+- **imageUrl**: `String`
+  - **Requerido**: Sí
+  - **Longitud**: máximo 255 caracteres.
+  - **Descripción**: URL de la imagen.
+---
 
 ## UserDtoEntrance
 

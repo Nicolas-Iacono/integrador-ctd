@@ -14,9 +14,9 @@ export const CrearUsuario = () => {
         </BoxLogoSuperior>
         <BoxFormUnder>
               
-              {/* <NewUser/> */}
+              <NewUser/>
 
-              <Login/>
+              {/* <Login/> */}
 
         </BoxFormUnder>
      

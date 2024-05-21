@@ -45,5 +45,9 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
         }
+
+
     }
+
+
 }

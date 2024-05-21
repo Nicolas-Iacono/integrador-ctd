@@ -32,6 +32,7 @@ public class GlobalExeceptionHandler {
         });
         return exceptionMassege;
     }
+
     // Manejo genérico para todas las excepciones
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception ex) {

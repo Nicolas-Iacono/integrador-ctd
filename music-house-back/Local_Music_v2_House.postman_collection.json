@@ -115,7 +115,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Bombo\",\r\n    \"description\": \"Instrumento de percusión de gran tamaño que forma parte de la batería acústica\",\r\n    \"rentalPrice\": 3000.00,\r\n    \"weight\": 30.0,\r\n    \"measures\": \"70x40\",\r\n    \"idCategory\": 2,\r\n    \"idTheme\": 1,\r\n    \"imageUrls\": [\r\n        \"https://www.fluteservice.cl/wp-content/uploads/2021/05/Yamaha-MB6324.jpg\",\r\n        \"https://http2.mlstatic.com/D_NQ_NP_986125-MLU75482699030_042024-O.webp\"\r\n    ]\r\n}",
+              "raw": "{\r\n    \"name\": \"Bombo\",\r\n    \"description\": \"Instrumento de percusión de gran tamaño que forma parte de la batería acústica\",\r\n    \"rentalPrice\": 3000.00,\r\n    \"weight\": 30.0,\r\n    \"measures\": \"70x40\",\r\n    \"idCategory\": 1,\r\n    \"idTheme\": 1,\r\n    \"imageUrls\": [\r\n        \"https://www.fluteservice.cl/wp-content/uploads/2021/05/Yamaha-MB6324.jpg\",\r\n        \"https://http2.mlstatic.com/D_NQ_NP_986125-MLU75482699030_042024-O.webp\"\r\n    ]\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -123,9 +123,16 @@
               }
             },
             "url": {
-              "raw": "{{LocalUrlIns}}create",
+              "raw": "http://localhost:8080/api/instrument/create",
+              "protocol": "http",
               "host": [
-                "{{LocalUrlIns}}create"
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "instrument",
+                "create"
               ]
             }
           },
@@ -402,6 +409,332 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "Local_User",
+      "item": [
+        {
+          "name": "local_create_user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Victor\",\r\n    \"lastName\": \"Pérez\",\r\n    \"email\": \"victor@gmail.com\",\r\n    \"password\": \"victor78\",\r\n    \"addresses\": [\r\n        {\r\n            \"street\": \"Carol Urzua\",\r\n            \"number\":6950,\r\n            \"city\": \"Santiago\",\r\n            \"state\": \"Metropolitana\",\r\n            \"country\": \"Chile\"\r\n        }\r\n    ],\r\n    \"phones\": [\r\n        {\r\n            \"phoneNumber\": \"+54986435678\"\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LocalUrlAuth}}create/user",
+              "host": [
+                "{{LocalUrlAuth}}create"
+              ],
+              "path": [
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "local_all_user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{LocalUrlUser}}all",
+              "host": [
+                "{{LocalUrlUser}}all"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "local_search_user:id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{LocalUrlUser}}search/20",
+              "host": [
+                "{{LocalUrlUser}}search"
+              ],
+              "path": [
+                "20"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "local_update_user",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"idUser\": 20,\r\n    \"name\": \"Victor javier \",\r\n    \"lastName\": \"Pérez\",\r\n    \"email\": \"victorjavier@gmail.com\",\r\n    \"password\": \"victor78\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LocalUrlUser}}update",
+              "host": [
+                "{{LocalUrlUser}}update"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "local_delete_user",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{LocalUrlUser}}delete/9",
+              "host": [
+                "{{LocalUrlUser}}delete"
+              ],
+              "path": [
+                "9"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "local_crear_admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Victor\",\r\n    \"lastName\": \"Pérez\",\r\n    \"email\": \"victorJavier@gmail.com\",\r\n    \"password\": \"victor78\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LocalUrlAuth}}create/admin",
+              "host": [
+                "{{LocalUrlAuth}}create"
+              ],
+              "path": [
+                "admin"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Local_Address",
+      "item": [
+        {
+          "name": "local_add_address",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"idUser\":1,\r\n    \"street\": \"Avenida Secundaria\",\r\n    \"number\": 456,\r\n    \"city\": \"Ciudad Secundaria\",\r\n    \"state\": \"Estado Secundario\",\r\n    \"country\": \"País Secundario\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LocalUrlAddr}}add-address",
+              "host": [
+                "{{LocalUrlAddr}}add-address"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "local_all_address",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{LocalUrlAddr}}all",
+              "host": [
+                "{{LocalUrlAddr}}all"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "local_search_address:id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{LocalUrlAddr}}search/1",
+              "host": [
+                "{{LocalUrlAddr}}search"
+              ],
+              "path": [
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "local_update_address",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"idAddress\": 3,\r\n    \"street\": \"Carol Urzua\",\r\n    \"number\": 70000,\r\n    \"city\": \"Santiago\",\r\n    \"state\": \"Metropolitana\",\r\n    \"country\": \"Chile\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LocalUrlAddr}}update",
+              "host": [
+                "{{LocalUrlAddr}}update"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "local_delete_address",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{LocalUrlAddr}}delete/2",
+              "host": [
+                "{{LocalUrlAddr}}delete"
+              ],
+              "path": [
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Local_Phone",
+      "item": [
+        {
+          "name": "local_add_phone",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"idUser\":1,\r\n    \"phoneNumber\": \"+54986435678\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LocalUrlPhon}}add-phone",
+              "host": [
+                "{{LocalUrlPhon}}add-phone"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "local_all_phone",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{LocalUrlPhon}}all",
+              "host": [
+                "{{LocalUrlPhon}}all"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "local_search_phone:id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{LocalUrlPhon}}search/2",
+              "host": [
+                "{{LocalUrlPhon}}search"
+              ],
+              "path": [
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "local_update_phone",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"idPhone\": 1,\r\n    \"phoneNumber\": \"+55777779999\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LocalUrlPhon}}update",
+              "host": [
+                "{{LocalUrlPhon}}update"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "local_delete_phone",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{LocalUrlPhon}}delete/1",
+              "host": [
+                "{{LocalUrlPhon}}delete"
+              ],
+              "path": [
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ],
   "event": [
@@ -445,6 +778,26 @@
     {
       "key": "LocalUrlIma",
       "value": "http://localhost:8080/api/imageurls/",
+      "type": "string"
+    },
+    {
+      "key": "LocalUrlUser",
+      "value": "http://localhost:8080/api/user/",
+      "type": "string"
+    },
+    {
+      "key": "LocalUrlAddr",
+      "value": "http://localhost:8080/api/address/",
+      "type": "string"
+    },
+    {
+      "key": "LocalUrlPhon",
+      "value": "http://localhost:8080/api/phone/",
+      "type": "string"
+    },
+    {
+      "key": "LocalUrlAuth",
+      "value": "http://localhost:8080/api/auth/",
       "type": "string"
     }
   ]

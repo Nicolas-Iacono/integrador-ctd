@@ -10,10 +10,12 @@ import MainWrapper from '../common/MainWrapper'
 import TematicCard from '../common/TematicCard'
 import ProductsWrapper from '../common/ProductsWrapper'
 import ProductCard from '../common/ProductCard'
+import { useHeaderVisibility } from '../utils/context/HeaderVisibilityGlobal'
 
 import '../styles/home.styles.css'
 
 export const Home = () => {
+  const { isHeaderVisible } = useHeaderVisibility()
   const { state, dispatch } = useAppStates()
   const [instruments] = getInstruments()
   // Usar cuando el front no esté conectado a backend localhost
@@ -26,7 +28,7 @@ export const Home = () => {
   return (
     <main>
       <CssBaseline />
-      <MainWrapper>
+      <MainWrapper isHeaderVisible={isHeaderVisible}>
         {state.tematics?.map((tematic, index) => (
           <TematicCard
             key={`tematic-card-${index}`}

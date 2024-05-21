@@ -1,4 +1,5 @@
-import { useFetch } from '../helpers/useFetch'
+import { useGetFetch, postFetch, putFetch } from '../helpers/useFetch'
+
 const instruments = [
     {
         "idInstrument": 1,
@@ -72,19 +73,27 @@ const instruments = [
  * Acceso a DB en localhost
  */
 export const getInstruments = () => {
-  return useFetch('http://localhost:8080/api/instrument/all', [])
+  return useGetFetch('http://localhost:8080/api/instrument/all', [])
 }
 
 export const getInstrumentById = (id) => {
-  return useFetch(`http://localhost:8080/api/instrument/search/${id}`, {})
+  return useGetFetch(`http://localhost:8080/api/instrument/search/${id}`)
 }
 
 export const getCategories = () => {
-    return useFetch('http://localhost:8080/api/category/all')
+    return useGetFetch('http://localhost:8080/api/category/all')
 }
 
 export const getThemes = () => {
-    return useFetch('http://localhost:8080/api/theme/all')
+    return useGetFetch('http://localhost:8080/api/theme/all')
+}
+
+export const createInstrument = (payload) => {
+    return postFetch('http://localhost:8080/api/instrument/create', payload)
+}
+
+export const updateInstrument = (payload) => {
+    return putFetch('http://localhost:8080/api/instrument/update', payload)
 }
 
 /**
@@ -100,9 +109,9 @@ export const getInstrumentById1 = (id) => {
 }
 
 export const getCategories1 = () => {
-    return useFetch('https://loyal-art-production.up.railway.app/api/category/all')
+    return useGetFetch('https://loyal-art-production.up.railway.app/api/category/all')
 }
 
 export const getThemes1 = () => {
-    return useFetch('https://loyal-art-production.up.railway.app/api/theme/all')
+    return useGetFetch('https://loyal-art-production.up.railway.app/api/theme/all')
 }

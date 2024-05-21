@@ -23,7 +23,7 @@ import { ContrastInput } from './ContrastInput'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useHeaderVisibility } from '../utils/context/HeaderVisibilityGlobal'
 import '../styles/header.styles.css'
-import {  } from 'react-router-dom'
+
 const pages = [
   { to: '/', text: 'Inicio' },
   { to: '/instruments', text: 'Instrumentos' },
@@ -35,14 +35,14 @@ const settings = ['Crear Cuenta', 'Iniciar sesión']
 export const Header = () => {
   const [prevScroll, setPrevScroll] = useState(0)
   const [visible, setVisible] = useState(true)
-  const { toggleHeaderVisibility } = useHeaderVisibility();
+  const { toggleHeaderVisibility } = useHeaderVisibility()
   const [isMenuOpen, setIsMenuopen] = useState(false)
   const [anchorElNav, setAnchorElNav] = useState(null)
   const { pathname } = useLocation()
   const showButtonsAndSearch = pathname === '/'
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const navigationTo = (location)=>{
+  const navigationTo = (location) => {
     navigate(location)
   }
 
@@ -61,29 +61,30 @@ export const Header = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
   }
+
   useEffect(() => {
     const handleScroll = () => {
-      const currentScroll = window.scrollY;
-      const isHeaderVisible = prevScroll > currentScroll;
+      const currentScroll = window.scrollY
+      const isHeaderVisible = prevScroll > currentScroll
       setVisible(
-        (prevScroll > currentScroll  && prevScroll  - currentScroll > 70) || currentScroll < 10
+        (prevScroll > currentScroll && prevScroll - currentScroll > 70) ||
+          currentScroll < 10
       )
-      toggleHeaderVisibility(isHeaderVisible);
+      toggleHeaderVisibility(isHeaderVisible)
       setPrevScroll(currentScroll)
-      
     }
+
     window.addEventListener('scroll', handleScroll)
+
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [prevScroll, toggleHeaderVisibility]);
-  
-  const headerStyle = {
-    transition: 'top 1.2s',
-    top: visible ? '0' : '-300px'
-  };
+  }, [prevScroll, toggleHeaderVisibility])
+
   return (
-    <HeaderWrapper style={headerStyle}>
+    <HeaderWrapper
+      sx={{ transition: 'top 1.2s', top: visible ? '0' : '-300px' }}
+    >
       <Container maxWidth="xl">
         <UpperStyledToolbar disableGutters>
           <MenuWrapper>
@@ -180,7 +181,6 @@ export const Header = () => {
                 variant="contained"
                 sx={{ borderRadius: '1rem', padding: '.5rem .5rem' }}
                 onClick={() => navigationTo('/autentificacion')}
-
               >
                 <Typography textAlign="center" sx={{ fontWeight: 'bold' }}>
                   Iniciar sesión

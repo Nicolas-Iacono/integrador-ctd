@@ -9,6 +9,7 @@ export const MainWrapper = styled(Container)(({ theme }) => ({
   gap: '.5rem',
   paddingTop: 150,
   paddingBottom: '3rem',
+  alignItems: 'center',
 
   [theme.breakpoints.up('sm')]: {
     flexDirection: 'row'

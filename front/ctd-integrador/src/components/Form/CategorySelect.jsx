@@ -2,7 +2,11 @@ import { Select, MenuItem } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { getCategories, getCategories1 } from '../../api/instruments'
 
-const CategorySelect = ({ onChange }) => {
+const CategorySelect = ({
+  label,
+  onChange,
+  selectedCategoryId = undefined
+}) => {
   const [loading, setLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState('')
   const [categories] = getCategories()
@@ -10,13 +14,25 @@ const CategorySelect = ({ onChange }) => {
   // const [categories] = getCategories1()
 
   useEffect(() => {
+    if (!categories) return
+
     setLoading(false)
   }, [categories])
 
   useEffect(() => {
+    if (!selectedCategoryId || !categories) return
+
+    const selectedCategory = categories.find(
+      (category) => category.idCategory === selectedCategoryId
+    )
+    setSelectedCategory(selectedCategory)
+  }, [selectedCategoryId, categories])
+
+  useEffect(() => {
+    if (loading) return
     if (typeof onChange === 'function')
       onChange({
-        target: { name: 'category', value: selectedCategory.idCategory }
+        target: { name: 'idCategory', value: selectedCategory.idCategory }
       })
   }, [selectedCategory])
 
@@ -29,7 +45,12 @@ const CategorySelect = ({ onChange }) => {
   }
 
   return (
-    <Select value={selectedCategory} onChange={handleCategoryChange}>
+    <Select
+      value={selectedCategory}
+      onChange={handleCategoryChange}
+      label={label}
+      color="secondary"
+    >
       {categories?.map((category, index) => (
         <MenuItem key={`category-select-${index}`} value={category}>
           {category.categoryName}

@@ -6,6 +6,6 @@
 .formulario {
   display: flex;
   flex-direction: column;
-  background-color: column;
   justify-content: space-around;
+  padding: 2rem;
 }

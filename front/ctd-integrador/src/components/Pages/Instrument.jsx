@@ -8,17 +8,28 @@ import { Box, Divider, Tooltip, Button } from '@mui/material'
 import { ArrowNext } from '../Images/ArrowNext'
 import { FullScreenModal } from '../common/FullScreenModal'
 import { InstrumentGallery } from '../common/InstrumentGallery'
+import { useAppStates } from '../utils/global.context'
 
 import '../styles/instrument.styles.css'
+import { ArrowLeft } from '../Images/ArrowLeft'
+import { Si } from '../Images/Si'
+import { No } from '../Images/No'
 
 export const Instrument = () => {
   const { id } = useParams()
-  const [instrumentSelected, setInstrumentSelected] = useState({})
+  const { state } = useAppStates()
+  const [instrumentSelected, setInstrumentSelected] = useState({
+    characteristics: {}
+  })
   const [instrument] = getInstrumentById(id)
   const [showGallery, setShowGallery] = useState(false)
 
   useEffect(() => {
-    setInstrumentSelected(instrument)
+    if (!instrument?.data) return
+
+    console.log('DATA', instrument.data)
+
+    setInstrumentSelected(instrument.data)
   }, [instrument])
 
   const onClose = () => {
@@ -170,6 +181,56 @@ export const Instrument = () => {
             }}
           >
             <ArrowNext />
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column'
+          }}
+        >
+          <Divider />
+          <Typography
+            variant="h5"
+            sx={{ textAlign: 'center', fontWeight: '300', padding: '1rem' }}
+          >
+            Características
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              paddingBottom: '1rem',
+              width: '100%',
+              justifyContent: 'space-evenly'
+            }}
+          >
+            {state?.characteristics?.map((characteristic) => {
+              return (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <Tooltip title={characteristic.name}>
+                    <img
+                      src={characteristic.image}
+                      className="instrument-characteristic-image"
+                    />
+                  </Tooltip>
+                  <ArrowLeft className="instrument-characteristic-arrow" />
+                  {instrumentSelected?.characteristics[characteristic.id] ===
+                  'si' ? (
+                    <Si className="instrument-characteristic-text" />
+                  ) : (
+                    <No className="instrument-characteristic-text" />
+                  )}
+                </Box>
+              )
+            })}
           </Box>
         </Box>
       </MainWrapper>

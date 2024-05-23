@@ -19,13 +19,6 @@ import '../styles/crearInstrumento.styles.css'
 const InstrumentForm = ({ initialFormData, onSubmit }) => {
   const [formData, setFormData] = useState({ ...initialFormData })
   const [submitData, setSubmitData] = useState(false)
-  const [characteristic, setCharacteristic] = [
-    false,
-    false,
-    false,
-    false,
-    false
-  ]
   const { state } = useAppStates()
   const title = formData.idInstrument
     ? 'Editar Instrumento'
@@ -38,9 +31,7 @@ const InstrumentForm = ({ initialFormData, onSubmit }) => {
   }
 
   const handleCheckChange = (event) => {
-    console.log(event)
     const characteristic = formData.characteristics[event.id]
-    console.log('CHARACTERISTIC', characteristic)
     setFormData({
       ...formData,
       characteristics: {
@@ -72,8 +63,6 @@ const InstrumentForm = ({ initialFormData, onSubmit }) => {
 
   useEffect(() => {
     if (!submitData) return
-
-    console.log('DATA', formData)
 
     if (typeof onSubmit === 'function') onSubmit(formData)
   }, [submitData])

@@ -1,5 +1,6 @@
 export const characteristicsToFormData = (instrument) => {
   const characteristics = {
+    idCharacteristics: instrument.data?.characteristics?.idCharacteristics,
     instrumentCase:
       instrument.data?.characteristics?.instrumentCase === 'si' ? true : false,
     support: instrument.data?.characteristics?.support === 'si' ? true : false,
@@ -15,6 +16,7 @@ export const characteristicsToFormData = (instrument) => {
 
 export const formDataToCharacteristics = (formData) => {
   const characteristics = {
+    idCharacteristics: formData?.characteristics?.idCharacteristics,
     instrumentCase: formData?.characteristics?.instrumentCase ? 'si' : 'no',
     support: formData?.characteristics?.support ? 'si' : 'no',
     tuner: formData?.characteristics?.tuner ? 'si' : 'no',

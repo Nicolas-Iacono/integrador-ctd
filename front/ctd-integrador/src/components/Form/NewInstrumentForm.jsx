@@ -1,5 +1,6 @@
 import InstrumentForm from './InstrumentForm'
 import { createInstrument } from '../../api/instruments'
+import { formDataToCharacteristics } from '../utils/editInstrument'
 
 const NewInstrumentForm = () => {
   const initialFormData = {
@@ -22,8 +23,13 @@ const NewInstrumentForm = () => {
     }
   }
 
-  const onSubmit = (data) => {
-    if (!data) return
+  const onSubmit = (formData) => {
+    if (!formData) return
+
+    const data = {
+      ...formData,
+      characteristic: formDataToCharacteristics(formData)
+    }
 
     createInstrument(data).then((response) => {
       console.log(response)

@@ -11,11 +11,7 @@ const EditInstrumentForm = ({ id }) => {
   const [initialFormData, setInitialFormData] = useState()
   const [loading, setLoading] = useState(true)
 
-  console.log('EDIT')
-
   useEffect(() => {
-    console.log('INSTRUMENT', instrument)
-
     if (!(instrument && instrument.data?.idInstrument)) return
 
     const data = {
@@ -41,10 +37,8 @@ const EditInstrumentForm = ({ id }) => {
 
     const data = {
       ...formData,
-      characteristics: formDataToCharacteristics(formData)
+      characteristic: formDataToCharacteristics(formData)
     }
-
-    console.log('DATA', data)
 
     updateInstrument(data).then((response) => {
       console.log(response)

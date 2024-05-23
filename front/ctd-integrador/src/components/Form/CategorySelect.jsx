@@ -14,7 +14,6 @@ const CategorySelect = ({
   // const [categories] = getCategories1()
 
   useEffect(() => {
-    console.log('CATEGORIES', categories)
     if (!categories) return
 
     setLoading(false)

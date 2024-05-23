@@ -70,8 +70,8 @@ public class ThemeService implements ThemeInterface {
                 .orElseThrow(() -> new ResourceNotFoundException("Theme with id " + idTheme + " not found"));
         List<Instrument> instruments = instrumentRepository.findByTheme(themeToDelete);
         if (!instruments.isEmpty()) {
-            throw new CategoryAssociatedException("Cannot delete theme with id " + idTheme +
-                    " as it is associated with instruments");
+            throw new CategoryAssociatedException
+                    ("No se puede eliminar la tematica con ID :" + idTheme + " porque está asociada con instrumentos");
         }
 
         themeRepository.deleteById(idTheme);

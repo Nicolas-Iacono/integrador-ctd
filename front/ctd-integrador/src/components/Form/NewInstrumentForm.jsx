@@ -12,7 +12,14 @@ const NewInstrumentForm = () => {
     idCategory: '',
     idTheme: '',
     imageUrlsText: '',
-    imageUrls: []
+    imageUrls: [],
+    characteristics: {
+      instrumentCase: false,
+      support: false,
+      tuner: false,
+      microphone: false,
+      phoneHolder: false
+    }
   }
 
   const onSubmit = (data) => {

@@ -5,16 +5,28 @@ import {
   FormControl,
   TextField,
   Typography,
-  Grid
+  Grid,
+  Divider,
+  Tooltip,
+  Checkbox
 } from '@mui/material'
 import CategorySelect from './CategorySelect'
 import ThemeSelect from './ThemeSelect'
+import { useAppStates } from '../utils/global.context'
 
 import '../styles/crearInstrumento.styles.css'
 
 const InstrumentForm = ({ initialFormData, onSubmit }) => {
   const [formData, setFormData] = useState({ ...initialFormData })
   const [submitData, setSubmitData] = useState(false)
+  const [characteristic, setCharacteristic] = [
+    false,
+    false,
+    false,
+    false,
+    false
+  ]
+  const { state } = useAppStates()
   const title = formData.idInstrument
     ? 'Editar Instrumento'
     : 'Registrar Instrumento'
@@ -23,6 +35,19 @@ const InstrumentForm = ({ initialFormData, onSubmit }) => {
     const { name, value } = event.target
 
     setFormData({ ...formData, [name]: value })
+  }
+
+  const handleCheckChange = (event) => {
+    console.log(event)
+    const characteristic = formData.characteristics[event.id]
+    console.log('CHARACTERISTIC', characteristic)
+    setFormData({
+      ...formData,
+      characteristics: {
+        ...formData.characteristics,
+        ...{ [event.id]: !characteristic }
+      }
+    })
   }
 
   const handleSubmit = (event) => {
@@ -37,7 +62,8 @@ const InstrumentForm = ({ initialFormData, onSubmit }) => {
       rentalPrice: formData.rentalPrice,
       idCategory: formData.idCategory,
       idTheme: formData.idTheme,
-      imageUrls: formData.imageUrlsText.split(/[\n,\s]/)
+      imageUrls: formData.imageUrlsText.split(/[\n,\s]/),
+      characteristics: formData.characteristics
     }
 
     setFormData(data)
@@ -46,6 +72,8 @@ const InstrumentForm = ({ initialFormData, onSubmit }) => {
 
   useEffect(() => {
     if (!submitData) return
+
+    console.log('DATA', formData)
 
     if (typeof onSubmit === 'function') onSubmit(formData)
   }, [submitData])
@@ -164,13 +192,46 @@ const InstrumentForm = ({ initialFormData, onSubmit }) => {
             />
           </FormControl>
         </Grid>
+        <Divider />
+        <Box>
+          <Typography variant="h6">Características</Typography>
+          <Box
+            sx={{ display: 'flex', flexWrap: 'wrap', paddingBottom: '1rem' }}
+          >
+            {state?.characteristics?.map((characteristic) => {
+              return (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <Tooltip title={characteristic.name}>
+                    <img
+                      src={characteristic.image}
+                      className="characteristic-image"
+                    />
+                  </Tooltip>
+                  <Checkbox
+                    checked={formData.characteristics[characteristic.id]}
+                    color="secondary"
+                    onChange={() => handleCheckChange(characteristic)}
+                  />
+                </Box>
+              )
+            })}
+          </Box>
+        </Box>
+        <Divider />
         <Box
           sx={{
             width: '100%',
             display: 'flex',
             justifyContent: 'flex-end',
             alignItems: 'center',
-            paddingRight: '16px'
+            paddingRight: '1rem',
+            paddingTop: '1rem'
           }}
         >
           <Button variant="contained" color="primary" type="submit">

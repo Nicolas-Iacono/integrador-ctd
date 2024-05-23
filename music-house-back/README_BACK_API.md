@@ -106,35 +106,32 @@ Esta clase DTO representa los datos de entrada para las características de un i
 
 ## Atributos
 
-- **material**: `String`
+- **instrumentCase**: `String`
     - **Requerido**: Sí
     - **Longitud**: máximo 50 caracteres.
-    - **Descripción**: Material del instrumento.
+    - **Descripción**: Si el instrumento tiene estuche.
 
-- **frets**: `Long`
-    - **Requerido**: Sí
-    - **Valor mínimo**: 0.
-    - **Descripción**: Número de trastes del instrumento.
-
-- **scaleLength**: `String`
+- **support**: `String`
     - **Requerido**: Sí
     - **Longitud**: máximo 50 caracteres.
-    - **Descripción**: Longitud de la escala del instrumento.
+    - **Descripción**: Si el instrumento tiene soporte.
 
-- **numberOfStrings**: `Long`
-    - **Requerido**: Sí
-    - **Valor mínimo**: 0.
-    - **Descripción**: Número de cuerdas del instrumento.
-
-- **typeOfStrings**: `String`
+- **tuner**: `String`
     - **Requerido**: Sí
     - **Longitud**: máximo 50 caracteres.
-    - **Descripción**: Tipo de cuerdas del instrumento.
+    - **Descripción**: Si el instrumento viene con afinadoor.
 
-- **originCountry**: `String`
+- **microphone**: `String`
     - **Requerido**: Sí
     - **Longitud**: máximo 50 caracteres.
-    - **Descripción**: País de origen del instrumento.
+    - **Descripción**: Si el instrumento viene con microfono.
+
+- **phoneHolder**: `String`
+    - **Requerido**: Sí
+    - **Longitud**: máximo 50 caracteres.
+    - **Descripción**: Si el instrumento viene con soprte para celular.
+
+
 
 ## UserDtoEntrance
 

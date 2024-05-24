@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import {
   Box,
   Button,
@@ -6,18 +6,16 @@ import {
   TextField,
   Typography,
   Grid
-} from '@mui/material'
-import Link from '@mui/material/Link'
-import { styled } from '@mui/material/styles'
-import { CustomButton, InputCustom } from './CustomComponents'
-
-import * as Yup from 'yup'
-import { useFormik } from 'formik'
-import { UsersApi } from '../../../api/users'
-import swal from 'sweetalert'
-import loginValidationSchema from './LoginValidation'
-import { useNavigate } from 'react-router-dom'
-
+} from '@mui/material';
+import Link from '@mui/material/Link';
+import { styled } from '@mui/material/styles';
+import { CustomButton, InputCustom } from './CustomComponents';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import { UsersApi } from '../../../api/users';
+import swal from 'sweetalert';
+import loginValidationSchema from './LoginValidation';
+import { useNavigate } from 'react-router-dom';
 
 const ContainerForm = styled(Grid)(({ theme }) => ({
   display: 'flex',
@@ -29,15 +27,11 @@ const ContainerForm = styled(Grid)(({ theme }) => ({
   alignItems: 'flex-end',
   padding: '0px',
 
-
   [theme.breakpoints.down('md')]: {
     flexDirection: 'row'
   }
+}));
 
-  // [theme.breakpoints.up('md')]: {
-  //   paddingTop: 320
-  // }
-}))
 const ContainerBottom = styled(Grid)(({ theme }) => ({
   width: '100%',
   height: '100px',
@@ -51,67 +45,58 @@ const ContainerBottom = styled(Grid)(({ theme }) => ({
     width: '100%',
     marginLeft: '0px'
   }
-}))
+}));
 
 const Login = ({ theme, onSwitch }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: '',
       password: ''
-
     },
     validationSchema: loginValidationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        // Llama a la función de autenticación aquí
+        const response = await UsersApi.loginUser(values);
+        console.log('Server response:', response);
 
-        const response = await UsersApi.loginUser(values)
-        console.log('Server response:', response)
-        // Si la autenticación es exitosa, muestra la alerta
         if (response && response.token && response.roles) {
           const user = {
             roles: response.roles,
             email: response.email
-          }
-          localStorage.setItem('user', JSON.stringify(user))
-          localStorage.setItem('token', response.token)
+          };
+          localStorage.setItem('user', JSON.stringify(user));
+          localStorage.setItem('token', response.token);
           swal(
             '¡Inicio de sesión exitoso!',
-            'Has iniciado sesion correctamente'
-          )
+            'Has iniciado sesión correctamente'
+          );
           setTimeout(() => {
-            navigate('/')
-          }, 1000)
+            navigate('/');
+          }, 1000);
         } else {
-          console.error('Inicio de sesión fallido:', response)
+          console.error('Inicio de sesión fallido:', response);
           swal(
             'Error al iniciar sesión',
             response.message || 'Credenciales incorrectas',
             'error'
-          )
+          );
         }
-
-        // navigate('/')
       } catch (error) {
-        // Si ocurre un error, muestra una alerta de error
-        console.error('Error durante el inicio de sesión:', error)
+        console.error('Error durante el inicio de sesión:', error);
         swal(
           'Error al iniciar sesión',
           error.message || 'Ocurrió un error',
           'error'
-        )
+        );
       } finally {
-        // Establece isSubmitting en false para permitir que el formulario se envíe nuevamente
-        setSubmitting(false)
+        setSubmitting(false);
       }
     }
-
-  })
+  });
 
   return (
     <form onSubmit={formik.handleSubmit}>
-
       <ContainerForm>
         <Grid
           item
@@ -130,7 +115,6 @@ const Login = ({ theme, onSwitch }) => {
           <Typography variant="h3" sx={{ fontWeight: 'light' }}>
             Iniciar Sesión
           </Typography>
-
           <Grid
             sx={{
               width: '100%',
@@ -148,9 +132,7 @@ const Login = ({ theme, onSwitch }) => {
                 value={formik.values.email}
                 type="email"
                 color="primary"
-                errorMessage={
-                  formik.touched.email && Boolean(formik.errors.email)
-                }
+                error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
               />
             </FormControl>
@@ -162,9 +144,7 @@ const Login = ({ theme, onSwitch }) => {
                 value={formik.values.password}
                 type="password"
                 color="primary"
-                error={
-                  formik.touched.password && Boolean(formik.errors.password)
-                }
+                error={formik.touched.password && Boolean(formik.errors.password)}
                 helperText={formik.touched.password && formik.errors.password}
               />
             </FormControl>
@@ -187,20 +167,10 @@ const Login = ({ theme, onSwitch }) => {
               {'¿No tienes una cuenta? Regístrate'}
             </Link>
           </ContainerBottom>
-
         </Grid>
-        <ContainerBottom>
-          <CustomButton variant="contained" color="primary" type="submit" disabled={formik.isSubmitting}>
-            Iniciar Sesión
-          </CustomButton>
-          <Link href="#" underline="always" sx={{ color: 'white', marginTop: '10px' }} onClick={onSwitch}>
-            {'¿No tienes una cuenta? Regístrate'}
-          </Link>
-        </ContainerBottom>
-      </Grid>
-    </ContainerForm>
-  </form>
-);
+      </ContainerForm>
+    </form>
+  );
 }
 
-export default Login
+export default Login;

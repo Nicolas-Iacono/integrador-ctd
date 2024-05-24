@@ -10,70 +10,79 @@ import {
   FormControlLabel
 } from '@mui/material'
 import Link from '@mui/material/Link'
-
 import { styled } from '@mui/material/styles'
 import { blue } from '@mui/material/colors'
+import { CustomButton, InputCustom } from './CustomComponents'
+import axios from 'axios'
 
 const ContainerForm = styled(Grid)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   width: '100vw',
-  height:'80vh',
+  height: '80vh',
   marginTop: '30px',
   justifyContent: 'center',
-  alignItems:'flex-end',
-  padding:'0px',
+  alignItems: 'flex-end',
+  padding: '0px',
+  [theme.breakpoints.down('md')]: {
+    flexDirection: 'row'
+  }
 
-  
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'row',
-    },
-  
-    // [theme.breakpoints.up('md')]: {
-    //   paddingTop: 320
-    // }
-  }))
-  const ContainerBottom = styled(Grid)(({ theme }) => ({
-     width: '100%',
-      height: '100px',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'column',
-  
-    
-      [theme.breakpoints.down('md')]: {
-        flexDirection: 'column',
-     width: '100%',
-     marginLeft: '0px',
-      },
-    
-      // [theme.breakpoints.up('md')]: {
-      //   paddingTop: 320
-      // }
-    }))
+  // [theme.breakpoints.up('md')]: {
+  //   paddingTop: 320
+  // }
+}))
+const ContainerBottom = styled(Grid)(({ theme }) => ({
+  width: '100%',
+  height: '100px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'column',
+  [theme.breakpoints.down('md')]: {
+    flexDirection: 'column',
+    width: '100%',
+    marginLeft: '0px'
+  }
 
- 
+  // [theme.breakpoints.up('md')]: {
+  //   paddingTop: 320
+  // }
+}))
 
-const NewUser = ({onSwitch}) => {
+const NewUser = ({ onSwitch }) => {
   const initialFormData = {
     name: '',
-    username: '',
+    lastName: '',
     email: '',
     password: '',
-    repeatPassword: ''
+    repeatPassword: '',
+    addresses: [
+      {
+        street: '',
+        number: 0,
+        city: '',
+        state: '',
+        country: ''
+      }
+    ],
+    phones: [
+      {
+        phoneNumber: ''
+      }
+    ]
   }
 
   const initialErrorState = {
     name: '',
-    username: '',
+    lastName: '',
     email: '',
     password: '',
     repeatPassword: '',
     general: ''
   }
   const initialSuccessState = {
-    repeatPassword : ''
+    repeatPassword: ''
   }
 
   const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
@@ -85,23 +94,34 @@ const NewUser = ({onSwitch}) => {
       fontSize: 24
     }
   }))
-  
+
   const [formData, setFormData] = useState(initialFormData)
   const [accept, setAccept] = useState(false)
   const [errors, setErrors] = useState(initialErrorState)
   const [success, setSuccess] = useState(initialSuccessState)
-  
+
   const handleChange = (event) => {
     const { name, value } = event.target
+    const [field, index] = name.split('-')
+    if (index !== undefined) {
+      const updatedArray = [...formData[field]]
+      updatedArray[index] = {
+        ...updatedArray[index],
+        [event.target.dataset.field]: value
+      }
+      setFormData({ ...formData, [field]: updatedArray })
+    } else {
+      setFormData({ ...formData, [name]: value })
+    }
+
     setFormData({ ...formData, [name]: value })
     setErrors({ ...errors, [name]: '', general: '' })
 
-
-      if(name === 'repeatPassword' && formData.password === value ){
-        setSuccess({ ...success, repeatPassword:'Las password son identicas'})
-      }else{
-        setSuccess({ ...success, repeatPassword: '' });
-      }
+    if (name === 'repeatPassword' && formData.password === value) {
+      setSuccess({ ...success, repeatPassword: 'Las password son identicas' })
+    } else {
+      setSuccess({ ...success, repeatPassword: '' })
+    }
   }
 
   const handleCheckBoxChange = (e) => {
@@ -110,6 +130,29 @@ const NewUser = ({onSwitch}) => {
       setErrors({ ...errors, general: '' })
     }
   }
+
+  const handleAddressChange = (index, e) => {
+    const { name, value } = e.target
+    const updateAddresses = formData.addresses.map((address, i) =>
+      i === index ? { ...address, [name]: value } : address
+    )
+    setFormData((prevState) => ({
+      ...prevState,
+      addresses: updateAddresses
+    }))
+  }
+  const handlePhoneChange = (index, e) => {
+    const { name, value } = e.target
+    const updatedPhones = formData.phones.map((phone, i) =>
+      i === index ? { ...phone, [name]: value } : phone
+    )
+    setFormData((prevState) => ({
+      ...prevState,
+      phones: updatedPhones
+    }))
+  }
+
+  const endPoint = 'https://music-house.up.railway.app/api/auth/create/user'
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -120,8 +163,8 @@ const NewUser = ({onSwitch}) => {
       newErrors.name = 'El nombre es requerido'
       formIsValid = false
     }
-    if (!formData.username) {
-      newErrors.username = 'El apellido es requerido'
+    if (!formData.lastName) {
+      newErrors.lastName = 'El apellido es requerido'
       formIsValid = false
     }
     if (!formData.email) {
@@ -148,131 +191,276 @@ const NewUser = ({onSwitch}) => {
       setErrors(newErrors)
     } else {
       console.log(formData)
+      const formDataToSend = { ...formData }
+      delete formDataToSend.repeatPassword
+      console.log(formDataToSend)
       // Aquí puedes enviar los datos del formulario a través de una función prop o realizar otras acciones
+      axios
+        .post(endPoint, formDataToSend)
+        .then((response) => {
+          console.log('respuesta del servidor: ', response.data)
+        })
+        .catch((error) => {
+          console.error('Error en la solicitud:', error)
+        })
     }
   }
 
   return (
     <>
-    <form onSubmit={handleSubmit}>
-   <ContainerForm>
+      <form onSubmit={handleSubmit}>
+        <ContainerForm>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              padding: 3,
+              width: { md: '70%', xs: '70%' },
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              gap: '20px'
+            }}
+          >
+            <Typography variant="h3" sx={{ fontWeight: 'light' }}>
+              Crear una cuenta
+            </Typography>
 
-        <Grid
-          item
-          xs={12}
-          md={6}
-          sx={{
-            padding: 3,
-            width:{md:'40%',xs:'70%'},
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent:'center',
-            gap: '20px',
-          }}
-        >
-          <Typography variant="h3" sx={{ fontWeight: 'light' }}>
-            Crear una cuenta
-          </Typography>
-
-          <Grid sx={{ width: '100%',display:'flex',flexDirection:'column',justifyContent:'center', alignItems:'center' }}>
-            <FormControl fullWidth margin="normal">
-              <TextField
-                placeholder="Nombre"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                type="text"
-                color="primary"
-                error={Boolean(errors.name)}
-                helperText={errors.name}
-              />
-            </FormControl>
-            <FormControl fullWidth margin="normal">
-              <TextField
-                placeholder="Apellido"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-                type="text"
-                color="primary"
-                error={Boolean(errors.username)}
-                helperText={errors.username}
-              />
-            </FormControl>
-            <FormControl fullWidth margin="normal">
-              <TextField
-                placeholder="Email"
-                name="email"
-                onChange={handleChange}
-                value={formData.email}
-                type="email"
-                color="primary"
-                error={Boolean(errors.email)}
-                helperText={errors.email}
-              />
-            </FormControl>
-            <FormControl fullWidth margin="normal">
-              <TextField
-                placeholder="Password"
-                name="password"
-                onChange={handleChange}
-                value={formData.password}
-                type="password"
-                color="primary"
-                error={Boolean(errors.password)}
-                helperText={errors.password  || (success.repeatPassword  &&<span style={{ color: 'green'}}>{success.repeatPassword}</span>)}
-              />
-            </FormControl>
-            <FormControl fullWidth margin="normal">
-              <TextField
-                placeholder="Repeat password"
-                name="repeatPassword"
-                onChange={handleChange}
-                value={formData.repeatPassword}
-                type="password"
-                color="primary"
-                error={Boolean(errors.repeatPassword)}
-                helperText={errors.repeatPassword  || (success.repeatPassword  &&<span style={{ color: 'green' }}>{success.repeatPassword}</span>)}
-              />
-            </FormControl>
-            <FormControlLabel
-              control={
-                <CustomCheckbox
-                  checked={accept}
-                  onChange={handleCheckBoxChange}
-                />
-              }
-              label="Acepto los términos y condiciones del servicio"
-              sx={{ color: blue[50], marginTop: '30px' }}
-            />
-            {errors.general && (
-              <Typography color="error" sx={{ marginTop: '10px' }}>
-                {errors.general}
-              </Typography>
-            )}
-          </Grid>
-          <ContainerBottom>
-            <Button variant="contained" color="primary" type="submit">
-              Registrar
-            </Button>
-            <Link
-              href=""
-              underline="always"
-              sx={{ color: 'white', marginTop: '10px' }}
-              onClick={onSwitch}
+            <Grid
+              sx={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
             >
-              {'Ya tengo una cuenta'}
-            </Link>
-          </ContainerBottom>
-        </Grid>
-   </ContainerForm>
-      
-    </form>
-    </>
+              <Grid
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: { md: 'row', xs: 'column' },
+                  gap: '10px'
+                }}
+              >
+                <Grid
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <FormControl fullWidth margin="normal">
+                    <InputCustom
+                      placeholder="Nombre"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      type="text"
+                      color="primary"
+                      error={Boolean(errors.name)}
+                      helperText={errors.name}
+                    />
+                  </FormControl>
+                  <FormControl fullWidth margin="normal">
+                    <InputCustom
+                      placeholder="Apellido"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      required
+                      type="text"
+                      color="primary"
+                      error={Boolean(errors.lastName)}
+                      helperText={errors.lastName}
+                    />
+                  </FormControl>
+                  {formData.addresses.map((address, index) => (
+                    <Grid
+                      key={index}
+                      container
+                      spacing={2}
+                      sx={{ marginTop: '1px' }}
+                    >
+                      <Grid item xs={12} sm={6}>
+                        <InputCustom
+                          placeholder="Calle"
+                          name="street"
+                          value={address.street}
+                          onChange={(e) => handleAddressChange(index, e)}
+                          required
+                          type="text"
+                          color="primary"
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <InputCustom
+                          placeholder="Número"
+                          name="number"
+                          value={address.number}
+                          onChange={(e) => handleAddressChange(index, e)}
+                          required
+                          type="number"
+                          color="primary"
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4}>
+                        <InputCustom
+                          placeholder="Ciudad"
+                          name="city"
+                          value={address.city}
+                          onChange={(e) => handleAddressChange(index, e)}
+                          required
+                          type="text"
+                          color="primary"
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4}>
+                        <InputCustom
+                          placeholder="Provincia"
+                          name="state"
+                          value={address.state}
+                          onChange={(e) => handleAddressChange(index, e)}
+                          required
+                          type="text"
+                          color="primary"
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4}>
+                        <InputCustom
+                          placeholder="País"
+                          name="country"
+                          value={address.country}
+                          onChange={(e) => handleAddressChange(index, e)}
+                          required
+                          type="text"
+                          color="primary"
+                          fullWidth
+                        />
+                      </Grid>
+                    </Grid>
+                  ))}
+                  {formData.phones.map((phone, index) => (
+                    <FormControl key={index} fullWidth margin="normal">
+                      <InputCustom
+                        placeholder="Teléfono"
+                        name="phoneNumber"
+                        value={phone.phoneNumber}
+                        onChange={(e) => handlePhoneChange(index, e)}
+                        required
+                        type="text"
+                        color="primary"
+                      />
+                    </FormControl>
+                  ))}
+                </Grid>
+                <Grid
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center'
+                  }}
+                >
+                  <FormControl fullWidth margin="normal">
+                    <InputCustom
+                      placeholder="Email"
+                      name="email"
+                      onChange={handleChange}
+                      value={formData.email}
+                      type="email"
+                      color="primary"
+                      error={Boolean(errors.email)}
+                      helperText={errors.email}
+                    />
+                  </FormControl>
+                  <FormControl fullWidth margin="normal">
+                    <InputCustom
+                      placeholder="Password"
+                      name="password"
+                      onChange={handleChange}
+                      value={formData.password}
+                      type="password"
+                      color="primary"
+                      error={Boolean(errors.password)}
+                      helperText={
+                        errors.password ||
+                        (success.repeatPassword && (
+                          <span style={{ color: 'green' }}>
+                            {success.repeatPassword}
+                          </span>
+                        ))
+                      }
+                    />
+                  </FormControl>
+                  <FormControl fullWidth margin="normal">
+                    <InputCustom
+                      placeholder="Repeat password"
+                      name="repeatPassword"
+                      onChange={handleChange}
+                      value={formData.repeatPassword}
+                      type="password"
+                      color="primary"
+                      error={Boolean(errors.repeatPassword)}
+                      helperText={
+                        errors.repeatPassword ||
+                        (success.repeatPassword && (
+                          <span style={{ color: 'green' }}>
+                            {success.repeatPassword}
+                          </span>
+                        ))
+                      }
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
 
+              <FormControlLabel
+                control={
+                  <CustomCheckbox
+                    checked={accept}
+                    onChange={handleCheckBoxChange}
+                  />
+                }
+                label="Acepto los términos y condiciones del servicio"
+                sx={{ color: blue[50], marginTop: '30px' }}
+              />
+              {errors.general && (
+                <Typography color="error" sx={{ marginTop: '10px' }}>
+                  {errors.general}
+                </Typography>
+              )}
+            </Grid>
+            <ContainerBottom>
+              <CustomButton variant="contained" color="primary" type="submit">
+                Registrar
+              </CustomButton>
+              <Link
+                href=""
+                underline="always"
+                sx={{ color: 'white', marginTop: '10px' }}
+                onClick={onSwitch}
+              >
+                {'Ya tengo una cuenta'}
+              </Link>
+            </ContainerBottom>
+          </Grid>
+        </ContainerForm>
+      </form>
+    </>
   )
 }
 

@@ -109,9 +109,13 @@ export const getInstrumentById1 = (id) => {
 }
 
 export const getCategories1 = () => {
-    return useGetFetch('https://loyal-art-production.up.railway.app/api/category/all')
+    return useGetFetch('https://music-house.up.railway.app/api/category/all')
 }
 
 export const getThemes1 = () => {
-    return useGetFetch('https://loyal-art-production.up.railway.app/api/theme/all')
+    return useGetFetch('https://music-house.up.railway.app/api/theme/all')
+}
+
+export const crearUsuario = (payload) => {
+    return postFetch("https://music-house.up.railway.app/api/auth/create/user",payload)
 }

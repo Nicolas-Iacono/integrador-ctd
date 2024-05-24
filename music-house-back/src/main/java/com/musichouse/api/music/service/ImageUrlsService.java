@@ -87,7 +87,7 @@ public class ImageUrlsService implements ImageUrlsInterface {
         if (image.isPresent() && image.get().getInstrument().getIdInstrument().equals(idInstrument)) {
             imageUrlsRepository.deleteImageByIdAndInstrumentId(idImage, idInstrument);
         } else {
-            throw new ResourceNotFoundException("Imagen no encontrada con ID " + idImage);
+            throw new ResourceNotFoundException("Imagen Urls  no encontrada con ID " + idImage);
         }
     }
 }

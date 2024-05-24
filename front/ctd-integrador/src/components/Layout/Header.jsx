@@ -22,6 +22,8 @@ import { ContrastInput } from './ContrastInput'
 
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useHeaderVisibility } from '../utils/context/HeaderVisibilityGlobal'
+
+import background from '../../assets/background.svg'
 import '../styles/header.styles.css'
 
 const pages = [
@@ -83,6 +85,7 @@ export const Header = () => {
 
   return (
     <HeaderWrapper
+      backgroundImageUrl={background}
       sx={{ transition: 'top 1.2s', top: visible ? '0' : '-300px' }}
     >
       <Container maxWidth="xl">

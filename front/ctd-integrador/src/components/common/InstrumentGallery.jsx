@@ -7,6 +7,7 @@ import { MainWrapper } from './MainWrapper'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
 import '../styles/instrumentGallery.styles.css'
+import background from '../../assets/background.svg'
 
 const srcset = (image, size, rows = 1, cols = 1) => {
   const urlHasParams = /\?/.test(image)
@@ -24,12 +25,12 @@ export const InstrumentGallery = ({ itemData }) => {
 
   return (
     <Container sx={{ backgroundColor: '#F2F2F2', height: '100%' }}>
-      <HeaderWrapper />
+      <HeaderWrapper backgroundImageUrl={background} />
       <MainWrapper>
         <ImageList
           sx={{
             width: { xs: '100%', md: '70%' },
-            height: 500
+            height: 520
           }}
           variant="quilted"
           cols={4}

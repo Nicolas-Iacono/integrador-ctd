@@ -1,12 +1,10 @@
 package com.musichouse.api.music.service;
 
+import com.musichouse.api.music.dto.dto_entrance.CharacteristicDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.InstrumentDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.InstrumentDtoExit;
 import com.musichouse.api.music.dto.dto_modify.InstrumentDtoModify;
-import com.musichouse.api.music.entity.Category;
-import com.musichouse.api.music.entity.ImageUrls;
-import com.musichouse.api.music.entity.Instrument;
-import com.musichouse.api.music.entity.Theme;
+import com.musichouse.api.music.entity.*;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.InstrumentInterface;
 import com.musichouse.api.music.repository.CategoryRepository;
@@ -33,8 +31,17 @@ public class InstrumentService implements InstrumentInterface {
     public InstrumentDtoExit createInstrument(InstrumentDtoEntrance instrumentsDtoEntrance) throws ResourceNotFoundException {
         Category category = categoryRepository.findById(instrumentsDtoEntrance.getIdCategory())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró la categoría con el ID proporcionado"));
+
         Theme theme = themeRepository.findById(instrumentsDtoEntrance.getIdTheme())
-                .orElseThrow(() -> new ResourceNotFoundException("No se encontró la tematica con el ID proporcionado"));
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró la temática con el ID proporcionado"));
+        CharacteristicDtoEntrance characteristicsDtoEntrance = instrumentsDtoEntrance.getCharacteristic();
+        Characteristics characteristics = new Characteristics();
+        characteristics.setInstrumentCase(characteristicsDtoEntrance.getInstrumentCase());
+        characteristics.setSupport(characteristicsDtoEntrance.getSupport());
+        characteristics.setTuner(characteristicsDtoEntrance.getTuner());
+        characteristics.setMicrophone(characteristicsDtoEntrance.getMicrophone());
+        characteristics.setPhoneHolder(characteristicsDtoEntrance.getPhoneHolder());
+
         Instrument instrument = new Instrument();
         instrument.setName(instrumentsDtoEntrance.getName());
         instrument.setDescription(instrumentsDtoEntrance.getDescription());
@@ -43,6 +50,8 @@ public class InstrumentService implements InstrumentInterface {
         instrument.setMeasures(instrumentsDtoEntrance.getMeasures());
         instrument.setCategory(category);
         instrument.setTheme(theme);
+        instrument.setCharacteristics(characteristics);
+
         List<ImageUrls> imageUrls = instrumentsDtoEntrance.getImageUrls().stream()
                 .map(url -> {
                     ImageUrls imageUrl = new ImageUrls();
@@ -78,15 +87,32 @@ public class InstrumentService implements InstrumentInterface {
 
     @Override
     public InstrumentDtoExit updateInstrument(InstrumentDtoModify instrumentDtoModify) throws ResourceNotFoundException {
-        Instrument instrumentsToUpdate = instrumentRepository.findById(instrumentDtoModify.getIdInstrument())
+        Category category = categoryRepository.findById(instrumentDtoModify.getIdCategory())
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró la categoría con el ID proporcionado"));
+        Theme theme = themeRepository.findById(instrumentDtoModify.getIdTheme())
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró la temática con el ID proporcionado"));
+        Instrument instrumentToUpdate = instrumentRepository.findById(instrumentDtoModify.getIdInstrument())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado"));
-        instrumentsToUpdate.setName(instrumentDtoModify.getName());
-        instrumentsToUpdate.setDescription(instrumentDtoModify.getDescription());
-        instrumentsToUpdate.setRentalPrice(instrumentDtoModify.getRentalPrice());
-        instrumentsToUpdate.setWeight(instrumentDtoModify.getWeight());
-        instrumentsToUpdate.setMeasures(instrumentDtoModify.getMeasures());
-        instrumentRepository.save(instrumentsToUpdate);
-        return mapper.map(instrumentsToUpdate, InstrumentDtoExit.class);
+        instrumentToUpdate.setName(instrumentDtoModify.getName());
+        instrumentToUpdate.setDescription(instrumentDtoModify.getDescription());
+        instrumentToUpdate.setWeight(instrumentDtoModify.getWeight());
+        instrumentToUpdate.setMeasures(instrumentDtoModify.getMeasures());
+        instrumentToUpdate.setRentalPrice(instrumentDtoModify.getRentalPrice());
+        instrumentToUpdate.setCategory(category);
+        instrumentToUpdate.setTheme(theme);
+        Characteristics characteristics = instrumentToUpdate.getCharacteristics();
+        if (characteristics == null) {
+            characteristics = new Characteristics();
+            instrumentToUpdate.setCharacteristics(characteristics);
+        }
+        CharacteristicDtoEntrance characteristicsDtoEntrance = instrumentDtoModify.getCharacteristic();
+        characteristics.setInstrumentCase(characteristicsDtoEntrance.getInstrumentCase());
+        characteristics.setSupport(characteristicsDtoEntrance.getSupport());
+        characteristics.setTuner(characteristicsDtoEntrance.getTuner());
+        characteristics.setMicrophone(characteristicsDtoEntrance.getMicrophone());
+        characteristics.setPhoneHolder(characteristicsDtoEntrance.getPhoneHolder());
+        instrumentRepository.save(instrumentToUpdate);
+        return mapper.map(instrumentToUpdate, InstrumentDtoExit.class);
     }
 
     @Override

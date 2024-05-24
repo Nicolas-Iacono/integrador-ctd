@@ -1,6 +1,7 @@
 package com.musichouse.api.music.dto.dto_modify;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.musichouse.api.music.dto.dto_entrance.CharacteristicDtoEntrance;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -31,5 +32,12 @@ public class InstrumentDtoModify {
     @NotNull(message = "El precio de alquiler es obligatorio")
     @PositiveOrZero(message = "El precio de alquiler debe ser positivo o cero")
     private BigDecimal rentalPrice;
+    @NotNull(message = "El id de la categoría es obligatorio")
+    private Long idCategory;
+    @NotNull(message = "El id de la tematica es obligatorio")
+    private Long idTheme;
+    @NotNull(message = "Las características del instrumento es obligatorio")
+    private CharacteristicDtoEntrance characteristic;
+
 
 }

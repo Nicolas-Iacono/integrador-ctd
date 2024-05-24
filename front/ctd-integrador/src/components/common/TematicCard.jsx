@@ -6,7 +6,7 @@ export const TematicCard = ({ title, imageUrl }) => {
   return (
     <Card sx={{ flex: 1 }}>
       <CardMedia
-        sx={{ height: 300, cursor: 'pointer', borderRadius:'10px' }}
+        sx={{ height: 300, cursor: 'pointer', borderRadius: '10px' }}
         image={imageUrl}
         title={title}
       >

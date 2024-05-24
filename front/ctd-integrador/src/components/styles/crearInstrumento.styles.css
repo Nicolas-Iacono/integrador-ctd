@@ -9,3 +9,7 @@
   justify-content: space-around;
   padding: 2rem;
 }
+
+.characteristic-image {
+  width: 50%;
+}

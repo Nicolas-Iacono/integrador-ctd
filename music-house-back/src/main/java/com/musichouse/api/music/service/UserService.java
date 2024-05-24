@@ -7,15 +7,19 @@ import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
 import com.musichouse.api.music.entity.Role;
 import com.musichouse.api.music.entity.User;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
+import com.musichouse.api.music.infra.MailManager;
 import com.musichouse.api.music.interfaces.UserInterface;
 import com.musichouse.api.music.repository.AddressRepository;
 import com.musichouse.api.music.repository.PhoneRepository;
 import com.musichouse.api.music.repository.RolRepository;
 import com.musichouse.api.music.repository.UserRepository;
+import com.musichouse.api.music.util.RoleConstants;
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,33 +38,38 @@ public class UserService implements UserInterface {
     private final RolRepository rolRepository;
     private final AddressRepository addressRepository;
     private final PhoneRepository phoneRepository;
+    private  final MailManager mailManager;
 
 
     @Transactional
     @Override
-    public UserDtoExit createUser(UserDtoEntrance userDtoEntrance) throws DataIntegrityViolationException {
+    public UserDtoExit createUser(UserDtoEntrance userDtoEntrance) throws DataIntegrityViolationException
+            ,MessagingException{
         User user = mapper.map(userDtoEntrance, User.class);
-        Role role = rolRepository.findByRol("USER")
-                .orElseGet(() -> rolRepository.save(new Role("USER")));
+        Role role = rolRepository.findByRol(RoleConstants.USER)
+                .orElseGet(() -> rolRepository.save(new Role(RoleConstants.USER)));
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
         user.getAddresses().forEach(address -> address.setUser(user));
         user.getPhones().forEach(phone -> phone.setUser(user));
         User userSaved = userRepository.save(user);
+        sendMessageUser(user.getEmail(), user.getName(),user.getLastName());
         return mapper.map(userSaved, UserDtoExit.class);
     }
 
     @Transactional
     @Override
-    public UserDtoExit createUserAdmin(UserAdminDtoEntrance userAdminDtoEntrance) throws DataIntegrityViolationException {
+    public UserDtoExit createUserAdmin(UserAdminDtoEntrance userAdminDtoEntrance) throws DataIntegrityViolationException
+    ,MessagingException {
         User user = mapper.map(userAdminDtoEntrance, User.class);
-        Role role = rolRepository.findByRol("ADMIN")
-                .orElseGet(() -> rolRepository.save(new Role("ADMIN")));
+        Role role = rolRepository.findByRol(RoleConstants.ADMIN)
+                .orElseGet(() -> rolRepository.save(new Role(RoleConstants.ADMIN)));
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
         User userSaved = userRepository.save(user);
+        sendMessageUser(user.getEmail(), user.getName(),user.getLastName());
         return mapper.map(userSaved, UserDtoExit.class);
     }
 
@@ -108,6 +117,11 @@ public class UserService implements UserInterface {
         } else {
             throw new ResourceNotFoundException("User not found with id: " + idUser);
         }
+    }
+
+    public  void sendMessageUser(String email,String name,String lastName) throws MessagingException {
+        mailManager.sendMessage(email,name,lastName);
+
     }
 
 }

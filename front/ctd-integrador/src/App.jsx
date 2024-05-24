@@ -9,7 +9,7 @@ import { ContextProvider } from './components/utils/global.context'
 import { AgregarInstrumento } from './components/Pages/AgregarInstrumento'
 import { EditarInstrumento } from './components/Pages/EditarInstrumento'
 import { HeaderVisibilityProvider } from './components/utils/context/HeaderVisibilityGlobal'
-
+import { AuthContextProvider } from './components/utils/context/AuthGlobal'
 import './App.css'
 import AuthPage from './components/Pages/AuthPage'
 
@@ -17,6 +17,8 @@ export const App = () => {
   return (
     <BrowserRouter>
       <HeaderVisibilityProvider>
+      <AuthContextProvider>
+
         <ContextProvider>
           <Routes>
             <Route path="/autentificacion" element={<AuthPage />} />
@@ -26,17 +28,15 @@ export const App = () => {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/instrument/:id" element={<Instrument />} />
-              <Route
-                path="/agregarInstrumento"
-                element={<AgregarInstrumento />}
+              <Route path="/agregarInstrumento"element={<AgregarInstrumento />}
               />
-              <Route
-                path="/editarInstrumento/:id"
-                element={<EditarInstrumento />}
-              />
+              <Route path="/editarInstrumento/:id" element={<EditarInstrumento />}/>
             </Route>
+
           </Routes>
         </ContextProvider>
+        </AuthContextProvider>
+
       </HeaderVisibilityProvider>
     </BrowserRouter>
   )

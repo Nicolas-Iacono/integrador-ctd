@@ -5,6 +5,7 @@ import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.service.UserService;
 import com.musichouse.api.music.util.ApiResponse;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -41,13 +42,14 @@ public class AuthController {
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse<>("El correo electrónico ingresado ya está en uso. Por favor, elija otro correo electrónico.", null));
+        } catch (MessagingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(e.getMessage(), null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
+                    .body(new ApiResponse<>(e.getMessage(), null));
         }
-
-
     }
-
-
 }
+
+

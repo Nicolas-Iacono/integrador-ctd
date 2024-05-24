@@ -154,7 +154,6 @@ const InstrumentForm = ({ initialFormData, onSubmit }) => {
                 selectedCategoryId={formData?.idCategory}
               />
             </FormControl>
-            <Typography variant="h6">Asignar Tema</Typography>
             <FormControl fullWidth margin="normal">
               <ThemeSelect
                 onChange={handleChange}
@@ -170,8 +169,9 @@ const InstrumentForm = ({ initialFormData, onSubmit }) => {
           sx={{ padding: 2, width: '100%', height: '100%' }}
         >
           <FormControl fullWidth margin="normal">
+            <Typography variant="h6">Imágenes</Typography>
             <TextField
-              label="Agregue las urls de las imágenes separadas mediante espacios"
+              placeholder="Agregue las urls de las imágenes separadas mediante espacios"
               name="imageUrlsText"
               multiline
               rows={5}

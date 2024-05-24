@@ -30,7 +30,7 @@ export const InstrumentGallery = ({ itemData }) => {
         <ImageList
           sx={{
             width: { xs: '100%', md: '70%' },
-            height: 500
+            height: 520
           }}
           variant="quilted"
           cols={4}

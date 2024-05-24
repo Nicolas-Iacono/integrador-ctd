@@ -5,11 +5,18 @@ import {
   characteristicsToFormData,
   formDataToCharacteristics
 } from '../utils/editInstrument'
+import { MessageDialog } from '../common/MessageDialog'
 
 const EditInstrumentForm = ({ id }) => {
   const [instrument] = getInstrumentById(id)
   const [initialFormData, setInitialFormData] = useState()
   const [loading, setLoading] = useState(true)
+  const [showMessage, setShowMessage] = useState(false)
+  const [message, setMessage] = useState()
+
+  const onClose = () => {
+    setShowMessage(false)
+  }
 
   useEffect(() => {
     if (!(instrument && instrument.data?.idInstrument)) return
@@ -40,9 +47,16 @@ const EditInstrumentForm = ({ id }) => {
       characteristic: formDataToCharacteristics(formData)
     }
 
-    updateInstrument(data).then((response) => {
-      console.log(response)
-    })
+    updateInstrument(data)
+      .then((response) => {
+        console.log(response)
+        setMessage('Instrumento guardado exitosamente')
+      })
+      .catch((error) => {
+        console.log(error)
+        setMessage('No se pudo guardar instrumento')
+      })
+      .finally(() => setShowMessage(true))
   }
 
   if (loading) {
@@ -50,7 +64,16 @@ const EditInstrumentForm = ({ id }) => {
   }
 
   return (
-    <InstrumentForm initialFormData={initialFormData} onSubmit={onSubmit} />
+    <>
+      <InstrumentForm initialFormData={initialFormData} onSubmit={onSubmit} />
+      <MessageDialog
+        title="Editar Instrumento"
+        message={message}
+        isOpen={showMessage}
+        buttonText="Ok"
+        onClose={onClose}
+      />
+    </>
   )
 }
 

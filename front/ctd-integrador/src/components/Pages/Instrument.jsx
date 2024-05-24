@@ -6,7 +6,7 @@ import { MainWrapper } from '../common/MainWrapper'
 import { InstrumentDetailWrapper } from '../common/InstrumentDetailWrapper'
 import { Box, Divider, Tooltip, Button } from '@mui/material'
 import { ArrowNext } from '../Images/ArrowNext'
-import { FullScreenModal } from '../common/FullScreenModal'
+import { ScreenModal } from '../common/ScreenModal'
 import { InstrumentGallery } from '../common/InstrumentGallery'
 import { useAppStates } from '../utils/global.context'
 
@@ -234,9 +234,9 @@ export const Instrument = () => {
           </Box>
         </Box>
       </MainWrapper>
-      <FullScreenModal isOpen={showGallery} onClose={onClose}>
+      <ScreenModal isOpen={showGallery} onClose={onClose} fullScreen>
         <InstrumentGallery itemData={instrumentSelected?.imageUrls} />
-      </FullScreenModal>
+      </ScreenModal>
     </main>
   )
 }

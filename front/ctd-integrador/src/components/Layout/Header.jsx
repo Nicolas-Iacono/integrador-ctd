@@ -8,7 +8,6 @@ import Container from '@mui/material/Container'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
-
 import { HeaderWrapper } from './HeaderWrapper'
 import {
   UpperStyledToolbar,
@@ -19,12 +18,11 @@ import { Logo } from '../Images/Logo'
 import { LogoWrapper } from './LogoWrapper'
 import { MenuWrapper } from './MenuWrapper'
 import { ContrastInput } from './ContrastInput'
-
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useHeaderVisibility } from '../utils/context/HeaderVisibilityGlobal'
-
 import background from '../../assets/background.svg'
 import '../styles/header.styles.css'
+import { useAuthContext } from '../utils/context/AuthGlobal'
 
 const pages = [
   { to: '/', text: 'Inicio' },
@@ -43,6 +41,9 @@ export const Header = () => {
   const { pathname } = useLocation()
   const showButtonsAndSearch = pathname === '/'
   const navigate = useNavigate()
+  const [authGlobal, setAuthGlobal] = useState(false)
+  const {toggleAuthGlobal} = useAuthContext();
+
 
   const navigationTo = (location) => {
     navigate(location)
@@ -63,6 +64,23 @@ export const Header = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
   }
+  const logOut = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setAuthGlobal(false);
+    console.log('Estado de autenticación después de cerrar sesión:', authGlobal); // Agrega un console.log para verificar el estado después de cerrar sesión
+    navigationTo('/autentificacion');
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if(token){
+      setAuthGlobal(true);
+      console.log('Estado de autenticación al cargar el componente:', authGlobal); // Agrega un console.log para verificar el estado al cargar el componente
+    }
+  }, []);
+
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -160,18 +178,7 @@ export const Header = () => {
               padding: '.5rem',
               display: { xs: 'none', md: 'block' }
             }}
-          >
-            {/* <Tooltip title="Crear cuenta">
-              <Button
-                variant="contained"
-                sx={{ borderRadius: '1rem', padding: '.5rem .5rem' }}
-              >
-                <Typography textAlign="center" sx={{ fontWeight: 'bold' }}>
-                  Crear cuenta
-                </Typography>
-              </Button>
-            </Tooltip> */}
-          </Box>
+          ></Box>
           <Box
             sx={{
               flexGrow: 0,
@@ -179,17 +186,35 @@ export const Header = () => {
               display: { xs: 'none', md: 'block' }
             }}
           >
-            <Tooltip title="Iniciar sesión">
-              <Button
-                variant="contained"
-                sx={{ borderRadius: '1rem', padding: '.5rem .5rem' }}
-                onClick={() => navigationTo('/autentificacion')}
-              >
-                <Typography textAlign="center" sx={{ fontWeight: 'bold' }}>
-                  Iniciar sesión
-                </Typography>
-              </Button>
-            </Tooltip>
+            {
+              authGlobal ? (
+                <Tooltip title="Cerrar sesión">
+                <Button
+                  variant="contained"
+                  sx={{ borderRadius: '1rem', padding: '.5rem .5rem' }}
+                  onClick={logOut}
+                >
+                  <Typography textAlign="center" sx={{ fontWeight: 'bold' }}>
+                    Cerrar sesión
+                  </Typography>
+                </Button>
+              </Tooltip>
+              ) : (
+                <Tooltip title="Iniciar sesión">
+                <Button
+                  variant="contained"
+                  sx={{ borderRadius: '1rem', padding: '.5rem .5rem' }}
+                  onClick={() => navigationTo('/autentificacion')}
+                >
+                  <Typography textAlign="center" sx={{ fontWeight: 'bold' }}>
+                    Iniciar sesión
+                  </Typography>
+                </Button>
+              </Tooltip>
+
+              
+              )
+            }
           </Box>
         </MiddleStyledToolbar>
         <LowerStyledToolbar

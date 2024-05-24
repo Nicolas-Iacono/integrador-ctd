@@ -10,12 +10,14 @@ import {
 import Link from '@mui/material/Link'
 import { styled } from '@mui/material/styles'
 import { CustomButton, InputCustom } from './CustomComponents'
+
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { UsersApi } from '../../../api/users'
 import swal from 'sweetalert'
 import loginValidationSchema from './LoginValidation'
 import { useNavigate } from 'react-router-dom'
+
 
 const ContainerForm = styled(Grid)(({ theme }) => ({
   display: 'flex',
@@ -26,6 +28,7 @@ const ContainerForm = styled(Grid)(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'flex-end',
   padding: '0px',
+
 
   [theme.breakpoints.down('md')]: {
     flexDirection: 'row'
@@ -56,11 +59,13 @@ const Login = ({ theme, onSwitch }) => {
     initialValues: {
       email: '',
       password: ''
+
     },
     validationSchema: loginValidationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         // Llama a la función de autenticación aquí
+
         const response = await UsersApi.loginUser(values)
         console.log('Server response:', response)
         // Si la autenticación es exitosa, muestra la alerta
@@ -101,10 +106,12 @@ const Login = ({ theme, onSwitch }) => {
         setSubmitting(false)
       }
     }
+
   })
 
   return (
     <form onSubmit={formik.handleSubmit}>
+
       <ContainerForm>
         <Grid
           item
@@ -180,10 +187,20 @@ const Login = ({ theme, onSwitch }) => {
               {'¿No tienes una cuenta? Regístrate'}
             </Link>
           </ContainerBottom>
+
         </Grid>
-      </ContainerForm>
-    </form>
-  )
+        <ContainerBottom>
+          <CustomButton variant="contained" color="primary" type="submit" disabled={formik.isSubmitting}>
+            Iniciar Sesión
+          </CustomButton>
+          <Link href="#" underline="always" sx={{ color: 'white', marginTop: '10px' }} onClick={onSwitch}>
+            {'¿No tienes una cuenta? Regístrate'}
+          </Link>
+        </ContainerBottom>
+      </Grid>
+    </ContainerForm>
+  </form>
+);
 }
 
 export default Login

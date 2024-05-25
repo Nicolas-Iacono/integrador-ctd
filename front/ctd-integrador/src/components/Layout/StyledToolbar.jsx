@@ -8,15 +8,15 @@ export const UpperStyledToolbar = styled(Toolbar)(({ theme }) => ({
   paddingBottom: theme.spacing(1),
 
   [theme.breakpoints.up('md')]: {
-    flexDirection: 'row',
-  },
+    flexDirection: 'row'
+  }
 }))
 
 export const MiddleStyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: 'flex-start',
   flexDirection: 'row-reverse',
-  paddingTop: theme.spacing(1),
-  paddingBottom: theme.spacing(1),
+  paddingTop: 0,
+  paddingBottom: 0
 }))
 
 export const LowerStyledToolbar = styled(Toolbar)(({ theme }) => ({
@@ -24,5 +24,5 @@ export const LowerStyledToolbar = styled(Toolbar)(({ theme }) => ({
   flexDirection: 'row',
   justifyContent: 'center',
   paddingTop: theme.spacing(1),
-  paddingBottom: theme.spacing(1),
+  paddingBottom: theme.spacing(1)
 }))

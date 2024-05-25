@@ -1,13 +1,11 @@
 import { Select, MenuItem } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { getThemes, getThemes1 } from '../../api/instruments'
+import { getThemes } from '../../api/instruments'
 
 const ThemeSelect = ({ label, onChange, selectedThemeId = undefined }) => {
   const [loading, setLoading] = useState(true)
   const [selectedTheme, setSelectedTheme] = useState('')
   const [themes] = getThemes()
-  // Usar cuando el front no esté conectado a backend localhost
-  // const [themes] = getThemes1()
 
   useEffect(() => {
     if (!themes) return

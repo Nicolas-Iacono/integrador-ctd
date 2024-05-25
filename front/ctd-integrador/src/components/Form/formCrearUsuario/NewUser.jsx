@@ -1,9 +1,6 @@
 import { useState } from 'react'
 import {
-  Box,
-  Button,
   FormControl,
-  TextField,
   Typography,
   Grid,
   Checkbox,
@@ -13,7 +10,9 @@ import Link from '@mui/material/Link'
 import { styled } from '@mui/material/styles'
 import { blue } from '@mui/material/colors'
 import { CustomButton, InputCustom } from './CustomComponents'
-import axios from 'axios'
+import { UsersApi } from '../../../api/users'
+import { MessageDialog } from '../../common/MessageDialog'
+import { useNavigate } from 'react-router-dom'
 
 const ContainerForm = styled(Grid)(({ theme }) => ({
   display: 'flex',
@@ -99,6 +98,18 @@ const NewUser = ({ onSwitch }) => {
   const [accept, setAccept] = useState(false)
   const [errors, setErrors] = useState(initialErrorState)
   const [success, setSuccess] = useState(initialSuccessState)
+  const [showMessage, setShowMessage] = useState(false)
+  const [message, setMessage] = useState()
+  const [isUserCreated, setIsUserCreated] = useState(false)
+  const navigate = useNavigate()
+
+  const onClose = () => {
+    setShowMessage(false)
+
+    if (isUserCreated) {
+      navigate(0)
+    }
+  }
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -152,8 +163,6 @@ const NewUser = ({ onSwitch }) => {
     }))
   }
 
-  const endPoint = 'https://music-house.up.railway.app/api/auth/create/user'
-
   const handleSubmit = (event) => {
     event.preventDefault()
     let formIsValid = true
@@ -195,14 +204,22 @@ const NewUser = ({ onSwitch }) => {
       delete formDataToSend.repeatPassword
       console.log(formDataToSend)
       // Aquí puedes enviar los datos del formulario a través de una función prop o realizar otras acciones
-      axios
-        .post(endPoint, formDataToSend)
+      UsersApi.registerUser(formDataToSend)
         .then((response) => {
           console.log('respuesta del servidor: ', response.data)
+          setMessage(
+            'Usuario registrado exitosamente\nYa puedes iniciar sesión'
+          )
+          setIsUserCreated(true)
         })
         .catch((error) => {
           console.error('Error en la solicitud:', error)
+          setMessage(
+            'No se pudo registrar usuario\nPor favor, vuelve a intentarlo'
+          )
+          setIsUserCreated(false)
         })
+        .finally(() => setShowMessage(true))
     }
   }
 
@@ -460,6 +477,13 @@ const NewUser = ({ onSwitch }) => {
           </Grid>
         </ContainerForm>
       </form>
+      <MessageDialog
+        title="Registrar Usuario"
+        message={message}
+        isOpen={showMessage}
+        buttonText="Ok"
+        onClose={onClose}
+      />
     </>
   )
 }

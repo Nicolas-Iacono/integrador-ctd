@@ -5,14 +5,15 @@ const AuthUserContext = createContext()
 export const useAuthContext = () => {
   return useContext(AuthUserContext)
 }
-export const AuthContextProvider = ({ children }) => {
-  const [authGlobal, setAuthGlobal] = useState(false)
+export const AuthContextProvider = ({ loggedUser, children }) => {
+  const [authGlobal, setAuthGlobal] = useState(!!loggedUser)
+  const [user, setUser] = useState(loggedUser)
   const toggleAuthGlobal = (isAuth) => {
     setAuthGlobal(isAuth)
   }
   return (
     <AuthUserContext.Provider
-      value={{ authGlobal, toggleAuthGlobal }}
+      value={{ authGlobal, setAuthGlobal, user, setUser }}
     >
       {children}
     </AuthUserContext.Provider>

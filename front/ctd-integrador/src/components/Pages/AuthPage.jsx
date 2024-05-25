@@ -24,7 +24,7 @@ const AuthPage = () => {
   return (
     <MainCrearUsuario>
       <BoxLogoSuperior>
-        <Link to='/' onClick={homeNavigate}>
+        <Link to="/" onClick={homeNavigate}>
           <Logo />
         </Link>
       </BoxLogoSuperior>

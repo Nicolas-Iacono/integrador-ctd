@@ -1,6 +1,6 @@
 import { Select, MenuItem } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { getCategories, getCategories1 } from '../../api/instruments'
+import { getCategories } from '../../api/instruments'
 
 const CategorySelect = ({
   label,
@@ -10,8 +10,6 @@ const CategorySelect = ({
   const [loading, setLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState('')
   const [categories] = getCategories()
-  // Usar cuando el front no esté conectado a backend localhost
-  // const [categories] = getCategories1()
 
   useEffect(() => {
     if (!categories) return

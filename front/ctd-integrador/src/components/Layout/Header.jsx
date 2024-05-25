@@ -8,6 +8,10 @@ import Container from '@mui/material/Container'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
+import Chip from '@mui/material/Chip'
+import Avatar from '@mui/material/Avatar'
+import { Divider } from '@mui/material'
+
 import { HeaderWrapper } from './HeaderWrapper'
 import {
   UpperStyledToolbar,
@@ -19,10 +23,11 @@ import { LogoWrapper } from './LogoWrapper'
 import { MenuWrapper } from './MenuWrapper'
 import { ContrastInput } from './ContrastInput'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useHeaderVisibility } from '../utils/context/HeaderVisibilityGlobal'
-import background from '../../assets/background.svg'
-import '../styles/header.styles.css'
 import { useAuthContext } from '../utils/context/AuthGlobal'
+import { useHeaderVisibility } from '../utils/context/HeaderVisibilityGlobal'
+
+import '../styles/header.styles.css'
+import background from '../../assets/background.svg'
 
 const pages = [
   { to: '/', text: 'Inicio' },
@@ -35,15 +40,13 @@ const settings = ['Crear Cuenta', 'Iniciar sesión']
 export const Header = () => {
   const [prevScroll, setPrevScroll] = useState(0)
   const [visible, setVisible] = useState(true)
-  const { toggleHeaderVisibility } = useHeaderVisibility()
   const [isMenuOpen, setIsMenuopen] = useState(false)
   const [anchorElNav, setAnchorElNav] = useState(null)
+  const { authGlobal, setAuthGlobal, user, setUser } = useAuthContext()
+  const { toggleHeaderVisibility } = useHeaderVisibility()
   const { pathname } = useLocation()
   const showButtonsAndSearch = pathname === '/'
   const navigate = useNavigate()
-  const [authGlobal, setAuthGlobal] = useState(false)
-  const {toggleAuthGlobal} = useAuthContext();
-
 
   const navigationTo = (location) => {
     navigate(location)
@@ -65,22 +68,13 @@ export const Header = () => {
     setAnchorElUser(null)
   }
   const logOut = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setAuthGlobal(false);
-    console.log('Estado de autenticación después de cerrar sesión:', authGlobal); // Agrega un console.log para verificar el estado después de cerrar sesión
-    navigationTo('/autentificacion');
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    setAuthGlobal(false)
+    setUser(undefined)
+    console.log('Estado de autenticación después de cerrar sesión:', authGlobal) // Agrega un console.log para verificar el estado después de cerrar sesión
+    navigationTo('/autentificacion')
   }
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if(token){
-      setAuthGlobal(true);
-      console.log('Estado de autenticación al cargar el componente:', authGlobal); // Agrega un console.log para verificar el estado al cargar el componente
-    }
-  }, []);
-
-
 
   useEffect(() => {
     const handleScroll = () => {
@@ -111,13 +105,24 @@ export const Header = () => {
           <MenuWrapper>
             <IconButton
               size="large"
-              aria-label="account of current user"
+              aria-label="Menu navegación"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              <MenuIcon sx={{ fill: 'white' }} fontSize="large" />
+              {authGlobal ? (
+                <Avatar
+                  sx={{
+                    height: '2.5rem !important',
+                    width: '2.5rem !important'
+                  }}
+                >
+                  {user && user.avatar}
+                </Avatar>
+              ) : (
+                <MenuIcon sx={{ fill: 'white' }} fontSize="large" />
+              )}
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -144,6 +149,36 @@ export const Header = () => {
                   </Typography>
                 </MenuItem>
               ))}
+              {authGlobal ? (
+                <>
+                  <Divider
+                    sx={{
+                      width: '80%',
+                      marginLeft: 'auto',
+                      marginRight: 'auto'
+                    }}
+                  />
+                  <MenuItem key={`menu-nav-close-session`} onClick={logOut}>
+                    <Typography textAlign="center">Cerrar sesión</Typography>
+                  </MenuItem>
+                </>
+              ) : (
+                <>
+                  <Divider
+                    sx={{
+                      width: '80%',
+                      marginLeft: 'auto',
+                      marginRight: 'auto'
+                    }}
+                  />
+                  <MenuItem
+                    key={`menu-nav-close-session`}
+                    onClick={() => navigationTo('/autentificacion')}
+                  >
+                    <Typography textAlign="center">Iniciar sesión</Typography>
+                  </MenuItem>
+                </>
+              )}
             </Menu>
           </MenuWrapper>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -186,21 +221,39 @@ export const Header = () => {
               display: { xs: 'none', md: 'block' }
             }}
           >
-            {
-              authGlobal ? (
+            {authGlobal ? (
+              <IconButton
+                size="large"
+                aria-label="menu"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
                 <Tooltip title="Cerrar sesión">
-                <Button
-                  variant="contained"
-                  sx={{ borderRadius: '1rem', padding: '.5rem .5rem' }}
-                  onClick={logOut}
-                >
-                  <Typography textAlign="center" sx={{ fontWeight: 'bold' }}>
-                    Cerrar sesión
-                  </Typography>
-                </Button>
-              </Tooltip>
-              ) : (
-                <Tooltip title="Iniciar sesión">
+                  <Chip
+                    avatar={
+                      <Avatar
+                        sx={{
+                          height: '2rem !important',
+                          width: '2rem !important'
+                        }}
+                      >
+                        {user && user.avatar}
+                      </Avatar>
+                    }
+                    label="Cerrar sesión"
+                    color="primary"
+                    sx={{
+                      borderRadius: '1rem',
+                      height: '2.5rem'
+                    }}
+                    onClick={logOut}
+                  />
+                </Tooltip>
+              </IconButton>
+            ) : (
+              <Tooltip title="Iniciar sesión">
                 <Button
                   variant="contained"
                   sx={{ borderRadius: '1rem', padding: '.5rem .5rem' }}
@@ -211,10 +264,7 @@ export const Header = () => {
                   </Typography>
                 </Button>
               </Tooltip>
-
-              
-              )
-            }
+            )}
           </Box>
         </MiddleStyledToolbar>
         <LowerStyledToolbar

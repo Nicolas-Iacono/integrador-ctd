@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from 'react'
 import {
   Box,
   Button,
@@ -6,16 +6,17 @@ import {
   TextField,
   Typography,
   Grid
-} from '@mui/material';
-import Link from '@mui/material/Link';
-import { styled } from '@mui/material/styles';
-import { CustomButton, InputCustom } from './CustomComponents';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
-import { UsersApi } from '../../../api/users';
-import swal from 'sweetalert';
-import loginValidationSchema from './LoginValidation';
-import { useNavigate } from 'react-router-dom';
+} from '@mui/material'
+import Link from '@mui/material/Link'
+import { styled } from '@mui/material/styles'
+import { CustomButton, InputCustom } from './CustomComponents'
+import * as Yup from 'yup'
+import { useFormik } from 'formik'
+import { UsersApi } from '../../../api/users'
+import swal from 'sweetalert'
+import loginValidationSchema from './LoginValidation'
+import { useNavigate } from 'react-router-dom'
+import { useAuthContext } from '../../utils/context/AuthGlobal'
 
 const ContainerForm = styled(Grid)(({ theme }) => ({
   display: 'flex',
@@ -30,7 +31,7 @@ const ContainerForm = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     flexDirection: 'row'
   }
-}));
+}))
 
 const ContainerBottom = styled(Grid)(({ theme }) => ({
   width: '100%',
@@ -45,10 +46,11 @@ const ContainerBottom = styled(Grid)(({ theme }) => ({
     width: '100%',
     marginLeft: '0px'
   }
-}));
+}))
 
 const Login = ({ theme, onSwitch }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const { setAuthGlobal, setUser } = useAuthContext()
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -57,43 +59,46 @@ const Login = ({ theme, onSwitch }) => {
     validationSchema: loginValidationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const response = await UsersApi.loginUser(values);
-        console.log('Server response:', response);
+        const response = await UsersApi.loginUser(values)
+        console.log('Server response:', response)
 
         if (response && response.token && response.roles) {
           const user = {
             roles: response.roles,
-            email: response.email
-          };
-          localStorage.setItem('user', JSON.stringify(user));
-          localStorage.setItem('token', response.token);
+            email: response.email,
+            avatar: `${response.name.charAt(0)}${response.lastName.charAt(0)}`
+          }
+          localStorage.setItem('user', JSON.stringify(user))
+          localStorage.setItem('token', response.token)
+          setAuthGlobal(true)
+          setUser(user)
           swal(
             '¡Inicio de sesión exitoso!',
             'Has iniciado sesión correctamente'
-          );
+          )
           setTimeout(() => {
-            navigate('/');
-          }, 1000);
+            navigate('/')
+          }, 1000)
         } else {
-          console.error('Inicio de sesión fallido:', response);
+          console.error('Inicio de sesión fallido:', response)
           swal(
             'Error al iniciar sesión',
             response.message || 'Credenciales incorrectas',
             'error'
-          );
+          )
         }
       } catch (error) {
-        console.error('Error durante el inicio de sesión:', error);
+        console.error('Error durante el inicio de sesión:', error)
         swal(
           'Error al iniciar sesión',
           error.message || 'Ocurrió un error',
           'error'
-        );
+        )
       } finally {
-        setSubmitting(false);
+        setSubmitting(false)
       }
     }
-  });
+  })
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -144,7 +149,9 @@ const Login = ({ theme, onSwitch }) => {
                 value={formik.values.password}
                 type="password"
                 color="primary"
-                error={formik.touched.password && Boolean(formik.errors.password)}
+                error={
+                  formik.touched.password && Boolean(formik.errors.password)
+                }
                 helperText={formik.touched.password && formik.errors.password}
               />
             </FormControl>
@@ -170,7 +177,7 @@ const Login = ({ theme, onSwitch }) => {
         </Grid>
       </ContainerForm>
     </form>
-  );
+  )
 }
 
-export default Login;
+export default Login

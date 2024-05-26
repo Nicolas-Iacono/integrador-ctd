@@ -10,6 +10,9 @@ import Link from '@mui/material/Link'
 import { styled } from '@mui/material/styles'
 import { blue } from '@mui/material/colors'
 import { CustomButton, InputCustom } from './CustomComponents'
+import { RoleSelect } from './RoleSelect'
+import { useAuthContext } from '../../utils/context/AuthGlobal'
+import { useNavigate } from 'react-router-dom'
 
 const ContainerForm = styled(Grid)(({ theme }) => ({
   display: 'flex',
@@ -28,6 +31,7 @@ const ContainerForm = styled(Grid)(({ theme }) => ({
   //   paddingTop: 320
   // }
 }))
+
 const ContainerBottom = styled(Grid)(({ theme }) => ({
   width: '100%',
   height: '100px',
@@ -70,11 +74,22 @@ export const UserForm = ({ onSwitch, initialFormData, onSubmit }) => {
   }))
 
   const [formData, setFormData] = useState({ ...initialFormData })
-  const [accept, setAccept] = useState(false)
+  const [accept, setAccept] = useState(!!formData.idUser)
   const [errors, setErrors] = useState(initialErrorState)
   const [success, setSuccess] = useState(initialSuccessState)
-  const title = formData.idUser ? 'Editar cuenta usuario' : 'Crear una cuenta'
-  const buttonText = formData.idUser ? 'Guardar' : Registrar
+  const { user, isUserAdmin } = useAuthContext()
+  const navigate = useNavigate()
+  const isLoggedUser =
+    user?.idUser && user.idUser === Number(initialFormData?.idUser)
+  const title = isLoggedUser
+    ? 'Mi perfil'
+    : formData.idUser
+      ? 'Editar cuenta usuario'
+      : 'Crear una cuenta'
+  const buttonText = formData.idUser ? 'Guardar' : 'Registrar'
+
+  console.log('IS ADMIN', isUserAdmin)
+  console.log('IS LOGGED USER', isLoggedUser)
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -145,22 +160,23 @@ export const UserForm = ({ onSwitch, initialFormData, onSubmit }) => {
       newErrors.email = 'El email es requerido'
       formIsValid = false
     }
-    if (!formData.password) {
-      newErrors.password = 'La contraseña es requerida'
-      formIsValid = false
+    if (!formData.idUser) {
+      if (!formData.password) {
+        newErrors.password = 'La contraseña es requerida'
+        formIsValid = false
+      }
+      if (!formData.repeatPassword) {
+        newErrors.repeatPassword = 'Repetir la contraseña es requerido'
+        formIsValid = false
+      } else if (formData.password !== formData.repeatPassword) {
+        newErrors.repeatPassword = 'Las contraseñas no coinciden'
+        formIsValid = false
+      }
+      if (!accept) {
+        newErrors.general = 'Debe aceptar los términos y condiciones'
+        formIsValid = false
+      }
     }
-    if (!formData.repeatPassword) {
-      newErrors.repeatPassword = 'Repetir la contraseña es requerido'
-      formIsValid = false
-    } else if (formData.password !== formData.repeatPassword) {
-      newErrors.repeatPassword = 'Las contraseñas no coinciden'
-      formIsValid = false
-    }
-    if (!accept) {
-      newErrors.general = 'Debe aceptar los términos y condiciones'
-      formIsValid = false
-    }
-
     if (!formIsValid) {
       setErrors(newErrors)
     } else {
@@ -348,6 +364,25 @@ export const UserForm = ({ onSwitch, initialFormData, onSubmit }) => {
                     helperText={errors.email}
                   />
                 </FormControl>
+                {formData.idUser && isUserAdmin && (
+                  <Grid
+                    item
+                    xs={12}
+                    md={6}
+                    sx={{ padding: 2, width: '100%', height: '100%' }}
+                  >
+                    <Typography variant="h6">Asignar Rol</Typography>
+                    <FormControl fullWidth margin="normal">
+                      <RoleSelect
+                        selectedRoleId={formData?.idRol}
+                        onChange={handleChange}
+                        sx={{
+                          backgroundColor: 'rgba(255, 255, 255, 0.4) !important'
+                        }}
+                      />
+                    </FormControl>
+                  </Grid>
+                )}
                 {!formData.idUser && (
                   <>
                     <FormControl fullWidth margin="normal">

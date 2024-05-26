@@ -46,7 +46,9 @@ export const App = () => {
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/instrument/:id" element={<Instrument />} />
                     {user && (
-                      <Route element={<ProtectedRoute user={user} />}>
+                      <Route
+                        element={<ProtectedRoute user={user} role="ADMIN" />}
+                      >
                         <Route
                           path="/agregarInstrumento"
                           element={<AgregarInstrumento />}

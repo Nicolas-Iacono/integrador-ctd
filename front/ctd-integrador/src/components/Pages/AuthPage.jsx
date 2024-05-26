@@ -8,6 +8,7 @@ import { Logo } from '../Images/Logo'
 import NewUser from '../Form/formUsuario/NewUser'
 import BoxFormUnder from '../common/crearUsuario/BoxFormUnder'
 import { useNavigate, Link } from 'react-router-dom'
+
 const AuthPage = () => {
   const navigate = useNavigate()
 

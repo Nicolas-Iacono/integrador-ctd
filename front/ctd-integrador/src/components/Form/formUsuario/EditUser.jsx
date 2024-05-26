@@ -2,37 +2,77 @@ import { useState, useEffect } from 'react'
 import { UsersApi } from '../../../api/users'
 import { UserForm } from './UserForm'
 import { MessageDialog } from '../../common/MessageDialog'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Link } from 'react-router-dom'
 import MainCrearUsuario from '../../common/crearUsuario/MainCrearUsuario'
 import BoxLogoSuperior from '../../common/crearUsuario/BoxLogoSuperior'
 import { Logo } from '../../Images/Logo'
+import { Code } from '../../../api/constants'
+import { roleById } from '../../utils/roles/constants'
+import { useAuthContext } from '../../utils/context/AuthGlobal'
 
 const EditUser = ({ onSwitch }) => {
   const { id } = useParams()
-  const [user] = UsersApi.getUserById(id)
+  const [user, code] = UsersApi.getUserById(id)
   const [formData, setFormData] = useState()
   const [showMessage, setShowMessage] = useState(false)
   const [loading, setLoading] = useState(true)
   const [message, setMessage] = useState()
-  const [isUserUpdated, setIsUserUpdated] = useState(false)
+  const [isUserUpdated, setIsUserUpdated] = useState()
+  const [isNewRoleAdded, setIsNewRoleAdded] = useState()
+  const [isOldRoleDeleted, setIsOldRoleDeleted] = useState()
+  const { user: loggedUser, isUserAdmin } = useAuthContext()
   const navigate = useNavigate()
+  const isLoggedUser = loggedUser?.idUser && loggedUser.idUser === Number(id)
 
   useEffect(() => {
-    if (!user) return
+    if (!(user || code)) return
 
-    const initialFormData = {
-      idUser: id,
-      name: user.data.name,
-      lastName: user.data.lastName,
-      email: user.data.email,
-      password: '',
-      repeatPassword: '',
-      addresses: user.data.addresses,
-      phones: user.data.phones
+    if (code === Code.SUCCESS) {
+      const initialFormData = {
+        idUser: id,
+        name: user.data.name,
+        lastName: user.data.lastName,
+        email: user.data.email,
+        addresses: user.data.addresses,
+        phones: user.data.phones,
+        idRol: user.data.roles.length && user.data.roles[0].idRol
+      }
+      setFormData(initialFormData)
     }
-    setFormData(initialFormData)
+    if (code === Code.NOT_FOUND) {
+      setMessage('Usuario no encontrado')
+      setShowMessage(true)
+    }
+
     setLoading(false)
-  }, [user])
+  }, [user, code])
+
+  useEffect(() => {
+    if (
+      isUserUpdated === undefined ||
+      isNewRoleAdded === undefined ||
+      isOldRoleDeleted === undefined
+    )
+      return
+
+    if (
+      (isLoggedUser && isUserUpdated === true) ||
+      (isUserAdmin &&
+        isUserUpdated === true &&
+        isNewRoleAdded === true &&
+        isOldRoleDeleted === true)
+    ) {
+      setMessage('Usuario guardado exitosamente')
+    } else {
+      setMessage(
+        'No fue posible guardar el usuario. Por favor, inténtalo nuevamente'
+      )
+    }
+    setIsUserUpdated(undefined)
+    setIsNewRoleAdded(undefined)
+    setIsOldRoleDeleted(undefined)
+    setShowMessage(true)
+  }, [isUserUpdated, isNewRoleAdded, isOldRoleDeleted])
 
   const onClose = () => {
     setShowMessage(false)
@@ -43,25 +83,49 @@ const EditUser = ({ onSwitch }) => {
   }
 
   const handleSubmit = (formData) => {
-    console.log(formData)
     const formDataToSend = { ...formData }
-    delete formDataToSend.repeatPassword
-    console.log(formDataToSend)
+    const oldRol = user.data.roles.length && user.data.roles[0].rol
+    const newRol = roleById(formDataToSend.idRol)
+    console.log('DATA TO SEND', formDataToSend)
+    console.log('NEW ROLE', newRol)
+    console.log('OLD ROLE', oldRol)
     // Aquí puedes enviar los datos del formulario a través de una función prop o realizar otras acciones
     UsersApi.updateUser(formDataToSend)
       .then((response) => {
         console.log('respuesta del servidor: ', response.data)
-        setMessage('Usuario guardado exitosamente')
         setIsUserUpdated(true)
       })
       .catch((error) => {
         console.error('Error en la solicitud:', error)
         setMessage(
-          'No fue posible guardar usuario\nPor favor, vuelve a intentarlo'
+          'No fue posible guardar usuario. Por favor, vuelve a intentarlo'
         )
         setIsUserUpdated(false)
       })
-      .finally(() => setShowMessage(true))
+
+    if (!isUserAdmin || oldRol === undefined) setIsOldRoleDeleted(true)
+    if (!isUserAdmin || newRol === undefined) setIsNewRoleAdded(true)
+
+    if (oldRol === newRol) {
+      setIsOldRoleDeleted(true)
+      setIsNewRoleAdded(true)
+    }
+
+    if (isUserAdmin && oldRol !== newRol) {
+      UsersApi.addUserRole(user.data, newRol)
+        .then(() => setIsNewRoleAdded(true))
+        .catch(() => setIsNewRoleAdded(false))
+    }
+
+    if (isUserAdmin && oldRol !== undefined && oldRol !== newRol) {
+      UsersApi.deleteUserRole(user.data, oldRol)
+        .then(() => setIsOldRoleDeleted(true))
+        .catch(() => setIsOldRoleDeleted(false))
+    }
+  }
+
+  if (!(isLoggedUser || isUserAdmin)) {
+    navigate('/')
   }
 
   if (loading) {
@@ -71,13 +135,18 @@ const EditUser = ({ onSwitch }) => {
   return (
     <MainCrearUsuario>
       <BoxLogoSuperior>
+        <Link to="/">
+          <Logo />
+        </Link>
         <Logo />
       </BoxLogoSuperior>
-      <UserForm
-        onSwitch={onSwitch}
-        initialFormData={formData}
-        onSubmit={handleSubmit}
-      />
+      {formData && (
+        <UserForm
+          onSwitch={onSwitch}
+          initialFormData={formData}
+          onSubmit={handleSubmit}
+        />
+      )}
       <MessageDialog
         title="Editar Usuario"
         message={message}

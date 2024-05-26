@@ -64,8 +64,9 @@ const Login = ({ theme, onSwitch }) => {
 
         if (response && response.token && response.roles) {
           const user = {
+            idUser: response.idUser,
             roles: response.roles,
-            email: response.email,
+            email: values.email,
             avatar: `${response.name.charAt(0)}${response.lastName.charAt(0)}`
           }
           localStorage.setItem('user', JSON.stringify(user))

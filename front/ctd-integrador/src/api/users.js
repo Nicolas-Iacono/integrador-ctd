@@ -1,4 +1,9 @@
-import { useGetFetch, postFetch, putFetch } from '../helpers/useFetch'
+import {
+  useGetFetch,
+  postFetch,
+  putFetch,
+  deleteFetch
+} from '../helpers/useFetch'
 import axios from 'axios'
 
 const URL_GET_USERS = 'https://music-house.up.railway.app/api/user/all'
@@ -9,6 +14,10 @@ const URL_UPDATE_USER = 'https://music-house.up.railway.app/api/user/update'
 const URL_BASE_LOGIN = 'https://music-house.up.railway.app/api/auth/login'
 const URL_CREATE_ADMIN =
   'https://music-house.up.railway.app/api/auth/create/admin'
+const URL_ADD_ROLE_USER =
+  'https://music-house.up.railway.app/api/roles/user/rol/add'
+const URL_DELETE_ROLE_USER =
+  'https://music-house.up.railway.app/api/roles/user/rol/delete'
 
 export const UsersApi = {
   getAllUsers: () => {
@@ -25,6 +34,24 @@ export const UsersApi = {
 
   updateUser: (user) => {
     return putFetch(URL_UPDATE_USER, user)
+  },
+
+  addUserRole: (user, newRole) => {
+    const data = {
+      idUser: user.idUser,
+      rol: newRole
+    }
+
+    return postFetch(URL_ADD_ROLE_USER, data)
+  },
+
+  deleteUserRole: (user, oldRole) => {
+    const data = {
+      idUser: user.idUser,
+      rol: oldRole
+    }
+
+    return deleteFetch(URL_DELETE_ROLE_USER, data)
   },
 
   registerAdmin: async (adminUser) => {

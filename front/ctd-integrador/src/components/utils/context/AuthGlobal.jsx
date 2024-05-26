@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react'
+import { isAdmin } from '../roles/constants'
 
 const AuthUserContext = createContext()
 
@@ -8,12 +9,14 @@ export const useAuthContext = () => {
 export const AuthContextProvider = ({ loggedUser, children }) => {
   const [authGlobal, setAuthGlobal] = useState(!!loggedUser)
   const [user, setUser] = useState(loggedUser)
+  const isUserAdmin = isAdmin(loggedUser?.roles)
   const toggleAuthGlobal = (isAuth) => {
     setAuthGlobal(isAuth)
   }
+
   return (
     <AuthUserContext.Provider
-      value={{ authGlobal, setAuthGlobal, user, setUser }}
+      value={{ authGlobal, setAuthGlobal, user, setUser, isUserAdmin }}
     >
       {children}
     </AuthUserContext.Provider>

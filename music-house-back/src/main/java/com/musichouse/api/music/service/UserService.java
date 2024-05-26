@@ -99,10 +99,12 @@ public class UserService implements UserInterface {
         userToUpdate.setName(userDtoModify.getName());
         userToUpdate.setLastName(userDtoModify.getLastName());
         userToUpdate.setEmail(userDtoModify.getEmail());
-        userToUpdate.setPassword(userDtoModify.getPassword());
+       String newPassword = userDtoModify.getPassword();
+       if (newPassword != null && !newPassword.isEmpty()) {
+           userToUpdate.setPassword(newPassword);
+       }
         userRepository.save(userToUpdate);
         return mapper.map(userToUpdate, UserDtoExit.class);
-
     }
 
     @Override

@@ -19,7 +19,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,13 +37,13 @@ public class UserService implements UserInterface {
     private final RolRepository rolRepository;
     private final AddressRepository addressRepository;
     private final PhoneRepository phoneRepository;
-    private  final MailManager mailManager;
+    private final MailManager mailManager;
 
 
     @Transactional
     @Override
     public UserDtoExit createUser(UserDtoEntrance userDtoEntrance) throws DataIntegrityViolationException
-            ,MessagingException{
+            , MessagingException {
         User user = mapper.map(userDtoEntrance, User.class);
         Role role = rolRepository.findByRol(RoleConstants.USER)
                 .orElseGet(() -> rolRepository.save(new Role(RoleConstants.USER)));
@@ -54,14 +53,14 @@ public class UserService implements UserInterface {
         user.getAddresses().forEach(address -> address.setUser(user));
         user.getPhones().forEach(phone -> phone.setUser(user));
         User userSaved = userRepository.save(user);
-        sendMessageUser(user.getEmail(), user.getName(),user.getLastName());
+        sendMessageUser(user.getEmail(), user.getName(), user.getLastName());
         return mapper.map(userSaved, UserDtoExit.class);
     }
 
     @Transactional
     @Override
     public UserDtoExit createUserAdmin(UserAdminDtoEntrance userAdminDtoEntrance) throws DataIntegrityViolationException
-    ,MessagingException {
+            , MessagingException {
         User user = mapper.map(userAdminDtoEntrance, User.class);
         Role role = rolRepository.findByRol(RoleConstants.ADMIN)
                 .orElseGet(() -> rolRepository.save(new Role(RoleConstants.ADMIN)));
@@ -69,7 +68,7 @@ public class UserService implements UserInterface {
         roles.add(role);
         user.setRoles(roles);
         User userSaved = userRepository.save(user);
-        sendMessageUser(user.getEmail(), user.getName(),user.getLastName());
+        sendMessageUser(user.getEmail(), user.getName(), user.getLastName());
         return mapper.map(userSaved, UserDtoExit.class);
     }
 
@@ -119,8 +118,8 @@ public class UserService implements UserInterface {
         }
     }
 
-    public  void sendMessageUser(String email,String name,String lastName) throws MessagingException {
-        mailManager.sendMessage(email,name,lastName);
+    public void sendMessageUser(String email, String name, String lastName) throws MessagingException {
+        mailManager.sendMessage(email, name, lastName);
 
     }
 

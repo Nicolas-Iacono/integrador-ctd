@@ -131,8 +131,6 @@ Esta clase DTO representa los datos de entrada para las características de un i
     - **Longitud**: máximo 50 caracteres.
     - **Descripción**: Si el instrumento viene con soprte para celular.
 
-
-
 ## UserDtoEntrance
 
 Esta clase representa los datos de entrada para un usuario.

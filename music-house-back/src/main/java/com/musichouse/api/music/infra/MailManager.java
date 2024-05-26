@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Component
@@ -19,12 +20,12 @@ public class MailManager {
     @Value("${spring.mail.username}")
     private String sender;
 
-    public void sendMessage(String email, String name,String lastName) throws MessagingException {
+    public void sendMessage(String email, String name, String lastName) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         String content = MessageHTML.MESSAGE_HTML;
-        content = content.replace("{nombre}",name);
-        content= content.replace("{apellido}",lastName);
+        content = content.replace("{nombre}", name);
+        content = content.replace("{apellido}", lastName);
 
         try {
             mimeMessage.setSubject("Prueba de correo");

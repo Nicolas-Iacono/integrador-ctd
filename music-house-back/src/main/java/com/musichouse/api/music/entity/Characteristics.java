@@ -31,7 +31,7 @@ public class Characteristics {
     /**
      * Si lleva soporte.
      */
-    @Column(name = "support",length = 50, nullable = false)
+    @Column(name = "support", length = 50, nullable = false)
     private String support;
 
     /**
@@ -43,7 +43,7 @@ public class Characteristics {
     /**
      * Si lleva micrófono.
      */
-    @Column(name = "microphone",length = 50,nullable = false)
+    @Column(name = "microphone", length = 50, nullable = false)
     private String microphone;
 
     /**

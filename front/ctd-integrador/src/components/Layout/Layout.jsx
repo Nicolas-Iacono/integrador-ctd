@@ -19,6 +19,7 @@ export const Layout = () => {
     <ThemeProvider theme={theme}>
       <Header />
       <Outlet />
+      <Footer />
     </ThemeProvider>
   )
 }

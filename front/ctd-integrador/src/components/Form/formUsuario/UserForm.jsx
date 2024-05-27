@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   FormControl,
   Typography,
@@ -86,7 +86,11 @@ export const UserForm = ({ onSwitch, initialFormData, onSubmit }) => {
     : formData.idUser
       ? 'Editar cuenta usuario'
       : 'Crear una cuenta'
-  const buttonText = formData.idUser ? 'Guardar' : 'Registrar'
+  const buttonText = formData.idUser || isUserAdmin ? 'Guardar' : 'Registrar'
+
+  useEffect(() => {
+    if (isUserAdmin) setAccept(true)
+  }, [isUserAdmin])
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -424,7 +428,7 @@ export const UserForm = ({ onSwitch, initialFormData, onSubmit }) => {
                 )}
               </Grid>
             </Grid>
-            {!formData.idUser && (
+            {!formData.idUser && !isUserAdmin && (
               <FormControlLabel
                 control={
                   <CustomCheckbox
@@ -446,7 +450,7 @@ export const UserForm = ({ onSwitch, initialFormData, onSubmit }) => {
             <CustomButton variant="contained" color="primary" type="submit">
               {buttonText}
             </CustomButton>
-            {!formData.idUser && (
+            {!formData.idUser && !isUserAdmin && (
               <Link
                 href=""
                 underline="always"

@@ -19,6 +19,7 @@ import {
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import FilterListIcon from '@mui/icons-material/FilterList'
+import AddIcon from '@mui/icons-material/Add'
 import { Edit } from '@mui/icons-material'
 import { visuallyHidden } from '@mui/utils'
 import MainWrapper from '../../common/MainWrapper'
@@ -145,6 +146,11 @@ const EnhancedTableHead = (props) => {
 
 const EnhancedTableToolbar = (props) => {
   const { numSelected } = props
+  const navigate = useNavigate()
+
+  const handleAdd = () => {
+    navigate('/agregarUsuario')
+  }
 
   return (
     <Toolbar
@@ -187,9 +193,9 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
+        <Tooltip title="Agregar usuario">
+          <IconButton onClick={handleAdd}>
+            <AddIcon />
           </IconButton>
         </Tooltip>
       )}

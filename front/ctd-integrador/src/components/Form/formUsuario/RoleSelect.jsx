@@ -10,7 +10,6 @@ export const RoleSelect = ({
   selectedRoleId = undefined,
   sx
 }) => {
-  console.log('ROLES', roles)
   const [loading, setLoading] = useState(true)
   const [selectedRole, setSelectedRole] = useState('')
 

@@ -27,8 +27,6 @@ export const Instrument = () => {
   useEffect(() => {
     if (!instrument?.data) return
 
-    console.log('DATA', instrument.data)
-
     setInstrumentSelected(instrument.data)
   }, [instrument])
 

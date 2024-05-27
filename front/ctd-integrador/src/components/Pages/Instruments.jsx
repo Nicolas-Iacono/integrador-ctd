@@ -128,7 +128,12 @@ const EnhancedTableHead = (props) => {
 }
 
 const EnhancedTableToolbar = (props) => {
+  const navigate = useNavigate()
   const { numSelected } = props
+
+  const handleAdd = () => {
+    navigate('/agregarInstrumento')
+  }
 
   return (
     <Toolbar
@@ -165,15 +170,15 @@ const EnhancedTableToolbar = (props) => {
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip title="Eliminar">
           <IconButton>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
+        <Tooltip title="Agregar instrumento">
+          <IconButton onClick={handleAdd}>
+            <AddIcon />
           </IconButton>
         </Tooltip>
       )}
@@ -239,10 +244,6 @@ export const Instruments = () => {
 
   const handleDelete = (id) => {
     setRows(rows.filter((row) => row.id !== id))
-  }
-
-  const handleAdd = () => {
-    navigate('/agregarInstrumento')
   }
 
   const handleChangePage = (event, newPage) => {

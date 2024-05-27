@@ -167,7 +167,7 @@ const EnhancedTableToolbar = (props) => {
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {numSelected} seleccionado{numSelected > 1 ? 's' : ''}
         </Typography>
       ) : (
         <Typography
@@ -176,7 +176,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Nutrition
+          Usuarios
         </Typography>
       )}
 
@@ -279,6 +279,12 @@ export const Usuarios = () => {
     [rows, order, orderBy, page, rowsPerPage]
   )
 
+  const getLabelDisplayedRows = ({ from, to, count }) => {
+    {
+      return `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`
+    }
+  }
+
   if (loading) return <p>Loading...</p>
 
   return (
@@ -306,6 +312,7 @@ export const Usuarios = () => {
                     visibleRows.map((row, index) => {
                       const isItemSelected = isSelected(row.idUser)
                       const labelId = `enhanced-table-checkbox-${index}`
+                      const isRowEven = index % 2 === 0
 
                       return (
                         <TableRow
@@ -315,7 +322,10 @@ export const Usuarios = () => {
                           tabIndex={-1}
                           key={row.idUser}
                           selected={isItemSelected}
-                          sx={{ cursor: 'pointer' }}
+                          sx={{
+                            cursor: 'pointer',
+                            backgroundColor: isRowEven ? '#fbf194' : 'inherit'
+                          }}
                           onClick={(event) => handleClick(event, row.idUser)}
                         >
                           <TableCell padding="checkbox">
@@ -371,6 +381,8 @@ export const Usuarios = () => {
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
+              labelRowsPerPage="Filas por página"
+              labelDisplayedRows={getLabelDisplayedRows}
             />
           </Paper>
         </MainWrapper>

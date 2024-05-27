@@ -1,12 +1,12 @@
 .table-row-even {
-    background-color: #f7e434;
+  background-color: #fbf194;
 }
-   
+
 .actions-header-cell {
-    text-align: right;
+  text-align: right;
 }
-  
+
 .actions-cell {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }

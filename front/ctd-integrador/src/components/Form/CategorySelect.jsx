@@ -20,7 +20,7 @@ const CategorySelect = ({
   useEffect(() => {
     if (!selectedCategoryId || !categories) return
 
-    const selectedCategory = categories.find(
+    const selectedCategory = categories.data.find(
       (category) => category.idCategory === selectedCategoryId
     )
     setSelectedCategory(selectedCategory)
@@ -49,7 +49,7 @@ const CategorySelect = ({
       label={label}
       color="secondary"
     >
-      {categories?.map((category, index) => (
+      {categories?.data?.map((category, index) => (
         <MenuItem key={`category-select-${index}`} value={category}>
           {category.categoryName}
         </MenuItem>

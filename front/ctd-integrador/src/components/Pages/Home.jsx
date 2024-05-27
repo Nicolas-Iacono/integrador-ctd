@@ -23,7 +23,6 @@ export const Home = () => {
   useEffect(() => {
     if (!instruments) return
     dispatch({ type: actions.UPDATE_INSTRUMENTS, payload: instruments })
-    console.log('INSTRUMENTS', instruments)
     setLoading(false)
   }, [instruments])
 

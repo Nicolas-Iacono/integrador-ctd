@@ -10,6 +10,7 @@ import { ContextProvider } from './components/utils/global.context'
 import { AgregarInstrumento } from './components/Pages/Admin/AgregarInstrumento'
 import { EditarInstrumento } from './components/Pages/Admin/EditarInstrumento'
 import { Usuarios } from './components/Pages/Admin/Usuarios'
+import CrearUsuario from './components/Pages/CrearUsuario'
 import EditUser from './components/Form/formUsuario/EditUser'
 import { HeaderVisibilityProvider } from './components/utils/context/HeaderVisibilityGlobal'
 import { AuthContextProvider } from './components/utils/context/AuthGlobal'
@@ -41,7 +42,6 @@ export const App = () => {
                   <Route path="/autentificacion" element={<AuthPage />} />
                   <Route element={<Layout />}>
                     <Route path="/" element={<Home />} />
-                    <Route path="/instruments" element={<Instruments />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/instrument/:id" element={<Instrument />} />
@@ -49,6 +49,8 @@ export const App = () => {
                       <Route
                         element={<ProtectedRoute user={user} role="ADMIN" />}
                       >
+                        <Route path="/instruments" element={<Instruments />} />
+                        <Route path="/usuarios" element={<Usuarios />} />
                         <Route
                           path="/agregarInstrumento"
                           element={<AgregarInstrumento />}
@@ -57,13 +59,22 @@ export const App = () => {
                           path="/editarInstrumento/:id"
                           element={<EditarInstrumento />}
                         />
-                        <Route path="/usuarios" element={<Usuarios />} />
                       </Route>
                     )}
                   </Route>
                   {user && (
                     <Route element={<ProtectedRoute user={user} />}>
                       <Route path="/editarUsuario/:id" element={<EditUser />} />
+                    </Route>
+                  )}
+                  {user && (
+                    <Route
+                      element={<ProtectedRoute user={user} role="ADMIN" />}
+                    >
+                      <Route
+                        path="/agregarUsuario"
+                        element={<CrearUsuario />}
+                      />
                     </Route>
                   )}
                 </Routes>

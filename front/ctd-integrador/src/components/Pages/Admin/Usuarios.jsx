@@ -19,6 +19,7 @@ import {
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import FilterListIcon from '@mui/icons-material/FilterList'
+import AddIcon from '@mui/icons-material/Add'
 import { Edit } from '@mui/icons-material'
 import { visuallyHidden } from '@mui/utils'
 import MainWrapper from '../../common/MainWrapper'
@@ -145,6 +146,11 @@ const EnhancedTableHead = (props) => {
 
 const EnhancedTableToolbar = (props) => {
   const { numSelected } = props
+  const navigate = useNavigate()
+
+  const handleAdd = () => {
+    navigate('/agregarUsuario')
+  }
 
   return (
     <Toolbar
@@ -167,7 +173,7 @@ const EnhancedTableToolbar = (props) => {
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {numSelected} seleccionado{numSelected > 1 ? 's' : ''}
         </Typography>
       ) : (
         <Typography
@@ -176,7 +182,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Nutrition
+          Usuarios
         </Typography>
       )}
 
@@ -187,9 +193,9 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
+        <Tooltip title="Agregar usuario">
+          <IconButton onClick={handleAdd}>
+            <AddIcon />
           </IconButton>
         </Tooltip>
       )}
@@ -279,6 +285,12 @@ export const Usuarios = () => {
     [rows, order, orderBy, page, rowsPerPage]
   )
 
+  const getLabelDisplayedRows = ({ from, to, count }) => {
+    {
+      return `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`
+    }
+  }
+
   if (loading) return <p>Loading...</p>
 
   return (
@@ -306,6 +318,7 @@ export const Usuarios = () => {
                     visibleRows.map((row, index) => {
                       const isItemSelected = isSelected(row.idUser)
                       const labelId = `enhanced-table-checkbox-${index}`
+                      const isRowEven = index % 2 === 0
 
                       return (
                         <TableRow
@@ -315,7 +328,10 @@ export const Usuarios = () => {
                           tabIndex={-1}
                           key={row.idUser}
                           selected={isItemSelected}
-                          sx={{ cursor: 'pointer' }}
+                          sx={{
+                            cursor: 'pointer',
+                            backgroundColor: isRowEven ? '#fbf194' : 'inherit'
+                          }}
                           onClick={(event) => handleClick(event, row.idUser)}
                         >
                           <TableCell padding="checkbox">
@@ -371,6 +387,8 @@ export const Usuarios = () => {
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
+              labelRowsPerPage="Filas por página"
+              labelDisplayedRows={getLabelDisplayedRows}
             />
           </Paper>
         </MainWrapper>

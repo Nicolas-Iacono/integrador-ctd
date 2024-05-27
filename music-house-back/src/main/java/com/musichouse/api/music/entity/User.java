@@ -6,9 +6,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Representa una entidad de usuario en la aplicación de Music House.
@@ -24,7 +29,7 @@ import java.util.Set;
  * phones y roles. Esto se hace para evitar problemas de recursión infinita en las operaciones de igualdad y hashCode.
  */
 @EqualsAndHashCode(exclude = {"addresses", "phones", "roles"})
-public class User {
+public class User implements UserDetails {
     /**
      * Identificador único para el usuario.
      */
@@ -102,4 +107,39 @@ public class User {
     @Temporal(TemporalType.DATE)
     @Column(name = "regist_date")
     private Date registDate;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles
+                .stream().map(role -> new SimpleGrantedAuthority(role.getRol()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
+
+
+

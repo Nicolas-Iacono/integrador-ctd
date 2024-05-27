@@ -88,9 +88,6 @@ export const UserForm = ({ onSwitch, initialFormData, onSubmit }) => {
       : 'Crear una cuenta'
   const buttonText = formData.idUser ? 'Guardar' : 'Registrar'
 
-  console.log('IS ADMIN', isUserAdmin)
-  console.log('IS LOGGED USER', isLoggedUser)
-
   const handleChange = (event) => {
     const { name, value } = event.target
     const [field, index] = name.split('-')

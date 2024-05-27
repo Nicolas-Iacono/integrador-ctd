@@ -68,7 +68,6 @@ const EditUser = ({ onSwitch }) => {
         'No fue posible guardar el usuario. Por favor, inténtalo nuevamente'
       )
     }
-    setIsUserUpdated(undefined)
     setIsNewRoleAdded(undefined)
     setIsOldRoleDeleted(undefined)
     setShowMessage(true)
@@ -78,17 +77,16 @@ const EditUser = ({ onSwitch }) => {
     setShowMessage(false)
 
     if (isUserUpdated) {
+      setIsUserUpdated(undefined)
       navigate(-1)
     }
   }
 
   const handleSubmit = (formData) => {
     const formDataToSend = { ...formData }
-    const oldRol = user.data.roles.length && user.data.roles[0].rol
+    const oldRol =
+      (user.data.roles.length && user.data.roles[0].rol) || undefined
     const newRol = roleById(formDataToSend.idRol)
-    console.log('DATA TO SEND', formDataToSend)
-    console.log('NEW ROLE', newRol)
-    console.log('OLD ROLE', oldRol)
     // Aquí puedes enviar los datos del formulario a través de una función prop o realizar otras acciones
     UsersApi.updateUser(formDataToSend)
       .then((response) => {
@@ -111,16 +109,16 @@ const EditUser = ({ onSwitch }) => {
       setIsNewRoleAdded(true)
     }
 
-    if (isUserAdmin && oldRol !== newRol) {
-      UsersApi.addUserRole(user.data, newRol)
-        .then(() => setIsNewRoleAdded(true))
-        .catch(() => setIsNewRoleAdded(false))
-    }
-
     if (isUserAdmin && oldRol !== undefined && oldRol !== newRol) {
       UsersApi.deleteUserRole(user.data, oldRol)
         .then(() => setIsOldRoleDeleted(true))
         .catch(() => setIsOldRoleDeleted(false))
+    }
+
+    if (isUserAdmin && oldRol !== newRol) {
+      UsersApi.addUserRole(user.data, newRol)
+        .then(() => setIsNewRoleAdded(true))
+        .catch(() => setIsNewRoleAdded(false))
     }
   }
 

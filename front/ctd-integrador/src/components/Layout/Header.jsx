@@ -20,7 +20,7 @@ import {
 } from './StyledToolbar'
 import { Logo } from '../Images/Logo'
 import { LogoWrapper } from './LogoWrapper'
-import { MenuWrapper } from './MenuWrapper'
+import { MenuWrapper, MenuUserWrapper } from './MenuWrapper'
 import { ContrastInput } from './ContrastInput'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../utils/context/AuthGlobal'
@@ -29,9 +29,17 @@ import { useHeaderVisibility } from '../utils/context/HeaderVisibilityGlobal'
 import '../styles/header.styles.css'
 import background from '../../assets/background.svg'
 
-const pages = [
+const pagesMobile = [
   { to: '/', text: 'Inicio' },
   { to: '/instruments', text: 'Instrumentos' },
+  { to: '/about', text: 'Acerca de' },
+  { to: '/contact', text: 'Contáctanos' }
+]
+
+const pagesDesktop = [
+  { to: '/', text: 'Inicio' },
+  { to: '/instruments', text: 'Instrumentos' },
+  { to: '/usuarios', text: 'Usuarios', admin: true },
   { to: '/about', text: 'Acerca de' },
   { to: '/contact', text: 'Contáctanos' }
 ]
@@ -41,8 +49,11 @@ export const Header = () => {
   const [prevScroll, setPrevScroll] = useState(0)
   const [visible, setVisible] = useState(true)
   const [isMenuOpen, setIsMenuopen] = useState(false)
+  const [isMenuUserOpen, setIsMenuUserOpen] = useState(false)
   const [anchorElNav, setAnchorElNav] = useState(null)
-  const { authGlobal, setAuthGlobal, user, setUser } = useAuthContext()
+  const [anchorElUser, setAnchorElUser] = useState(null)
+  const { authGlobal, setAuthGlobal, user, setUser, isUserAdmin } =
+    useAuthContext()
   const { toggleHeaderVisibility } = useHeaderVisibility()
   const { pathname } = useLocation()
   const showButtonsAndSearch = pathname === '/'
@@ -58,6 +69,7 @@ export const Header = () => {
   }
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget)
+    setIsMenuUserOpen(!isMenuUserOpen)
   }
 
   const handleCloseNavMenu = (event) => {
@@ -137,7 +149,7 @@ export const Header = () => {
                 display: { xs: 'block', md: 'none' }
               }}
             >
-              {pages.map((page, index) => (
+              {pagesMobile.map((page, index) => (
                 <MenuItem
                   key={`menu-nav-${index}`}
                   onClick={handleCloseNavMenu}
@@ -150,7 +162,7 @@ export const Header = () => {
                 </MenuItem>
               ))}
               {authGlobal ? (
-                <>
+                <Box>
                   <Divider
                     sx={{
                       width: '80%',
@@ -158,12 +170,25 @@ export const Header = () => {
                       marginRight: 'auto'
                     }}
                   />
+                  <MenuItem
+                    key={'menu-nav-user-profile'}
+                    onClick={handleCloseNavMenu}
+                  >
+                    <Typography textAlign="center">
+                      <Link
+                        to={`/editarUsuario/${user.idUser}`}
+                        className="option-link"
+                      >
+                        Mi Perfil
+                      </Link>
+                    </Typography>
+                  </MenuItem>
                   <MenuItem key={`menu-nav-close-session`} onClick={logOut}>
                     <Typography textAlign="center">Cerrar sesión</Typography>
                   </MenuItem>
-                </>
+                </Box>
               ) : (
-                <>
+                <Box>
                   <Divider
                     sx={{
                       width: '80%',
@@ -177,28 +202,32 @@ export const Header = () => {
                   >
                     <Typography textAlign="center">Iniciar sesión</Typography>
                   </MenuItem>
-                </>
+                </Box>
               )}
             </Menu>
           </MenuWrapper>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page, index) => (
-              <Button
-                key={`menu-option-${index}`}
-                sx={{
-                  my: 2,
-                  color: 'white',
-                  display: 'block',
-                  fontSize: '1.3rem',
-                  fontWeight: 'bold',
-                  padding: '0 .6rem'
-                }}
-              >
-                <Link to={page.to} className="nav-link">
-                  {page.text}
-                </Link>
-              </Button>
-            ))}
+            {pagesDesktop.map((page, index) => {
+              return [
+                ((page.admin && isUserAdmin) || !page.admin) && (
+                  <Button
+                    key={`menu-option-${index}`}
+                    sx={{
+                      my: 2,
+                      color: 'white',
+                      display: 'block',
+                      fontSize: '1.3rem',
+                      fontWeight: 'bold',
+                      padding: '0 .6rem'
+                    }}
+                  >
+                    <Link to={page.to} className="nav-link">
+                      {page.text}
+                    </Link>
+                  </Button>
+                )
+              ]
+            })}
           </Box>
           <LogoWrapper variant="h5" noWrap component="a" href="">
             <Logo />
@@ -222,36 +251,68 @@ export const Header = () => {
             }}
           >
             {authGlobal ? (
-              <IconButton
-                size="large"
-                aria-label="menu"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <Tooltip title="Cerrar sesión">
-                  <Chip
-                    avatar={
-                      <Avatar
-                        sx={{
-                          height: '2rem !important',
-                          width: '2rem !important'
-                        }}
+              <MenuUserWrapper>
+                <IconButton
+                  size="large"
+                  aria-label="menu"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleOpenUserMenu}
+                  color="inherit"
+                >
+                  <Tooltip title="Opciones">
+                    <Chip
+                      avatar={
+                        <Avatar
+                          sx={{
+                            height: '2rem !important',
+                            width: '2rem !important'
+                          }}
+                        >
+                          {user && user.avatar}
+                        </Avatar>
+                      }
+                      label={`Hola ${user.name}!`}
+                      color="primary"
+                      onClick={handleOpenUserMenu}
+                      sx={{
+                        borderRadius: '1rem',
+                        height: '2.5rem'
+                      }}
+                    />
+                  </Tooltip>
+                </IconButton>
+                <Menu
+                  id="menu-appbar-user"
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right'
+                  }}
+                  anchorEl={anchorElUser}
+                  keepMounted
+                  open={isMenuUserOpen}
+                  sx={{
+                    display: { xs: 'none', md: 'block' }
+                  }}
+                >
+                  <MenuItem
+                    key={'menu-nav-user-profile'}
+                    onClick={handleCloseNavMenu}
+                  >
+                    <Typography textAlign="center">
+                      <Link
+                        to={`/editarUsuario/${user.idUser}`}
+                        className="option-link"
                       >
-                        {user && user.avatar}
-                      </Avatar>
-                    }
-                    label="Cerrar sesión"
-                    color="primary"
-                    sx={{
-                      borderRadius: '1rem',
-                      height: '2.5rem'
-                    }}
-                    onClick={logOut}
-                  />
-                </Tooltip>
-              </IconButton>
+                        Mi Perfil
+                      </Link>
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem key={`menu-nav-close-session`} onClick={logOut}>
+                    <Typography textAlign="center">Cerrar sesión</Typography>
+                  </MenuItem>
+                </Menu>
+              </MenuUserWrapper>
             ) : (
               <Tooltip title="Iniciar sesión">
                 <Button

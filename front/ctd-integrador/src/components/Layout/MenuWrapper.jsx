@@ -7,6 +7,16 @@ export const MenuWrapper = styled(Box)(({ theme }) => ({
   flexGrow: 1,
 
   [theme.breakpoints.up('md')]: {
-    display: 'none',
-  },
+    display: 'none'
+  }
+}))
+
+export const MenuUserWrapper = styled(Box)(({ theme }) => ({
+  display: 'none',
+  flexDirection: 'row-reverse',
+  flexGrow: 1,
+
+  [theme.breakpoints.up('md')]: {
+    display: 'flex'
+  }
 }))

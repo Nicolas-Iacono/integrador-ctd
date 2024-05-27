@@ -209,8 +209,10 @@ export const Usuarios = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
+    if (!usuarios) return
+
     if (usuarios) {
-      setRows(usuarios)
+      setRows(usuarios.data)
       setLoading(false)
     }
   }, [usuarios])

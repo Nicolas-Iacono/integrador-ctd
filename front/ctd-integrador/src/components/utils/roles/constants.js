@@ -17,7 +17,7 @@ export const roleList = () => {
 }
 
 export const isAdmin = (roles) => {
-  if (!roles && !roles.length) return false
+  if (!roles && !roles?.length) return false
 
   return roles.some((role) => role.rol === 'ADMIN')
 }

@@ -1,16 +1,7 @@
-import { useState } from 'react'
-import {
-  Box,
-  Button,
-  FormControl,
-  TextField,
-  Typography,
-  Grid
-} from '@mui/material'
+import { FormControl, Typography, Grid } from '@mui/material'
 import Link from '@mui/material/Link'
 import { styled } from '@mui/material/styles'
 import { CustomButton, InputCustom } from './CustomComponents'
-import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { UsersApi } from '../../../api/users'
 import swal from 'sweetalert'
@@ -67,6 +58,7 @@ const Login = ({ theme, onSwitch }) => {
             idUser: response.idUser,
             roles: response.roles,
             email: values.email,
+            name: response.name,
             avatar: `${response.name.charAt(0)}${response.lastName.charAt(0)}`
           }
           localStorage.setItem('user', JSON.stringify(user))

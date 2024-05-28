@@ -31,14 +31,13 @@ import background from '../../assets/background.svg'
 
 const pagesMobile = [
   { to: '/', text: 'Inicio' },
-  { to: '/instruments', text: 'Instrumentos' },
   { to: '/about', text: 'Acerca de' },
   { to: '/contact', text: 'Contáctanos' }
 ]
 
 const pagesDesktop = [
   { to: '/', text: 'Inicio' },
-  { to: '/instruments', text: 'Instrumentos' },
+  { to: '/instruments', text: 'Instrumentos', admin: true },
   { to: '/usuarios', text: 'Usuarios', admin: true },
   { to: '/about', text: 'Acerca de' },
   { to: '/contact', text: 'Contáctanos' }

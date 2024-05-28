@@ -22,6 +22,8 @@ export const App = () => {
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState()
 
+  console.log('USER', user)
+
   useEffect(() => {
     const token = localStorage.getItem('token')
     const user = JSON.parse(localStorage.getItem('user'))
@@ -45,38 +47,25 @@ export const App = () => {
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/instrument/:id" element={<Instrument />} />
-                    {user && (
+                    <Route element={<ProtectedRoute role="ADMIN" />}>
+                      <Route path="/instruments" element={<Instruments />} />
+                      <Route path="/usuarios" element={<Usuarios />} />
                       <Route
-                        element={<ProtectedRoute user={user} role="ADMIN" />}
-                      >
-                        <Route path="/instruments" element={<Instruments />} />
-                        <Route path="/usuarios" element={<Usuarios />} />
-                        <Route
-                          path="/agregarInstrumento"
-                          element={<AgregarInstrumento />}
-                        />
-                        <Route
-                          path="/editarInstrumento/:id"
-                          element={<EditarInstrumento />}
-                        />
-                      </Route>
-                    )}
-                  </Route>
-                  {user && (
-                    <Route element={<ProtectedRoute user={user} />}>
-                      <Route path="/editarUsuario/:id" element={<EditUser />} />
-                    </Route>
-                  )}
-                  {user && (
-                    <Route
-                      element={<ProtectedRoute user={user} role="ADMIN" />}
-                    >
+                        path="/agregarInstrumento"
+                        element={<AgregarInstrumento />}
+                      />
                       <Route
-                        path="/agregarUsuario"
-                        element={<CrearUsuario />}
+                        path="/editarInstrumento/:id"
+                        element={<EditarInstrumento />}
                       />
                     </Route>
-                  )}
+                  </Route>
+                  <Route element={<ProtectedRoute />}>
+                    <Route path="/editarUsuario/:id" element={<EditUser />} />
+                  </Route>
+                  <Route element={<ProtectedRoute role="ADMIN" />}>
+                    <Route path="/agregarUsuario" element={<CrearUsuario />} />
+                  </Route>
                 </Routes>
               </ContextProvider>
             </AuthContextProvider>

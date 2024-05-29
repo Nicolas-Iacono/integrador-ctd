@@ -9,6 +9,7 @@ import { ArrowNext } from '../Images/ArrowNext'
 import { ScreenModal } from '../common/ScreenModal'
 import { InstrumentGallery } from '../common/InstrumentGallery'
 import { useAppStates } from '../utils/global.context'
+import { useAuthContext } from '../utils/context/AuthGlobal'
 
 import '../styles/instrument.styles.css'
 import { ArrowLeft } from '../Images/ArrowLeft'
@@ -23,6 +24,7 @@ export const Instrument = () => {
   })
   const [instrument] = getInstrumentById(id)
   const [showGallery, setShowGallery] = useState(false)
+  const { user, isUserAdmin } = useAuthContext()
 
   useEffect(() => {
     if (!instrument?.data) return
@@ -141,34 +143,36 @@ export const Instrument = () => {
             flexDirection: 'row'
           }}
         >
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'row-reverse',
-              cursor: 'pointer'
-            }}
-          >
-            <Tooltip title="Reservar">
-              <Button
-                variant="contained"
-                sx={{
-                  borderRadius: '1rem',
-                  padding: '1.3rem',
-                  maxHeight: '4.5rem'
-                }}
-              >
-                <Typography
-                  textAlign="center"
-                  sx={{ fontWeight: 'bold' }}
-                  variant="h6"
+          {user && !isUserAdmin && (
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: 'flex',
+                alignItems: 'center',
+                flexDirection: 'row-reverse',
+                cursor: 'pointer'
+              }}
+            >
+              <Tooltip title="Reservar">
+                <Button
+                  variant="contained"
+                  sx={{
+                    borderRadius: '1rem',
+                    padding: '1.3rem',
+                    maxHeight: '4.5rem'
+                  }}
                 >
-                  Reservar
-                </Typography>
-              </Button>
-            </Tooltip>
-          </Box>
+                  <Typography
+                    textAlign="center"
+                    sx={{ fontWeight: 'bold' }}
+                    variant="h6"
+                  >
+                    Reservar
+                  </Typography>
+                </Button>
+              </Tooltip>
+            </Box>
+          )}
           <Box
             sx={{
               flexGrow: 1,

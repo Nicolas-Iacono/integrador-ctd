@@ -13,6 +13,6 @@ public class CategoryDtoEntrance {
     @NotBlank(message = "El nombre de la categoría es obligatorio")
     @Size(max = 100, message = "El nombre de la categoría debe tener como máximo {max} caracteres")
     private String categoryName;
-    @Size(max = 255, message = "La descripción de la categoría debe tener como máximo {max} caracteres")
+    @Size(max = 1024, message = "La descripción de la categoría debe tener como máximo {max} caracteres")
     private String description;
 }

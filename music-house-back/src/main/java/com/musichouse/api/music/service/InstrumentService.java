@@ -124,4 +124,8 @@ public class InstrumentService implements InstrumentInterface {
         }
     }
 
+    public List<Instrument> searchInstruments(String name) {
+        return instrumentRepository.findByNameContainingIgnoreCase(name);
+    }
+
 }

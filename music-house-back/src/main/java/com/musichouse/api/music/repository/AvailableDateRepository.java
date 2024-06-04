@@ -38,4 +38,19 @@ public interface AvailableDateRepository extends JpaRepository<AvailableDate, Lo
      */
     List<AvailableDate> findByInstrumentIdInstrumentAndDateAvailableBetween(Long idInstrument, LocalDate startDate, LocalDate endDate);
 
+    /**
+     * Elimina todas las entidades AvailableDate cuya fechaAvailable sea anterior a la fecha especificada.
+     *
+     * <p>Este método está anotado con {@link Modifying} y {@link Transactional} para asegurar que realiza
+     * una operación de modificación dentro de un contexto transaccional. La anotación {@link Query} especifica
+     * la consulta JPQL (Java Persistence Query Language) a ejecutar.</p>
+     *
+     * @param today la fecha con la cual se comparará el campo fechaAvailable.
+     *              Se eliminarán todos los registros con una fechaAvailable anterior a esta fecha.
+     */
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM AvailableDate a WHERE a.dateAvailable < :today")
+    void deleteByDateAvailableBefore(LocalDate today);
+
 }

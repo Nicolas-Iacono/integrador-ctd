@@ -17,7 +17,7 @@ public class AvailableDateDtoEntrance {
     private Long idInstrument;
 
     @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
-    @NotNull(message = "Fecha disponible no puede ser nula")
+    @NotNull(message = "La fecha disponible no puede ser nula")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateAvailable;
 

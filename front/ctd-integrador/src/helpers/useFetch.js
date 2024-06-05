@@ -14,10 +14,10 @@ export const useGetFetch = (endpoint, initial) => {
         setData(res.data)
       })
       .catch((error) => {
-        console.log('ERROR', error.response)
-
         if (error?.response?.status === 404) {
           setCode(Code.NOT_FOUND)
+        } else {
+          setCode(Code.SERVER_ERROR)
         }
       })
   }, [endpoint])

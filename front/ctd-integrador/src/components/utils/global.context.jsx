@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useMemo
-} from 'react'
+import { createContext, useContext, useReducer, useMemo } from 'react'
 import { actions } from './actions'
 
 import alternative from '../../assets/alternative.svg'
@@ -31,7 +25,8 @@ const initialState = {
     { name: 'Afinador', image: tuner, id: 'tuner' },
     { name: 'Micrófono', image: microphone, id: 'microphone' },
     { name: 'Phone holder', image: phoneHolder, id: 'phoneHolder' }
-  ]
+  ],
+  searchPattern: ''
 }
 
 const ContextGlobal = createContext()
@@ -40,6 +35,8 @@ const appReducer = (state, action) => {
   switch (action.type) {
     case actions.UPDATE_INSTRUMENTS:
       return { ...state, instruments: action.payload }
+    case actions.FIND_INSTRUMENT:
+      return { ...state, searchPattern: action.payload }
     default:
       return state
   }

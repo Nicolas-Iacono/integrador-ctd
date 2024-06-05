@@ -33,3 +33,10 @@ export const updateInstrument = (payload) => {
     payload
   )
 }
+
+export const searchInstrumentsByName = (name) => {
+  return useGetFetch(
+    `https://music-house.up.railway.app/api/instrument/find/name/${name}`,
+    (!name || name === '') && []
+  )
+}

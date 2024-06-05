@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Chip from '@mui/material/Chip'
 import Avatar from '@mui/material/Avatar'
 import { Divider } from '@mui/material'
+import { Finder } from '../common/finder/InstrumentsFinder'
 
 import { HeaderWrapper } from './HeaderWrapper'
 import {
@@ -21,7 +22,7 @@ import {
 import { Logo } from '../Images/Logo'
 import { LogoWrapper } from './LogoWrapper'
 import { MenuWrapper, MenuUserWrapper } from './MenuWrapper'
-import { ContrastInput } from './ContrastInput'
+import { ContrastInput } from '../common/finder/ContrastInput'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../utils/context/AuthGlobal'
 import { useHeaderVisibility } from '../utils/context/HeaderVisibilityGlobal'
@@ -90,11 +91,10 @@ export const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScroll = window.scrollY
-      const isHeaderVisible = prevScroll > currentScroll
-      setVisible(
+      const isHeaderVisible =
         (prevScroll > currentScroll && prevScroll - currentScroll > 70) ||
-          currentScroll < 10
-      )
+        currentScroll < 10
+      setVisible(isHeaderVisible)
       toggleHeaderVisibility(isHeaderVisible)
       setPrevScroll(currentScroll)
     }
@@ -330,7 +330,7 @@ export const Header = () => {
         <LowerStyledToolbar
           sx={{ display: `${showButtonsAndSearch ? 'flex' : 'none'}` }}
         >
-          <ContrastInput label="Encuentra tu instrumento favorito" />
+          <Finder />
         </LowerStyledToolbar>
       </Container>
     </HeaderWrapper>

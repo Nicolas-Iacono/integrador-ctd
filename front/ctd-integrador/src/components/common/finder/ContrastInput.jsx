@@ -16,7 +16,15 @@ const theme = createTheme({
   }
 })
 
-export const ContrastInput = ({ label }) => {
+export const ContrastInput = ({ label, onChange }) => {
+  const handleChange = (event) => {
+    const value = event.target.value
+    const sendValue =
+      event.type === 'change' ||
+      (event.type === 'keyup' && event.keyCode === 13)
+
+    if (sendValue && typeof onChange === 'function') onChange(value)
+  }
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -35,6 +43,8 @@ export const ContrastInput = ({ label }) => {
             id="outlined-contrast-input"
             label={label}
             variant="filled"
+            onChange={handleChange}
+            onKeyUp={handleChange}
             sx={{
               backgroundColor: '#F7E434',
               borderRadius: '1rem',

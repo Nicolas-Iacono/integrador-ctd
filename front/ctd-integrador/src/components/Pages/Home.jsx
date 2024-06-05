@@ -17,14 +17,32 @@ import '../styles/home.styles.css'
 export const Home = () => {
   const { isHeaderVisible } = useHeaderVisibility()
   const { state, dispatch } = useAppStates()
+  const { searchPattern } = state
+  const [selectedInstruments, setSelectedInstruments] = useState([])
   const [loading, setLoading] = useState(true)
   const [instruments] = getInstruments()
 
   useEffect(() => {
-    if (!instruments) return
-    dispatch({ type: actions.UPDATE_INSTRUMENTS, payload: instruments })
-    setLoading(false)
+    if (instruments && instruments.data) {
+      dispatch({ type: actions.UPDATE_INSTRUMENTS, payload: instruments })
+      setSelectedInstruments(instruments.data)
+      setLoading(false)
+    }
   }, [instruments])
+
+  useEffect(() => {
+    if (instruments && instruments.data) {
+      const found =
+        searchPattern.length > 0
+          ? instruments?.data?.filter((instrument) =>
+              instrument.name
+                .toLowerCase()
+                .includes(searchPattern.toLowerCase())
+            )
+          : instruments.data
+      setSelectedInstruments(found)
+    }
+  }, [searchPattern])
 
   if (loading) return <p>Loading...</p>
 
@@ -62,7 +80,7 @@ export const Home = () => {
               </Typography>
             </Box>
             <ProductsWrapper>
-              {instruments?.data?.map((instrument, index) => (
+              {selectedInstruments?.map((instrument, index) => (
                 <ProductCard
                   key={`product-card-${index}`}
                   name={instrument.name}

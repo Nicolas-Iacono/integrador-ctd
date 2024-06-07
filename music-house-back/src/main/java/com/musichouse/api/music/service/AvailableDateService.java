@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class AvailableDateService implements AvailableDateInterface {
-
     private final AvailableDateRepository availableDateRepository;
     private final InstrumentRepository instrumentRepository;
     private final ModelMapper mapper;

@@ -31,7 +31,7 @@ public class Theme {
     /**
      * Descripción de la tematica.
      */
-    @Column(name = "description", length = 255)
+    @Column(name = "description", length = 1024)
     private String description;
 
     /**

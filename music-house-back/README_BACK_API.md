@@ -18,7 +18,7 @@ Esta clase DTO representa los datos de entrada para una categoría en el sistema
     - **Descripción**: Nombre de la categoría.
 
 - **description**: `String`
-    - **Longitud**: máximo 255 caracteres.
+    - **Longitud**: máximo 1024 caracteres.
     - **Descripción**: Descripción de la categoría.
 
 ---
@@ -35,7 +35,7 @@ Esta clase DTO representa los datos de entrada para una temática en el sistema.
     - **Descripción**: Nombre de la temática.
 
 - **description**: `String`
-    - **Longitud**: máximo 255 caracteres.
+    - **Longitud**: máximo 1024 caracteres.
     - **Descripción**: Descripción de la temática.
 
 ---
@@ -52,7 +52,7 @@ Esta clase DTO representa los datos de entrada para un instrumento en el sistema
     - **Descripción**: Nombre del instrumento.
 
 - **description**: `String`
-    - **Longitud**: máximo 255 caracteres.
+    - **Longitud**: máximo 1024 caracteres.
     - **Descripción**: Descripción del instrumento.
 
 - **rentalPrice**: `BigDecimal`
@@ -81,6 +81,10 @@ Esta clase DTO representa los datos de entrada para un instrumento en el sistema
     - **Requerido**: Sí
     - **Descripción**: Lista de URLs de las imágenes del instrumento.
 
+-**characteristic**: `CharacteristicDtoEntrance`
+-**Requerido**: Sí
+-**Descripción**: Características del instrumento.
+
 ---
 
 ## ImageUrlsDtoEntrance
@@ -95,7 +99,7 @@ Esta clase DTO representa los datos de entrada para las URLs de las imágenes de
 
 - **imageUrl**: `String`
     - **Requerido**: Sí
-    - **Longitud**: máximo 255 caracteres.
+    - **Longitud**: máximo 1024 caracteres.
     - **Descripción**: URL de la imagen.
 
 ---
@@ -272,3 +276,82 @@ Esta clase representa los datos de entrada para agregar un número de teléfono 
 - **phoneNumber**: String
     - Requerido: Sí
     - Formato: número de teléfono válido
+
+## ChangeOfRole
+
+Esta clase representa los datos de entrada para cambiar el rol de un usuario.
+
+### Atributos:
+
+- **idUser**: Long
+    - Requerido: Sí
+    - Debe ser un número positivo (mayor que cero)
+    - No puede ser nulo
+    - Descripción: ID del usuario cuyo rol se va a cambiar
+
+- **rol**: String
+    - Requerido: Sí
+    - No puede ser nulo
+    - Descripción: Nuevo rol que se asignará al usuario
+
+## LoginDtoEntrance
+
+Esta clase representa los datos de entrada para un proceso de inicio de sesión.
+
+### Atributos:
+
+- **email**: String
+    - Requerido: Sí
+        - No puede ser nulo
+        - Debe tener un formato de correo electrónico válido
+        - Descripción: Correo electrónico del usuario
+
+- **password**: String
+    - Requerido: Sí
+    - No puede ser nulo
+    - Debe tener al menos 6 caracteres
+    - Descripción: Contraseña del usuario
+
+## AvailableDateDtoEntrance
+
+Esta clase representa los datos de entrada para una fecha disponible.
+
+### Atributos:
+
+- **idInstrument**: Long
+    - Requerido: Sí
+    - No puede ser nulo
+    - Descripción: ID del instrumento asociado a la fecha disponible
+
+- **dateAvailable**: LocalDate
+    - Requerido: Sí
+    - No puede ser nulo
+    - Debe ser una fecha futura o la fecha actual
+    - Formato: "yyyy-MM-dd"
+    - Descripción: Fecha disponible
+
+- **available**: Boolean
+    - Requerido: Sí
+    - Validaciones:
+    - No puede ser nulo
+    - Descripción: Disponibilidad del instrumento en la fecha especificada
+
+## FavoriteDtoEntrance
+
+Esta clase representa los datos de entrada para marcar un instrumento como favorito para un usuario.
+
+### Atributos:
+
+- **isFavorite**: Boolean
+    - Descripción: Indica si el instrumento es favorito para el usuario
+
+- **idUser**: Long
+    - Requerido: Sí
+    - No puede ser nulo
+    - Descripción: ID del usuario
+
+- **idInstrument**: Long
+    - Requerido: Sí
+    - No puede ser nulo
+    - Descripción: ID del instrumento
+   

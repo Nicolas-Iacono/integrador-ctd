@@ -81,7 +81,7 @@ Esta clase DTO representa los datos de entrada para un instrumento en el sistema
     - **Requerido**: Sí
     - **Descripción**: Lista de URLs de las imágenes del instrumento.
 
--**characteristic**: `CharacteristicDtoEntrance`
+-**characteristic**: CharacteristicDtoEntrance
 -**Requerido**: Sí
 -**Descripción**: Características del instrumento.
 

@@ -302,9 +302,9 @@ Esta clase representa los datos de entrada para un proceso de inicio de sesión.
 
 - **email**: String
     - Requerido: Sí
-        - No puede ser nulo
-        - Debe tener un formato de correo electrónico válido
-        - Descripción: Correo electrónico del usuario
+    - No puede ser nulo
+    - Debe tener un formato de correo electrónico válido
+    - Descripción: Correo electrónico del usuario
 
 - **password**: String
     - Requerido: Sí

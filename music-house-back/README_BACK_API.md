@@ -4,7 +4,7 @@ app de reserva de instrumentos musicales
 
 # DTOs de Entrada
 
-# Clases DTO de Entrada para Usuario, Dirección, Teléfono, Categoría, Temática, Instrumento e Imágenes
+# Clases DTO de Entrada para Usuario, Dirección, Teléfono, Categoría, Temática, Instrumento, Imágenes, Fechas Disponibles y Instrumentos Favoritos
 
 ## CategoryDtoEntrance
 

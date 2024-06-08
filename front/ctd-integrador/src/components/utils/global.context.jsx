@@ -26,7 +26,9 @@ const initialState = {
     { name: 'Micrófono', image: microphone, id: 'microphone' },
     { name: 'Phone holder', image: phoneHolder, id: 'phoneHolder' }
   ],
-  searchPattern: ''
+  searchOptions: {
+    found: undefined
+  }
 }
 
 const ContextGlobal = createContext()
@@ -36,7 +38,12 @@ const appReducer = (state, action) => {
     case actions.UPDATE_INSTRUMENTS:
       return { ...state, instruments: action.payload }
     case actions.FIND_INSTRUMENT:
-      return { ...state, searchPattern: action.payload }
+      return {
+        ...state,
+        searchOptions: {
+          found: action.payload.found
+        }
+      }
     default:
       return state
   }

@@ -11,44 +11,73 @@ import { InputFinder } from './InputFinder'
 import { DateRangeFinder } from './DateRangeFinder'
 import { ButtonFinder } from './ButtonFinder'
 import dayjs from 'dayjs'
+import {
+  findInstrumentAvailabilityByDate,
+  findInstrumentsAvailabilityByDates
+} from '../../../api/availability'
 
 export const Finder = () => {
   const [searchPattern, setSearchPattern] = useState()
   const [sendPattern, setSendPattern] = useState(false)
   const [isSearching, setIsSearching] = useState(false)
   const [showSugests, setShowSugests] = useState(false)
-  const [data, code] = searchInstrumentsByName(searchPattern)
   const [found, setFound] = useState(false)
-  const [fromDate, setFromDate] = useState()
-  const [toDate, setToDate] = useState()
-
+  const [dateFrom, setDateFrom] = useState(null)
+  const [dateTo, setDateTo] = useState(null)
+  const [instruments, instrumentsSearchCode] =
+    searchInstrumentsByName(searchPattern)
+  const [instrumentsByDate, instrumentsByDateCode] =
+    findInstrumentsAvailabilityByDates(
+      searchPattern && dateFrom && dayjs(dateFrom).format('YYYY-MM-DD'),
+      searchPattern && dateTo && dayjs(dateTo).format('YYYY-MM-DD')
+    )
   const { dispatch } = useAppStates()
 
   useEffect(() => {
-    if (sendPattern) {
-      dispatch({ type: actions.FIND_INSTRUMENT, payload: searchPattern })
-      setShowSugests(false)
-      setSendPattern(false)
+    if (!sendPattern) return
+    let found = searchPattern === '' ? undefined : instruments
+
+    if (dateFrom && instrumentsByDateCode === Code.SUCCESS) {
+      found = instruments.filter((instrument) =>
+        instrumentsByDate.data.some(
+          (instrumentByDate) =>
+            instrumentByDate.idInstrument === instrument.idInstrument
+        )
+      )
+    } else if (dateFrom && instrumentsByDateCode === Code.NOT_FOUND) {
+      found = []
     }
+
+    dispatch({ type: actions.FIND_INSTRUMENT, payload: { found } })
+    setShowSugests(false)
+    setSendPattern(false)
   }, [sendPattern])
 
   useEffect(() => {
     if (isSearching) return
 
+    if (dateFrom) {
+      const date = dayjs(dateFrom).format('YYYY-MM-DD')
+    }
+
     setIsSearching(true)
   }, [searchPattern])
 
   useEffect(() => {
-    if (code === Code.SUCCESS) {
+    if (instrumentsSearchCode === Code.SUCCESS) {
       setFound(true)
       setShowSugests(true)
-    } else setFound(false)
+    } else {
+      setFound(false)
+    }
     setIsSearching(false)
-  }, [data, code])
+  }, [instruments, instrumentsSearchCode])
 
   const handleKeyUp = (keyCode) => {
     if (keyCode === 27) {
       setSearchPattern('')
+      setDateFrom(null)
+      setDateTo(null)
       setSendPattern(true)
     }
   }
@@ -96,14 +125,18 @@ export const Finder = () => {
           setValue={setSearchPattern}
         />
         <DateRangeFinder
-          fromDate={fromDate}
-          setFromDate={setFromDate}
-          toDate={toDate}
-          setToDate={setToDate}
+          dateFrom={dateFrom}
+          setFromDate={setDateFrom}
+          dateTo={dateTo}
+          setToDate={setDateTo}
           minFromDateDefault={dayjs()}
           minToDateDefault={dayjs().add(1, 'day')}
         />
-        <ButtonFinder variant="contained" onClick={handleSubmitSearch}>
+        <ButtonFinder
+          variant="contained"
+          onClick={handleSubmitSearch}
+          disabled={!searchPattern}
+        >
           Buscar
         </ButtonFinder>
       </Box>
@@ -117,8 +150,8 @@ export const Finder = () => {
           }}
         >
           <List>
-            {data &&
-              data.map((instrument, index) => (
+            {instruments &&
+              instruments.map((instrument, index) => (
                 <ListItem
                   id={`instrument-name-${index}`}
                   sx={{ cursor: 'pointer' }}

@@ -59,7 +59,8 @@ const Login = ({ theme, onSwitch }) => {
             roles: response.roles,
             email: values.email,
             name: response.name,
-            avatar: `${response.name.charAt(0)}${response.lastName.charAt(0)}`
+            avatar:
+              `${response.name.charAt(0)}${response.lastName.charAt(0)}`.toUpperCase()
           }
           localStorage.setItem('user', JSON.stringify(user))
           localStorage.setItem('token', response.token)

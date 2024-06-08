@@ -13,7 +13,7 @@ export const InputFinder = ({ value, setValue, onKeyup }) => {
   const handleChange = (event) => {
     const value = event.target.value
 
-    if (typeof setValue === 'function') setValue(value)
+    if (typeof setValue === 'function') setValue(value.trim())
   }
 
   return (

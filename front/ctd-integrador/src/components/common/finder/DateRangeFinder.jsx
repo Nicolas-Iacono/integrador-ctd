@@ -10,10 +10,10 @@ dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)
 
 export const DateRangeFinder = ({
-  fromDate,
+  dateFrom,
   setFromDate,
   minFromDateDefault,
-  toDate,
+  dateTo,
   setToDate,
   minToDateDefault
 }) => {
@@ -34,16 +34,18 @@ export const DateRangeFinder = ({
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePickerFinder
-        defaultValue={fromDate}
+        defaultValue={dateFrom}
         minDate={minFromDate}
         onChange={handleFromDate}
         format="DD-MM-YYYY"
+        value={dateFrom}
       />
       <DatePickerFinder
-        defaultValue={toDate}
+        defaultValue={dateTo}
         minDate={minToDate}
         onChange={handleToDate}
         format="DD-MM-YYYY"
+        value={dateTo}
       />
     </LocalizationProvider>
   )

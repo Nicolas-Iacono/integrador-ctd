@@ -1,7 +1,5 @@
 import { useGetFetch, postFetch, putFetch } from '../helpers/useFetch'
-/**
- * Acceso a DB en localhost
- */
+
 export const getInstruments = () => {
   return useGetFetch('https://music-house.up.railway.app/api/instrument/all')
 }

@@ -17,7 +17,7 @@ import '../styles/home.styles.css'
 export const Home = () => {
   const { isHeaderVisible } = useHeaderVisibility()
   const { state, dispatch } = useAppStates()
-  const { searchPattern } = state
+  const { searchOptions } = state
   const [selectedInstruments, setSelectedInstruments] = useState([])
   const [loading, setLoading] = useState(true)
   const [instruments] = getInstruments()
@@ -31,18 +31,19 @@ export const Home = () => {
   }, [instruments])
 
   useEffect(() => {
+    console.log('FOUND', searchOptions)
     if (instruments && instruments.data) {
-      const found =
-        searchPattern.length > 0
-          ? instruments?.data?.filter((instrument) =>
-              instrument.name
-                .toLowerCase()
-                .includes(searchPattern.toLowerCase())
+      const found = searchOptions.found
+        ? instruments?.data?.filter((instrument) =>
+            searchOptions.found.some(
+              (instrumentFound) =>
+                instrument.idInstrument === instrumentFound.idInstrument
             )
-          : instruments.data
+          )
+        : instruments.data
       setSelectedInstruments(found)
     }
-  }, [searchPattern])
+  }, [searchOptions])
 
   if (loading) return <p>Loading...</p>
 

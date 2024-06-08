@@ -8,6 +8,9 @@ export const ButtonFinder = styled(Button)(({ theme }) => ({
   '&:hover': {
     backgroundColor: alpha(theme.palette.primary.main, 0.7)
   },
+  '&:disabled': {
+    backgroundColor: alpha(theme.palette.primary.main, 0.7)
+  },
   height: '2.5rem',
   marginLeft: '0.5rem !important',
 

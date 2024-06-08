@@ -19,6 +19,7 @@ export const useGetFetch = (endpoint, initial) => {
         } else {
           setCode(Code.SERVER_ERROR)
         }
+        setData(initial)
       })
   }, [endpoint])
 

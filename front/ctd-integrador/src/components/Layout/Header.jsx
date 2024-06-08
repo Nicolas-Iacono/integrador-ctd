@@ -22,7 +22,6 @@ import {
 import { Logo } from '../Images/Logo'
 import { LogoWrapper } from './LogoWrapper'
 import { MenuWrapper, MenuUserWrapper } from './MenuWrapper'
-import { ContrastInput } from '../common/finder/ContrastInput'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../utils/context/AuthGlobal'
 import { useHeaderVisibility } from '../utils/context/HeaderVisibilityGlobal'

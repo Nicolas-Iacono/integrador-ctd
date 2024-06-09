@@ -11,10 +11,7 @@ import { InputFinder } from './InputFinder'
 import { DateRangeFinder } from './DateRangeFinder'
 import { ButtonFinder } from './ButtonFinder'
 import dayjs from 'dayjs'
-import {
-  findInstrumentAvailabilityByDate,
-  findInstrumentsAvailabilityByDates
-} from '../../../api/availability'
+import { findInstrumentsAvailabilityByDates } from '../../../api/availability'
 
 export const Finder = () => {
   const [searchPattern, setSearchPattern] = useState()

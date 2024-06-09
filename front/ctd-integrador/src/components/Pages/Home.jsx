@@ -31,7 +31,6 @@ export const Home = () => {
   }, [instruments])
 
   useEffect(() => {
-    console.log('FOUND', searchOptions)
     if (instruments && instruments.data) {
       const found = searchOptions.found
         ? instruments?.data?.filter((instrument) =>

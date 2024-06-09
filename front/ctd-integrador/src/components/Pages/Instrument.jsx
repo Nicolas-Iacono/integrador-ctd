@@ -8,6 +8,7 @@ import { Box, Divider, Tooltip, Button } from '@mui/material'
 import { ArrowNext } from '../Images/ArrowNext'
 import { ScreenModal } from '../common/ScreenModal'
 import { InstrumentGallery } from '../common/InstrumentGallery'
+import { InstrumentAvailability } from '../common/availability/InstrumentAvailability'
 import { useAppStates } from '../utils/global.context'
 import { useAuthContext } from '../utils/context/AuthGlobal'
 
@@ -233,6 +234,31 @@ export const Instrument = () => {
                 </Box>
               )
             })}
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column'
+          }}
+        >
+          <Divider />
+          <Typography
+            variant="h5"
+            sx={{ textAlign: 'center', fontWeight: '300', padding: '1rem' }}
+          >
+            Disponibilidad
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              paddingBottom: '1rem',
+              width: '100%',
+              justifyContent: 'center'
+            }}
+          >
+            <InstrumentAvailability id={id} />
           </Box>
         </Box>
       </MainWrapper>

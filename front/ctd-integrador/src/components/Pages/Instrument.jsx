@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getInstrumentById } from '../../api/instruments'
-import { Typography } from '@mui/material'
+import {
+  Typography,
+  Box,
+  Divider,
+  Tooltip,
+  Button,
+  IconButton
+} from '@mui/material'
 import { MainWrapper } from '../common/MainWrapper'
 import { InstrumentDetailWrapper } from '../common/InstrumentDetailWrapper'
 import { Box, Divider, Tooltip, Button } from '@mui/material'
@@ -10,11 +17,12 @@ import { InstrumentGallery } from '../common/InstrumentGallery'
 import { InstrumentAvailability } from '../common/availability/InstrumentAvailability'
 import { useAppStates } from '../utils/global.context'
 import { useAuthContext } from '../utils/context/AuthGlobal'
-
-import '../styles/instrument.styles.css'
 import { ArrowLeft } from '../Images/ArrowLeft'
 import { Si } from '../Images/Si'
 import { No } from '../Images/No'
+import { Favorite } from '@mui/icons-material'
+
+import '../styles/instrument.styles.css'
 
 export const Instrument = () => {
   const { id } = useParams()
@@ -24,7 +32,8 @@ export const Instrument = () => {
   })
   const [instrument] = getInstrumentById(id)
   const [showGallery, setShowGallery] = useState(false)
-  const { user, isUserAdmin } = useAuthContext()
+  const { user, isUserAdmin, addFavorite, removeFavorite, favorites } =
+    useAuthContext()
 
   useEffect(() => {
     if (!instrument?.data) return
@@ -36,9 +45,42 @@ export const Instrument = () => {
     setShowGallery(false)
   }
 
+  const handleFavoriteClick = () => {
+    if (favorites.some((fav) => fav.id === instrumentSelected.id)) {
+      removeFavorite(instrumentSelected.id)
+    } else {
+      addFavorite(instrumentSelected)
+    }
+  }
+
+  const isFavorite = favorites.some((fav) => fav.id === instrumentSelected.id)
+
   return (
     <main>
-      <MainWrapper sx={{ alignItems: 'center' }}>
+      <MainWrapper sx={{ alignItems: 'center', position: 'relative' }}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '25%',
+            left: '100%',
+            transform: 'translate(-50%, -50%)'
+          }}
+        >
+          <IconButton
+            color="primary"
+            aria-label="add to favorites"
+            onClick={handleFavoriteClick}
+            sx={{
+              backgroundColor: isFavorite ? '#FFFF00' : '#000',
+              '&:hover': {
+                backgroundColor: isFavorite ? '#FFFF00' : '#333',
+                boxShadow: '0 0 8px rgba(0, 0, 0, 0.3)'
+              }
+            }}
+          >
+            <Favorite sx={{ color: isFavorite ? '#000' : '#FFF' }} />
+          </IconButton>
+        </Box>
         <Typography
           variant="h2"
           sx={{
@@ -51,6 +93,7 @@ export const Instrument = () => {
         >
           {instrumentSelected?.name}
         </Typography>
+
         <InstrumentDetailWrapper>
           <Box
             sx={{
@@ -150,6 +193,7 @@ export const Instrument = () => {
             {state?.characteristics?.map((characteristic) => {
               return (
                 <Box
+                  key={characteristic.id}
                   sx={{
                     display: 'flex',
                     alignItems: 'center',

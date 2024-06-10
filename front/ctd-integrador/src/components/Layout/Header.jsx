@@ -40,7 +40,9 @@ const pagesDesktop = [
   { to: '/instruments', text: 'Instrumentos', admin: true },
   { to: '/usuarios', text: 'Usuarios', admin: true },
   { to: '/about', text: 'Acerca de' },
-  { to: '/contact', text: 'Contáctanos' }
+  { to: '/contact', text: 'Contáctanos' },
+  { to: '/favorite', text: 'Favoritos' }
+  
 ]
 const settings = ['Crear Cuenta', 'Iniciar sesión']
 

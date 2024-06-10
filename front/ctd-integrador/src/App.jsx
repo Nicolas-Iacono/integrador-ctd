@@ -17,6 +17,7 @@ import { AuthContextProvider } from './components/utils/context/AuthGlobal'
 import './App.css'
 import AuthPage from './components/Pages/AuthPage'
 import { ProtectedRoute } from './components/common/routes/ProtectedRoute'
+import { Favorite } from '@mui/icons-material'
 
 export const App = () => {
   const [loading, setLoading] = useState(true)
@@ -46,6 +47,7 @@ export const App = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
+                    <Route path="/favorite" element={<Favorite />} />
                     <Route path="/instrument/:id" element={<Instrument />} />
                     <Route element={<ProtectedRoute role="ADMIN" />}>
                       <Route path="/instruments" element={<Instruments />} />

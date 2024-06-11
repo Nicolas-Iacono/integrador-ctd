@@ -38,3 +38,4 @@ export const searchInstrumentsByName = (name) => {
     (!name || name === '') && []
   )
 }
+

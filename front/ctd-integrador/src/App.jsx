@@ -12,6 +12,7 @@ import { EditarInstrumento } from './components/Pages/Admin/EditarInstrumento'
 import { Usuarios } from './components/Pages/Admin/Usuarios'
 import CrearUsuario from './components/Pages/CrearUsuario'
 import EditUser from './components/Form/formUsuario/EditUser'
+import { Favorites } from './components/Pages/Favorites'
 import { HeaderVisibilityProvider } from './components/utils/context/HeaderVisibilityGlobal'
 import { AuthContextProvider } from './components/utils/context/AuthGlobal'
 import './App.css'
@@ -21,8 +22,6 @@ import { ProtectedRoute } from './components/common/routes/ProtectedRoute'
 export const App = () => {
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState()
-
-  console.log('USER', user)
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -59,9 +58,13 @@ export const App = () => {
                         element={<EditarInstrumento />}
                       />
                     </Route>
+                    <Route element={<ProtectedRoute />}>
+                      } <Route path="/favorites" element={<Favorites />} />
+                    </Route>
                   </Route>
                   <Route element={<ProtectedRoute />}>
                     <Route path="/editarUsuario/:id" element={<EditUser />} />
+                    <Route path="/favorites" element={<Favorites />} />
                   </Route>
                   <Route element={<ProtectedRoute role="ADMIN" />}>
                     <Route path="/agregarUsuario" element={<CrearUsuario />} />

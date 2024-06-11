@@ -1,20 +1,27 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getInstrumentById } from '../../api/instruments'
-import { Typography } from '@mui/material'
 import { MainWrapper } from '../common/MainWrapper'
 import { InstrumentDetailWrapper } from '../common/InstrumentDetailWrapper'
-import { Box, Divider, Tooltip, Button } from '@mui/material'
+import { Box, Divider, Tooltip, Button, Typography } from '@mui/material'
 import { ScreenModal } from '../common/ScreenModal'
 import { InstrumentGallery } from '../common/InstrumentGallery'
 import { InstrumentAvailability } from '../common/availability/InstrumentAvailability'
 import { useAppStates } from '../utils/global.context'
 import { useAuthContext } from '../utils/context/AuthGlobal'
-
-import '../styles/instrument.styles.css'
 import { ArrowLeft } from '../Images/ArrowLeft'
 import { Si } from '../Images/Si'
 import { No } from '../Images/No'
+import { Favorite } from '@mui/icons-material'
+import { FavoriteIconWrapper } from '../common/favorito/FavoriteIcon'
+import {
+  addFavorite,
+  removeFavorite,
+  getAllFavorites
+} from '../../api/favorites'
+import { Code } from '../../api/constants'
+
+import '../styles/instrument.styles.css'
 
 export const Instrument = () => {
   const { id } = useParams()
@@ -25,6 +32,8 @@ export const Instrument = () => {
   const [instrument] = getInstrumentById(id)
   const [showGallery, setShowGallery] = useState(false)
   const { user, isUserAdmin } = useAuthContext()
+  const [favorites] = getAllFavorites(user?.idUser)
+  const [idFavorite, setIdFavorite] = useState()
 
   useEffect(() => {
     if (!instrument?.data) return
@@ -32,13 +41,66 @@ export const Instrument = () => {
     setInstrumentSelected(instrument.data)
   }, [instrument])
 
+  useEffect(() => {
+    if (favorites && favorites.data) {
+      const favorite = favorites.data.filter(
+        (favorite) => favorite.instrument.idInstrument === Number(id)
+      )
+
+      setIdFavorite(favorite && favorite.length > 0 && favorite[0].idFavorite)
+    }
+  }, [favorites])
+
   const onClose = () => {
     setShowGallery(false)
   }
 
+  const handleFavoriteClick = () => {
+    addFavorite(user.idUser, id)
+      .then((response) => {
+        setIdFavorite(response.data.idFavorite)
+      })
+      .catch(([error, code]) => {
+        if (code === Code.ALREADY_EXISTS) {
+          removeFromFavorites()
+        }
+      })
+  }
+
+  const removeFromFavorites = () => {
+    if (!idFavorite) return
+
+    removeFavorite(idFavorite, user.idUser, id)
+      .then((response) => {
+        console.log(response)
+        setIdFavorite(undefined)
+      })
+      .catch((error) => console.log(error))
+  }
+
   return (
     <main>
-      <MainWrapper sx={{ alignItems: 'center' }}>
+      <MainWrapper sx={{ alignItems: 'center', position: 'relative' }}>
+        {user && (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '27%',
+              left: '95%',
+              transform: 'translate(-50%, -50%)'
+            }}
+          >
+            <Tooltip title="Agregar a favoritos">
+              <FavoriteIconWrapper
+                aria-label="Agregar a favoritos"
+                onClick={handleFavoriteClick}
+                isFavorite={!!idFavorite}
+              >
+                <Favorite sx={{ color: '#000000 !important' }} />
+              </FavoriteIconWrapper>
+            </Tooltip>
+          </Box>
+        )}
         <Typography
           variant="h2"
           sx={{
@@ -51,6 +113,7 @@ export const Instrument = () => {
         >
           {instrumentSelected?.name}
         </Typography>
+
         <InstrumentDetailWrapper>
           <Box
             sx={{
@@ -150,6 +213,7 @@ export const Instrument = () => {
             {state?.characteristics?.map((characteristic) => {
               return (
                 <Box
+                  key={characteristic.id}
                   sx={{
                     display: 'flex',
                     alignItems: 'center',

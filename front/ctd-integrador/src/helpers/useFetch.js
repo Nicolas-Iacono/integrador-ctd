@@ -31,7 +31,13 @@ export const postFetch = (endpoint, payload) => {
     axios
       .post(endpoint, payload)
       .then((res) => resolve(res.data))
-      .catch((error) => reject(error))
+      .catch((error) => {
+        let code = Code.SERVER_ERROR
+        if (error?.response?.status === 409) {
+          code = Code.ALREADY_EXISTS
+        }
+        reject([error, code])
+      })
   })
 
   return promise

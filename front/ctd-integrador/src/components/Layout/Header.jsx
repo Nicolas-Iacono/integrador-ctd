@@ -32,7 +32,8 @@ import background from '../../assets/background.svg'
 const pagesMobile = [
   { to: '/', text: 'Inicio' },
   { to: '/about', text: 'Acerca de' },
-  { to: '/contact', text: 'Contáctanos' }
+  { to: '/contact', text: 'Contáctanos' },
+  { to: '/favorites', text: 'Favoritos', user: true }
 ]
 
 const pagesDesktop = [
@@ -40,7 +41,8 @@ const pagesDesktop = [
   { to: '/instruments', text: 'Instrumentos', admin: true },
   { to: '/usuarios', text: 'Usuarios', admin: true },
   { to: '/about', text: 'Acerca de' },
-  { to: '/contact', text: 'Contáctanos' }
+  { to: '/contact', text: 'Contáctanos' },
+  { to: '/favorites', text: 'Favoritos', user: true }
 ]
 const settings = ['Crear Cuenta', 'Iniciar sesión']
 
@@ -147,18 +149,22 @@ export const Header = () => {
                 display: { xs: 'block', md: 'none' }
               }}
             >
-              {pagesMobile.map((page, index) => (
-                <MenuItem
-                  key={`menu-nav-${index}`}
-                  onClick={handleCloseNavMenu}
-                >
-                  <Typography textAlign="center">
-                    <Link to={page.to} className="option-link">
-                      {page.text}
-                    </Link>
-                  </Typography>
-                </MenuItem>
-              ))}
+              {pagesMobile.map((page, index) => {
+                return [
+                  ((page.user && user) || (!page.admin && !page.user)) && (
+                    <MenuItem
+                      key={`menu-nav-${index}`}
+                      onClick={handleCloseNavMenu}
+                    >
+                      <Typography textAlign="center">
+                        <Link to={page.to} className="option-link">
+                          {page.text}
+                        </Link>
+                      </Typography>
+                    </MenuItem>
+                  )
+                ]
+              })}
               {authGlobal ? (
                 <Box>
                   <Divider
@@ -207,7 +213,9 @@ export const Header = () => {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pagesDesktop.map((page, index) => {
               return [
-                ((page.admin && isUserAdmin) || !page.admin) && (
+                ((page.admin && isUserAdmin) ||
+                  (page.user && user) ||
+                  (!page.admin && !page.user)) && (
                   <Button
                     key={`menu-option-${index}`}
                     sx={{

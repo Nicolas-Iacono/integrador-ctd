@@ -1,17 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getInstrumentById } from '../../api/instruments'
-import {
-  Typography,
-  Box,
-  Divider,
-  Tooltip,
-  Button,
-  IconButton
-} from '@mui/material'
 import { MainWrapper } from '../common/MainWrapper'
 import { InstrumentDetailWrapper } from '../common/InstrumentDetailWrapper'
-import { Box, Divider, Tooltip, Button } from '@mui/material'
+import { Box, Divider, Tooltip, Button, Typography } from '@mui/material'
 import { ScreenModal } from '../common/ScreenModal'
 import { InstrumentGallery } from '../common/InstrumentGallery'
 import { InstrumentAvailability } from '../common/availability/InstrumentAvailability'
@@ -21,6 +13,13 @@ import { ArrowLeft } from '../Images/ArrowLeft'
 import { Si } from '../Images/Si'
 import { No } from '../Images/No'
 import { Favorite } from '@mui/icons-material'
+import { FavoriteIconWrapper } from '../common/favorito/FavoriteIcon'
+import {
+  addFavorite,
+  removeFavorite,
+  getAllFavorites
+} from '../../api/favorites'
+import { Code } from '../../api/constants'
 
 import '../styles/instrument.styles.css'
 
@@ -32,8 +31,9 @@ export const Instrument = () => {
   })
   const [instrument] = getInstrumentById(id)
   const [showGallery, setShowGallery] = useState(false)
-  const { user, isUserAdmin, addFavorite, removeFavorite, favorites } =
-    useAuthContext()
+  const { user, isUserAdmin } = useAuthContext()
+  const [favorites] = getAllFavorites(user?.idUser)
+  const [idFavorite, setIdFavorite] = useState()
 
   useEffect(() => {
     if (!instrument?.data) return
@@ -41,46 +41,66 @@ export const Instrument = () => {
     setInstrumentSelected(instrument.data)
   }, [instrument])
 
+  useEffect(() => {
+    if (favorites && favorites.data) {
+      const favorite = favorites.data.filter(
+        (favorite) => favorite.instrument.idInstrument === Number(id)
+      )
+
+      setIdFavorite(favorite && favorite.length > 0 && favorite[0].idFavorite)
+    }
+  }, [favorites])
+
   const onClose = () => {
     setShowGallery(false)
   }
 
   const handleFavoriteClick = () => {
-    if (favorites.some((fav) => fav.id === instrumentSelected.id)) {
-      removeFavorite(instrumentSelected.id)
-    } else {
-      addFavorite(instrumentSelected)
-    }
+    addFavorite(user.idUser, id)
+      .then((response) => {
+        setIdFavorite(response.data.idFavorite)
+      })
+      .catch(([error, code]) => {
+        if (code === Code.ALREADY_EXISTS) {
+          removeFromFavorites()
+        }
+      })
   }
 
-  const isFavorite = favorites.some((fav) => fav.id === instrumentSelected.id)
+  const removeFromFavorites = () => {
+    if (!idFavorite) return
+
+    removeFavorite(idFavorite, user.idUser, id)
+      .then((response) => {
+        console.log(response)
+        setIdFavorite(undefined)
+      })
+      .catch((error) => console.log(error))
+  }
 
   return (
     <main>
       <MainWrapper sx={{ alignItems: 'center', position: 'relative' }}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '25%',
-            left: '100%',
-            transform: 'translate(-50%, -50%)'
-          }}
-        >
-          <IconButton
-            color="primary"
-            aria-label="add to favorites"
-            onClick={handleFavoriteClick}
+        {user && (
+          <Box
             sx={{
-              backgroundColor: isFavorite ? '#FFFF00' : '#000',
-              '&:hover': {
-                backgroundColor: isFavorite ? '#FFFF00' : '#333',
-                boxShadow: '0 0 8px rgba(0, 0, 0, 0.3)'
-              }
+              position: 'absolute',
+              top: '27%',
+              left: '95%',
+              transform: 'translate(-50%, -50%)'
             }}
           >
-            <Favorite sx={{ color: isFavorite ? '#000' : '#FFF' }} />
-          </IconButton>
-        </Box>
+            <Tooltip title="Agregar a favoritos">
+              <FavoriteIconWrapper
+                aria-label="Agregar a favoritos"
+                onClick={handleFavoriteClick}
+                isFavorite={!!idFavorite}
+              >
+                <Favorite sx={{ color: '#000000 !important' }} />
+              </FavoriteIconWrapper>
+            </Tooltip>
+          </Box>
+        )}
         <Typography
           variant="h2"
           sx={{

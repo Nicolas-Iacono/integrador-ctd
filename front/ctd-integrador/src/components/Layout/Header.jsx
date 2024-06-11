@@ -315,7 +315,7 @@ export const Header = () => {
               <Tooltip title="Iniciar sesión">
                 <Button
                   variant="contained"
-                  sx={{ borderRadius: '1rem', padding: '.5rem .5rem' }}
+                  sx={{ borderRadius: '.25rem', padding: '.5rem .5rem' }}
                   onClick={() => navigationTo('/autentificacion')}
                 >
                   <Typography textAlign="center" sx={{ fontWeight: 'bold' }}>

@@ -21,13 +21,22 @@ export const DateRangeFinder = ({
   const [minToDate, setMinToDate] = useState(minToDateDefault)
 
   const handleFromDate = (value, context) => {
-    if (minToDate.isSameOrBefore(value)) setMinToDate(value.add(1, 'day'))
+    if (context.validationError) return
+
+    if (!dateTo || minToDate.isSameOrBefore(value)) {
+      setMinToDate(value.add(1, 'day'))
+    }
+    if (dateTo && dateTo.isSameOrBefore(value)) {
+      setToDate(value.add(1, 'day'))
+    }
     if (typeof setFromDate === 'function') setFromDate(value)
   }
 
   const handleToDate = (value, context) => {
-    if (minFromDate.isSameOrAfter(value))
-      setMinFromDate(value.substract(1, 'day'))
+    if (context.validationError) return
+
+    if (!minFromDate && minFromDate.isSameOrAfter(value))
+      setMinFromDate(value.subtract(1, 'day'))
     if (typeof setToDate === 'function') setToDate(value)
   }
 

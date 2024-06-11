@@ -34,7 +34,6 @@ public class GlobalExeceptionHandler {
         return exceptionMassege;
     }
 
-    // Manejo genérico para todas las excepciones
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: " + ex.getMessage());
@@ -49,6 +48,11 @@ public class GlobalExeceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<?> handleUnauthorizedException(UnauthorizedException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ApiResponse<>(e.getMessage(), null));
+    }
+    @ExceptionHandler( FavoriteAlreadyExistsException .class)
+    public ResponseEntity<?> FavoriteAlreadyExistsException ( FavoriteAlreadyExistsException  e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ApiResponse<>(e.getMessage(), null));
     }
 }

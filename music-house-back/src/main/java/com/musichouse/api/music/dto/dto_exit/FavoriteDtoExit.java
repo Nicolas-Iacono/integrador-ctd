@@ -13,10 +13,10 @@ import java.util.Date;
 @NoArgsConstructor
 public class FavoriteDtoExit {
     private Long idFavorite;
+    private Long idUser;
     private Boolean isFavorite;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date registDate;
     private Instrument instrument;
     private String imageUrl;
-    private Long idUser;
 }

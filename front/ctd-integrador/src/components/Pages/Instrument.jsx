@@ -90,7 +90,11 @@ export const Instrument = () => {
               transform: 'translate(-50%, -50%)'
             }}
           >
-            <Tooltip title="Agregar a favoritos">
+            <Tooltip
+              title={
+                !!idFavorite ? 'Remover de favoritos' : 'Agregar a favoritos'
+              }
+            >
               <FavoriteIconWrapper
                 aria-label="Agregar a favoritos"
                 onClick={handleFavoriteClick}
@@ -170,7 +174,6 @@ export const Instrument = () => {
             >
               Temática: {instrumentSelected?.theme?.themeName}
             </Typography>
-            <Divider />
           </Box>
           <Box sx={{ width: { xs: '100%', md: '40%' }, cursor: 'pointer' }}>
             <Tooltip title="Ver más imágenes">

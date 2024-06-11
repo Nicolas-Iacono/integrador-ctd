@@ -1,3 +1,4 @@
+import { styled, alpha } from '@mui/material/styles'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
@@ -6,6 +7,13 @@ import { Link } from 'react-router-dom'
 import { Button, Tooltip } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import '../styles/product.styles.css'
+
+const DeleteFavoriteIcon = styled(DeleteIcon)(({ theme }) => ({
+  fill: '#000000 !important',
+  '&:hover': {
+    fill: `${alpha(theme.palette.secondary.main, 0.7)} !important`
+  }
+}))
 
 const ProductCard = ({
   name,
@@ -44,9 +52,9 @@ const ProductCard = ({
         </CardContent>
       </Link>
       {isFavorite && (
-        <Tooltip title="Eliminar de favoritos">
+        <Tooltip title="Remover de favoritos">
           <Button sx={{ height: '3rem' }} onClick={onClickTrash}>
-            <DeleteIcon fontSize="large" sx={{ fill: '#000000 !important' }} />
+            <DeleteFavoriteIcon fontSize="large" />
           </Button>
         </Tooltip>
       )}

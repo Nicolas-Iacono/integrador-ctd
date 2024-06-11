@@ -59,7 +59,7 @@ export const App = () => {
                       />
                     </Route>
                     <Route element={<ProtectedRoute />}>
-                      } <Route path="/favorites" element={<Favorites />} />
+                      <Route path="/favorites" element={<Favorites />} />
                     </Route>
                   </Route>
                   <Route element={<ProtectedRoute />}>

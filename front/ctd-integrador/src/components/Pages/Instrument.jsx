@@ -124,68 +124,7 @@ export const Instrument = () => {
               </Button>
             </Tooltip>
           </Box>
-          <Box sx={{ width: '100%' }}>
-            <Typography
-              variant="h4"
-              sx={{
-                textAlign: 'center',
-                fontWeight: 'lighter'
-              }}
-            >
-              Valor día: $ {instrumentSelected?.rentalPrice}
-            </Typography>
-          </Box>
         </InstrumentDetailWrapper>
-        <Box
-          sx={{
-            width: '100%',
-            padding: '1rem',
-            display: 'flex',
-            flexDirection: 'row'
-          }}
-        >
-          {user && !isUserAdmin && (
-            <Box
-              sx={{
-                flexGrow: 1,
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'row-reverse',
-                cursor: 'pointer'
-              }}
-            >
-              <Tooltip title="Reservar">
-                <Button
-                  variant="contained"
-                  sx={{
-                    borderRadius: '1rem',
-                    padding: '1.3rem',
-                    maxHeight: '4.5rem'
-                  }}
-                >
-                  <Typography
-                    textAlign="center"
-                    sx={{ fontWeight: 'bold' }}
-                    variant="h6"
-                  >
-                    Reservar
-                  </Typography>
-                </Button>
-              </Tooltip>
-            </Box>
-          )}
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'row-reverse',
-              cursor: 'pointer'
-            }}
-          >
-            <ArrowNext />
-          </Box>
-        </Box>
         <Box
           sx={{
             width: '100%',
@@ -260,6 +199,60 @@ export const Instrument = () => {
           >
             <InstrumentAvailability id={id} />
           </Box>
+        </Box>
+        <Box
+          sx={{
+            width: '100%',
+            padding: '1rem',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '1rem'
+          }}
+        >
+          <Divider sx={{ width: '100%' }} />
+          <Box sx={{ width: '100%' }}>
+            <Typography
+              variant="h4"
+              sx={{
+                textAlign: 'center',
+                fontWeight: 'lighter'
+              }}
+            >
+              Valor día: $ {instrumentSelected?.rentalPrice}
+            </Typography>
+          </Box>
+          {user && !isUserAdmin && (
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: 'flex',
+                alignItems: 'center',
+                flexDirection: 'row-reverse',
+                cursor: 'pointer'
+              }}
+            >
+              <Tooltip title="Reservar">
+                <Button
+                  variant="contained"
+                  sx={{
+                    borderRadius: '1rem',
+                    padding: '1.3rem',
+                    maxHeight: '4.5rem'
+                  }}
+                >
+                  <Typography
+                    textAlign="center"
+                    sx={{ fontWeight: 'bold' }}
+                    variant="h6"
+                  >
+                    Reservar
+                  </Typography>
+                </Button>
+              </Tooltip>
+            </Box>
+          )}
         </Box>
       </MainWrapper>
       <ScreenModal isOpen={showGallery} onClose={onClose} fullScreen>

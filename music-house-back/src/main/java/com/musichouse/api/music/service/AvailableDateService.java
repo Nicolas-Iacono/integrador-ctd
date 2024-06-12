@@ -179,6 +179,7 @@ public class AvailableDateService implements AvailableDateInterface {
                 .map(availableDate -> mapper.map(availableDate, AvailableDateDtoExit.class))
                 .collect(Collectors.toList());
     }
+
     @Transactional
     public void deletePastAvailableDates() {
         LocalDate today = LocalDate.now();

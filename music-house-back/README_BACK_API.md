@@ -354,4 +354,3 @@ Esta clase representa los datos de entrada para marcar un instrumento como favor
     - Requerido: Sí
     - No puede ser nulo
     - Descripción: ID del instrumento
-   

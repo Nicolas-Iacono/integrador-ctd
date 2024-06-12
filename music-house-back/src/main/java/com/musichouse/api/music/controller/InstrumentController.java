@@ -79,6 +79,7 @@ public class InstrumentController {
                     .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
         }
     }
+
     @GetMapping("/find/name/{name}")
     public ResponseEntity<?> searchInstrumentsByName(@PathVariable("name") String name) {
         try {

@@ -1,20 +1,34 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useMemo,
-} from 'react'
+import { createContext, useContext, useReducer, useMemo } from 'react'
 import { actions } from './actions'
+
+import alternative from '../../assets/alternative.svg'
+import classic from '../../assets/classic.svg'
+import ancestral from '../../assets/ancestral.svg'
+
+import instrumentCase from '../../assets/instrumentCase.svg'
+import support from '../../assets/support.svg'
+import tuner from '../../assets/tuner.svg'
+import microphone from '../../assets/microphone.svg'
+import phoneHolder from '../../assets/phoneHolder.svg'
 
 const initialState = {
   instruments: [],
   favorites: [],
   tematics: [
-    { name: 'Alternativo', image: '/src/assets/alternative.svg' },
-    { name: 'Clásico', image: '/src/assets/classic.svg' },
-    { name: 'Ancestral', image: '/src/assets/ancestral.svg' },
+    { name: 'Alternativo', image: alternative },
+    { name: 'Clásico', image: classic },
+    { name: 'Ancestral', image: ancestral }
   ],
+  characteristics: [
+    { name: 'Estuche', image: instrumentCase, id: 'instrumentCase' },
+    { name: 'Soporte', image: support, id: 'support' },
+    { name: 'Afinador', image: tuner, id: 'tuner' },
+    { name: 'Micrófono', image: microphone, id: 'microphone' },
+    { name: 'Phone holder', image: phoneHolder, id: 'phoneHolder' }
+  ],
+  searchOptions: {
+    found: undefined
+  }
 }
 
 const ContextGlobal = createContext()
@@ -23,6 +37,13 @@ const appReducer = (state, action) => {
   switch (action.type) {
     case actions.UPDATE_INSTRUMENTS:
       return { ...state, instruments: action.payload }
+    case actions.FIND_INSTRUMENT:
+      return {
+        ...state,
+        searchOptions: {
+          found: action.payload.found
+        }
+      }
     default:
       return state
   }

@@ -1,11 +1,11 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import CreateWrapper from '../common/crearProd/createWrapper'
+import CreateWrapper from '../../common/crearProd/createWrapper'
 import { Typography } from '@mui/material'
-import { useHeaderVisibility } from '../utils/context/HeaderVisibilityGlobal'
-import EditInstrumentForm from '../Form/EditInstrumentForm'
+import { useHeaderVisibility } from '../../utils/context/HeaderVisibilityGlobal'
+import EditInstrumentForm from '../../Form/EditInstrumentForm'
 
-import '../styles/crearInstrumento.styles.css'
+import '../../styles/crearInstrumento.styles.css'
 
 export const EditarInstrumento = () => {
   const { isHeaderVisible } = useHeaderVisibility()

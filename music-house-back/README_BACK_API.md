@@ -370,5 +370,6 @@ Esta clase representa los datos de entrada para crear la política de privacidad
   - Requerido: Sí
   - No puede ser nulo
   - Descripción: El contenido de la política de privacidad.
+  - 
 
    

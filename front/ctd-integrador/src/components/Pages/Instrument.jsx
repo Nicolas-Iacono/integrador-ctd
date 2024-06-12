@@ -78,7 +78,6 @@ export const Instrument = () => {
 
     removeFavorite(idFavorite, user.idUser, id)
       .then((response) => {
-        console.log(response)
         setIdFavorite(undefined)
       })
       .catch((error) => console.log(error))

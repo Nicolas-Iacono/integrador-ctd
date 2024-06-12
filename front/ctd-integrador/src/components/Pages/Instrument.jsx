@@ -36,6 +36,12 @@ export const Instrument = () => {
   const [idFavorite, setIdFavorite] = useState()
 
   useEffect(() => {
+    if (window) {
+      window.scrollTo(0, 0)
+    }
+  }, [])
+
+  useEffect(() => {
     if (!instrument?.data) return
 
     setInstrumentSelected(instrument.data)

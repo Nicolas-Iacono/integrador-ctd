@@ -27,9 +27,9 @@ const ProductCard = ({
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        width: { md: '13rem' },
-        flexGrow: 1,
-        borderRadius: '.625rem'
+        width: { xs: '100%', md: '13rem' },
+        borderRadius: '.625rem',
+        padding: '.5rem'
       }}
     >
       <Link to={`/instrument/${id}`} className="product-link">

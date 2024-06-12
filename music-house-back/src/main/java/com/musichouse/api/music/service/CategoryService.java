@@ -70,8 +70,8 @@ public class CategoryService implements CategoryInterface {
                 .orElseThrow(() -> new ResourceNotFoundException("Category with id " + idCategory + " not found"));
         List<Instrument> instruments = instrumentRepository.findByCategory(categoryToDelete);
         if (!instruments.isEmpty()) {
-            throw new CategoryAssociatedException("Cannot delete category with id " + idCategory +
-                    " as it is associated with instruments");
+            throw new CategoryAssociatedException("No se puede eliminar la categoría con ID : " + idCategory +
+                    " porque está asociada con instrumentos");
         }
 
         categoryRepository.deleteById(idCategory);

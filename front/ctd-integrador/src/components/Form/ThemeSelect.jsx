@@ -1,22 +1,32 @@
 import { Select, MenuItem } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { getThemes, getThemes1 } from '../../api/instruments'
+import { getThemes } from '../../api/instruments'
 
-const ThemeSelect = ({ onChange }) => {
+const ThemeSelect = ({ label, onChange, selectedThemeId = undefined }) => {
   const [loading, setLoading] = useState(true)
   const [selectedTheme, setSelectedTheme] = useState('')
   const [themes] = getThemes()
-  // Usar cuando el front no esté conectado a backend localhost
-  // const [themes] = getThemes1()
 
   useEffect(() => {
+    if (!themes) return
+
     setLoading(false)
   }, [themes])
 
   useEffect(() => {
+    if (!selectedThemeId || !themes) return
+
+    const selectedTheme = themes.data.find(
+      (theme) => theme.idTheme === selectedThemeId
+    )
+    setSelectedTheme(selectedTheme)
+  }, [selectedThemeId, themes])
+
+  useEffect(() => {
+    if (loading) return
     if (typeof onChange === 'function')
       onChange({
-        target: { name: 'theme', value: selectedTheme.idTheme }
+        target: { name: 'idTheme', value: selectedTheme.idTheme }
       })
   }, [selectedTheme])
 
@@ -29,8 +39,13 @@ const ThemeSelect = ({ onChange }) => {
   }
 
   return (
-    <Select value={selectedTheme} onChange={handleThemeChange}>
-      {themes?.map((theme, index) => (
+    <Select
+      value={selectedTheme}
+      onChange={handleThemeChange}
+      label={label}
+      color="secondary"
+    >
+      {themes?.data?.map((theme, index) => (
         <MenuItem key={`theme-select-${index}`} value={theme}>
           {theme.themeName}
         </MenuItem>

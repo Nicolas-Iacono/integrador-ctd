@@ -1,5 +1,6 @@
 package com.musichouse.api.music.dto.dto_entrance;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -19,7 +20,7 @@ public class InstrumentDtoEntrance {
     @Size(max = 100, message = "El nombre del instrumento debe tener como máximo {max} caracteres")
     private String name;
 
-    @Size(max = 255, message = "La descripción del instrumento debe tener como máximo {max} caracteres")
+    @Size(max = 1024, message = "La descripción del instrumento debe tener como máximo {max} caracteres")
     private String description;
 
     @NotNull(message = "El precio de alquiler es obligatorio")
@@ -40,6 +41,11 @@ public class InstrumentDtoEntrance {
     private Long idTheme;
 
     @NotNull(message = "Debe cargar al menos una imagen al crear el instrumento")
+    @Valid
     private List<String> imageUrls;
+
+    @NotNull(message = "Las características del instrumento deben estar presentes")
+    @Valid
+    private CharacteristicDtoEntrance characteristic;
 
 }

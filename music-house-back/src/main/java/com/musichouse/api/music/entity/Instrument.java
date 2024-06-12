@@ -1,5 +1,6 @@
 package com.musichouse.api.music.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 @Entity
 @Data
-@Table(name = "INSTRUMENT")
+@Table(name = "INSTRUMENTS")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Instrument {
@@ -37,7 +38,7 @@ public class Instrument {
     /**
      * Descripción detallada del instrumento.
      */
-    @Column(name = "description", length = 255)
+    @Column(name = "description", length = 1024)
     private String description;
 
     /**
@@ -51,7 +52,7 @@ public class Instrument {
     /**
      * Altura del instrumento en centímetros.
      */
-    @Column(name = "measures", nullable = false,length = 100)
+    @Column(name = "measures", nullable = false, length = 100)
     private String measures;
 
     /**
@@ -67,6 +68,7 @@ public class Instrument {
      */
     @ManyToOne
     @JoinColumn(name = "id_category")
+    @JsonIgnore
     private Category category;
 
     /**
@@ -74,13 +76,23 @@ public class Instrument {
      */
     @ManyToOne
     @JoinColumn(name = "id_theme")
+    @JsonIgnore
     private Theme theme;
 
     /**
      * Lista de URLs de imágenes asociadas al instrumento.
      */
     @OneToMany(mappedBy = "instrument", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<ImageUrls> imageUrls = new ArrayList<>();
+
+    /**
+     * Características del instrumento.
+     */
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "characteristics_id", referencedColumnName = "id_characteristics")
+    @JsonIgnore
+    private Characteristics characteristics;
 
     /**
      * Anotación que marca el campo como una fecha de creación automática.

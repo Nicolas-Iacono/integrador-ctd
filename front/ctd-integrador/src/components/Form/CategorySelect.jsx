@@ -1,22 +1,36 @@
 import { Select, MenuItem } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { getCategories, getCategories1 } from '../../api/instruments'
+import { getCategories } from '../../api/instruments'
 
-const CategorySelect = ({ onChange }) => {
+const CategorySelect = ({
+  label,
+  onChange,
+  selectedCategoryId = undefined
+}) => {
   const [loading, setLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState('')
   const [categories] = getCategories()
-  // Usar cuando el front no esté conectado a backend localhost
-  // const [categories] = getCategories1()
 
   useEffect(() => {
+    if (!categories) return
+
     setLoading(false)
   }, [categories])
 
   useEffect(() => {
+    if (!selectedCategoryId || !categories) return
+
+    const selectedCategory = categories.data.find(
+      (category) => category.idCategory === selectedCategoryId
+    )
+    setSelectedCategory(selectedCategory)
+  }, [selectedCategoryId, categories])
+
+  useEffect(() => {
+    if (loading) return
     if (typeof onChange === 'function')
       onChange({
-        target: { name: 'category', value: selectedCategory.idCategory }
+        target: { name: 'idCategory', value: selectedCategory.idCategory }
       })
   }, [selectedCategory])
 
@@ -29,8 +43,13 @@ const CategorySelect = ({ onChange }) => {
   }
 
   return (
-    <Select value={selectedCategory} onChange={handleCategoryChange}>
-      {categories?.map((category, index) => (
+    <Select
+      value={selectedCategory}
+      onChange={handleCategoryChange}
+      label={label}
+      color="secondary"
+    >
+      {categories?.data?.map((category, index) => (
         <MenuItem key={`category-select-${index}`} value={category}>
           {category.categoryName}
         </MenuItem>

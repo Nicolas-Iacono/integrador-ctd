@@ -146,8 +146,11 @@ export const Header = () => {
               keepMounted
               open={isMenuOpen}
               sx={{
-                display: { xs: 'block', md: 'none' }
+                display: { xs: 'block', md: 'none' },
+                width: '10rem',
+                height: '26rem'
               }}
+              hideBackdrop
             >
               {pagesMobile.map((page, index) => {
                 return [
@@ -298,8 +301,12 @@ export const Header = () => {
                   keepMounted
                   open={isMenuUserOpen}
                   sx={{
-                    display: { xs: 'none', md: 'block' }
+                    display: { xs: 'none', md: 'block' },
+                    width: '10rem',
+                    height: '12rem',
+                    left: '-3rem'
                   }}
+                  hideBackdrop
                 >
                   <MenuItem
                     key={'menu-nav-user-profile'}

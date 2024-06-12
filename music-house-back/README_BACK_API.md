@@ -4,7 +4,7 @@ app de reserva de instrumentos musicales
 
 # DTOs de Entrada
 
-# Clases DTO de Entrada para Usuario, Dirección, Teléfono, Categoría, Temática, Instrumento e Imágenes
+# Clases DTO de Entrada para Usuario, Dirección, Teléfono, Categoría, Temática, Instrumento, Imágenes, Fechas Disponibles y Instrumentos Favoritos
 
 ## CategoryDtoEntrance
 
@@ -355,21 +355,3 @@ Esta clase representa los datos de entrada para marcar un instrumento como favor
     - No puede ser nulo
     - Descripción: ID del instrumento
 
-## PrivacyPolicyDtoEntrance
-
-Esta clase representa los datos de entrada para crear la política de privacidad.
-
-### Atributos:
-
-- **title**: String
-  - Requerido: Sí
-  - No puede ser nulo
-  - Descripción: El título de la política de privacidad.
-
-- **content**: String
-  - Requerido: Sí
-  - No puede ser nulo
-  - Descripción: El contenido de la política de privacidad.
-  - 
-
-   

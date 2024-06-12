@@ -4,9 +4,14 @@ import TematicTitle from './TematicTitle'
 
 export const TematicCard = ({ title, imageUrl }) => {
   return (
-    <Card sx={{ flex: 1 }}>
+    <Card
+      sx={{
+        flexGrow: 1,
+        width: { xs: '100%', md: '20rem', borderRadius: '10px' }
+      }}
+    >
       <CardMedia
-        sx={{ height: 300, cursor: 'pointer', borderRadius:'10px' }}
+        sx={{ height: 300, cursor: 'pointer', borderRadius: '10px' }}
         image={imageUrl}
         title={title}
       >

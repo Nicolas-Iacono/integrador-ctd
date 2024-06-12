@@ -9,3 +9,16 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.instrument-characteristic-image {
+  width: 50%;
+}
+
+.instrument-characteristic-arrow {
+  margin-top: 0.7rem;
+  margin-left: -1rem;
+}
+
+.instrument-characteristic-text {
+  width: 35px;
+}

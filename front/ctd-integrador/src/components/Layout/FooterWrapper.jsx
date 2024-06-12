@@ -1,21 +1,19 @@
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import { Grid } from '@mui/material'
 
-export const FooterWrapper = styled(Grid)(({ theme }) => ({
+export const FooterWrapper = styled(Grid)(({ theme, backgroundImageUrl }) => ({
   display: 'flex',
   height: 100,
-  backgroundImage: 'url("/src/assets/footer.svg")',
-  justifyContent:'flex-start',
-  alignItems:"flex-end",
+  backgroundImage: `url(${backgroundImageUrl})`,
+  justifyContent: 'flex-start',
+  alignItems: 'flex-end',
   backgroundSize: 'cover',
   backgroundPosition: 'center bottom',
   backgroundRepeat: 'no-repeat',
-  width:'100vw',
-  marginTop:10,
-
+  width: '100vw',
+  marginTop: 10,
 
   [theme.breakpoints.up('md')]: {
-    height: 100,
-  },
-
+    height: 100
+  }
 }))

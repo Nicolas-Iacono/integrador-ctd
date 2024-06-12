@@ -1,38 +1,62 @@
 import { useState, useEffect } from 'react'
 import InstrumentForm from './InstrumentForm'
 import { getInstrumentById, updateInstrument } from '../../api/instruments'
+import {
+  characteristicsToFormData,
+  formDataToCharacteristics
+} from '../utils/editInstrument'
+import { MessageDialog } from '../common/MessageDialog'
 
 const EditInstrumentForm = ({ id }) => {
   const [instrument] = getInstrumentById(id)
   const [initialFormData, setInitialFormData] = useState()
   const [loading, setLoading] = useState(true)
+  const [showMessage, setShowMessage] = useState(false)
+  const [message, setMessage] = useState()
+
+  const onClose = () => {
+    setShowMessage(false)
+  }
 
   useEffect(() => {
-    if (!(instrument && instrument.idInstrument)) return
+    if (!(instrument && instrument.data?.idInstrument)) return
 
     const data = {
-      idInstrument: instrument.idInstrument,
-      name: instrument.name,
-      description: instrument.description,
-      measures: instrument.measures,
-      weight: instrument.weight,
-      rentalPrice: instrument.rentalPrice,
-      idCategory: instrument.category?.idCategory,
-      idTheme: instrument.theme?.idTheme,
-      imageUrlsText: instrument?.imageUrls
+      idInstrument: instrument.data.idInstrument,
+      name: instrument.data.name,
+      description: instrument.data.description,
+      measures: instrument.data.measures,
+      weight: instrument.data.weight,
+      rentalPrice: instrument.data.rentalPrice,
+      idCategory: instrument.data.category?.idCategory,
+      idTheme: instrument.data.theme?.idTheme,
+      imageUrlsText: instrument.data?.imageUrls
         .map((image) => image.imageUrl)
-        .join('\n')
+        .join('\n'),
+      characteristics: characteristicsToFormData(instrument)
     }
     setInitialFormData(data)
     setLoading(false)
   }, [instrument])
 
-  const onSubmit = (data) => {
-    if (!data) return
+  const onSubmit = (formData) => {
+    if (!formData) return
 
-    updateInstrument(data).then((response) => {
-      console.log(response)
-    })
+    const data = {
+      ...formData,
+      characteristic: formDataToCharacteristics(formData)
+    }
+
+    updateInstrument(data)
+      .then((response) => {
+        console.log(response)
+        setMessage('Instrumento guardado exitosamente')
+      })
+      .catch((error) => {
+        console.log(error)
+        setMessage('No se pudo guardar instrumento')
+      })
+      .finally(() => setShowMessage(true))
   }
 
   if (loading) {
@@ -40,7 +64,16 @@ const EditInstrumentForm = ({ id }) => {
   }
 
   return (
-    <InstrumentForm initialFormData={initialFormData} onSubmit={onSubmit} />
+    <>
+      <InstrumentForm initialFormData={initialFormData} onSubmit={onSubmit} />
+      <MessageDialog
+        title="Editar Instrumento"
+        message={message}
+        isOpen={showMessage}
+        buttonText="Ok"
+        onClose={onClose}
+      />
+    </>
   )
 }
 

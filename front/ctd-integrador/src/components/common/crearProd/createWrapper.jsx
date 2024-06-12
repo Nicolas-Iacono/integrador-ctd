@@ -11,6 +11,7 @@ export const CreateWrapper = styled(Container)(
     paddingBottom: '2rem',
     width: '100%',
     height: '110vh',
+    overflowY: 'scroll',
 
     [theme.breakpoints.up('md')]: {
       paddingTop: isHeaderVisible ? 320 : 50,

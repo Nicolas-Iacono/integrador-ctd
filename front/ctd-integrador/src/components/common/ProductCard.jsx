@@ -27,7 +27,7 @@ const ProductCard = ({
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        width: { xs: '100%', md: '13rem' },
+        width: { xs: '100%', md: '15rem' },
         borderRadius: '.625rem',
         padding: '.5rem'
       }}

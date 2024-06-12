@@ -64,8 +64,9 @@ export const Home = () => {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              paddingTop: 5,
-              paddingBottom: 5
+              paddingBottom: 5,
+              paddingLeft: { xs: '0' },
+              paddingRight: { xs: '0' }
             }}
           >
             <Box>

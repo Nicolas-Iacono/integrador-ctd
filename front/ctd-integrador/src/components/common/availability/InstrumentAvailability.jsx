@@ -7,7 +7,7 @@ import { PickersDay } from '@mui/x-date-pickers/PickersDay'
 import dayjs from 'dayjs'
 import { Code } from '../../../api/constants'
 import { findInstrumentAvailability } from '../../../api/availability'
-import { Tooltip } from '@mui/material'
+import { Box, Tooltip } from '@mui/material'
 
 const CustomLocalizationProvider = styled(LocalizationProvider)(
   ({ theme }) => ({
@@ -88,22 +88,26 @@ export const InstrumentAvailability = ({ id }) => {
     <>
       {availableDates && (
         <CustomLocalizationProvider dateAdapter={AdapterDayjs}>
-          <CustomDateCalendar
-            value={startDate}
-            shouldDisableDate={handleAvailableDate}
-            slots={{
-              day: AvailabiltyPickersDay
-            }}
-            readOnly
-          />
-          <CustomDateCalendar
-            value={endDate}
-            shouldDisableDate={handleAvailableDate}
-            slots={{
-              day: AvailabiltyPickersDay
-            }}
-            readOnly
-          />
+          <Box
+            sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}
+          >
+            <CustomDateCalendar
+              value={startDate}
+              shouldDisableDate={handleAvailableDate}
+              slots={{
+                day: AvailabiltyPickersDay
+              }}
+              readOnly
+            />
+            <CustomDateCalendar
+              value={endDate}
+              shouldDisableDate={handleAvailableDate}
+              slots={{
+                day: AvailabiltyPickersDay
+              }}
+              readOnly
+            />
+          </Box>
         </CustomLocalizationProvider>
       )}
     </>

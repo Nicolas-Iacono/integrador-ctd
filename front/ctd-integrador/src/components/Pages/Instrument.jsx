@@ -85,8 +85,8 @@ export const Instrument = () => {
           <Box
             sx={{
               position: 'absolute',
-              top: '27%',
-              left: '95%',
+              top: { xs: '7%', md: '23%' },
+              left: { xs: '91%', md: '95%' },
               transform: 'translate(-50%, -50%)'
             }}
           >
@@ -175,9 +175,22 @@ export const Instrument = () => {
               Temática: {instrumentSelected?.theme?.themeName}
             </Typography>
           </Box>
-          <Box sx={{ width: { xs: '100%', md: '40%' }, cursor: 'pointer' }}>
+          <Box
+            sx={{
+              width: { xs: '100%', md: '40%' },
+              cursor: 'pointer',
+              borderRadius: '.625rem'
+            }}
+          >
             <Tooltip title="Ver más imágenes">
-              <Button onClick={() => setShowGallery(true)}>
+              <Button
+                onClick={() => setShowGallery(true)}
+                sx={{
+                  backgroundColor: 'white',
+                  ':hover': { backgroundColor: 'white' },
+                  borderRadius: '.625rem'
+                }}
+              >
                 <img
                   className="instrument-image"
                   src={
@@ -185,6 +198,7 @@ export const Instrument = () => {
                     instrumentSelected.imageUrls[0].imageUrl
                   }
                   alt={instrumentSelected?.name}
+                  style={{ objectFit: 'cover' }}
                 />
               </Button>
             </Tooltip>

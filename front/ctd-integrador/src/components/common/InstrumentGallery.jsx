@@ -44,7 +44,8 @@ export const InstrumentGallery = ({ itemData }) => {
               sx={{
                 display: 'grid',
                 backgroundColor: 'white',
-                margin: '.5rem'
+                margin: '.5rem',
+                borderRadius: '.625rem'
               }}
             >
               <img

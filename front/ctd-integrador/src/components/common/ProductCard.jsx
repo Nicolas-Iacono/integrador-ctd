@@ -28,7 +28,8 @@ const ProductCard = ({
         display: 'flex',
         flexDirection: 'column',
         width: { md: '13rem' },
-        flexGrow: 1
+        flexGrow: 1,
+        borderRadius: '.625rem'
       }}
     >
       <Link to={`/instrument/${id}`} className="product-link">

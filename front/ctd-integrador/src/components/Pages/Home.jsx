@@ -81,14 +81,26 @@ export const Home = () => {
               </Typography>
             </Box>
             <ProductsWrapper>
-              {selectedInstruments?.map((instrument, index) => (
-                <ProductCard
-                  key={`product-card-${index}`}
-                  name={instrument.name}
-                  imageUrl={instrument.imageUrls[0].imageUrl}
-                  id={instrument.idInstrument}
-                />
-              ))}
+              {selectedInstruments.length > 0 ? (
+                selectedInstruments?.map((instrument, index) => (
+                  <ProductCard
+                    key={`product-card-${index}`}
+                    name={instrument.name}
+                    imageUrl={instrument.imageUrls[0].imageUrl}
+                    id={instrument.idInstrument}
+                  />
+                ))
+              ) : (
+                <Typography
+                  gutterBottom
+                  variant="h6"
+                  component="h6"
+                  textAlign="center"
+                  sx={{ paddingBottom: 1, fontWeight: 'bold' }}
+                >
+                  No se han encontrado instrumentos
+                </Typography>
+              )}
             </ProductsWrapper>
           </Container>
         </main>

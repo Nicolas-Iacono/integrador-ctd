@@ -297,7 +297,13 @@ export const Usuarios = () => {
     <>
       {!loading && (
         <MainWrapper sx={{ width: '100%' }}>
-          <Paper sx={{ width: '100%', mb: 2 }}>
+          <Paper
+            sx={{
+              display: { xs: 'none', lg: 'initial' },
+              width: '100%',
+              mb: 2
+            }}
+          >
             <EnhancedTableToolbar numSelected={selected.length} />
             <TableContainer>
               <Table
@@ -391,6 +397,25 @@ export const Usuarios = () => {
               labelDisplayedRows={getLabelDisplayedRows}
             />
           </Paper>
+          <Box
+            sx={{
+              display: { xs: 'flex', lg: 'none' },
+              height: '100vh'
+            }}
+          >
+            <Typography
+              gutterBottom
+              variant="h6"
+              component="h6"
+              textAlign="center"
+              sx={{
+                paddingTop: 30,
+                fontWeight: 'bold'
+              }}
+            >
+              Funcionalidad no disponible en esta resolución
+            </Typography>
+          </Box>
         </MainWrapper>
       )}
     </>

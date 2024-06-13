@@ -31,7 +31,7 @@ export const Instrument = () => {
   })
   const [instrument] = getInstrumentById(id)
   const [showGallery, setShowGallery] = useState(false)
-  const { user, isUserAdmin } = useAuthContext()
+  const { user, isUser, isUserAdmin } = useAuthContext()
   const [favorites] = getAllFavorites(user?.idUser)
   const [idFavorite, setIdFavorite] = useState()
 
@@ -86,7 +86,7 @@ export const Instrument = () => {
   return (
     <main>
       <MainWrapper sx={{ alignItems: 'center', position: 'relative' }}>
-        {user && (
+        {isUser && (
           <Box
             sx={{
               position: 'absolute',

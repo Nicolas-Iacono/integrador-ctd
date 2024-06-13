@@ -16,10 +16,17 @@ export const roleList = () => {
   return list
 }
 
-export const isAdmin = (roles) => {
+const isRole = (roles, rol) => {
   if (!roles && !roles?.length) return false
 
-  return roles.some((role) => role.rol === 'ADMIN')
+  return roles.some((role) => role.rol === rol)
+}
+export const getIsAdmin = (roles) => {
+  return isRole(roles, 'ADMIN')
+}
+
+export const getIsUser = (roles) => {
+  return isRole(roles, 'USER')
 }
 
 export const roleById = (idRol) => {

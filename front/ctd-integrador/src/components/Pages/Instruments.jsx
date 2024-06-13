@@ -280,7 +280,14 @@ export const Instruments = () => {
 
   return (
     <MainWrapper>
-      <Paper sx={{ width: '100%', mb: 2, maxWidth: 1200 }}>
+      <Paper
+        sx={{
+          display: { xs: 'none', lg: 'initial' },
+          width: '100%',
+          mb: 2,
+          maxWidth: 1200
+        }}
+      >
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
@@ -368,6 +375,25 @@ export const Instruments = () => {
           labelDisplayedRows={getLabelDisplayedRows}
         />
       </Paper>
+      <Box
+        sx={{
+          display: { xs: 'flex', lg: 'none' },
+          height: '100vh'
+        }}
+      >
+        <Typography
+          gutterBottom
+          variant="h6"
+          component="h6"
+          textAlign="center"
+          sx={{
+            paddingTop: 30,
+            fontWeight: 'bold'
+          }}
+        >
+          Funcionalidad no disponible en esta resolución
+        </Typography>
+      </Box>
     </MainWrapper>
   )
 }

@@ -30,18 +30,18 @@ import '../styles/header.styles.css'
 import background from '../../assets/background.svg'
 
 const pagesMobile = [
-  { to: '/', text: 'Inicio' },
-  { to: '/about', text: 'Acerca de' },
-  { to: '/contact', text: 'Contáctanos' },
+  { to: '/', text: 'Inicio', any: true },
+  { to: '/about', text: 'Acerca de', anonymous: true, user: true },
+  { to: '/contact', text: 'Contáctanos', anonymous: true, user: true },
   { to: '/favorites', text: 'Favoritos', user: true }
 ]
 
 const pagesDesktop = [
-  { to: '/', text: 'Inicio' },
+  { to: '/', text: 'Inicio', any: true },
   { to: '/instruments', text: 'Instrumentos', admin: true },
   { to: '/usuarios', text: 'Usuarios', admin: true },
-  { to: '/about', text: 'Acerca de' },
-  { to: '/contact', text: 'Contáctanos' },
+  { to: '/about', text: 'Acerca de', anonymous: true, user: true },
+  { to: '/contact', text: 'Contáctanos', anonymous: true, user: true },
   { to: '/favorites', text: 'Favoritos', user: true }
 ]
 const settings = ['Crear Cuenta', 'Iniciar sesión']
@@ -53,7 +53,7 @@ export const Header = () => {
   const [isMenuUserOpen, setIsMenuUserOpen] = useState(false)
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
-  const { authGlobal, setAuthGlobal, user, setUser, isUserAdmin } =
+  const { authGlobal, setAuthGlobal, user, setUser, isUserAdmin, isUser } =
     useAuthContext()
   const { toggleHeaderVisibility } = useHeaderVisibility()
   const { pathname } = useLocation()
@@ -155,7 +155,9 @@ export const Header = () => {
             >
               {pagesMobile.map((page, index) => {
                 return [
-                  ((page.user && user) || (!page.admin && !page.user)) && (
+                  ((page.user && isUser) ||
+                    (page.anonymous && !(isUser || isUserAdmin)) ||
+                    page.any) && (
                     <MenuItem
                       key={`menu-nav-${index}`}
                       onClick={handleCloseNavMenu}
@@ -218,8 +220,9 @@ export const Header = () => {
             {pagesDesktop.map((page, index) => {
               return [
                 ((page.admin && isUserAdmin) ||
-                  (page.user && user) ||
-                  (!page.admin && !page.user)) && (
+                  (page.user && isUser) ||
+                  (page.anonymous && !(isUser || isUserAdmin)) ||
+                  page.any) && (
                   <Button
                     key={`menu-option-${index}`}
                     sx={{

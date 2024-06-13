@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { UsersApi } from '../../../api/users'
 import { UserForm } from './UserForm'
+import { Box, Typography } from '@mui/material'
 import { MessageDialog } from '../../common/MessageDialog'
 import { useNavigate, useParams, Link } from 'react-router-dom'
-import MainCrearUsuario from '../../common/crearUsuario/MainCrearUsuario'
+import { MainCrearUsuario } from '../../common/crearUsuario/MainCrearUsuario'
 import BoxLogoSuperior from '../../common/crearUsuario/BoxLogoSuperior'
 import { Logo } from '../../Images/Logo'
 import { Code } from '../../../api/constants'
@@ -132,26 +133,59 @@ const EditUser = ({ onSwitch }) => {
 
   return (
     <MainCrearUsuario>
-      <BoxLogoSuperior>
-        <Link to="/">
+      <Box
+        sx={{
+          display: { xs: isUserAdmin ? 'none' : 'inherit', lg: 'inherit' }
+        }}
+      >
+        <BoxLogoSuperior>
+          <Link to="/">
+            <Logo />
+          </Link>
           <Logo />
-        </Link>
-        <Logo />
-      </BoxLogoSuperior>
-      {formData && (
-        <UserForm
-          onSwitch={onSwitch}
-          initialFormData={formData}
-          onSubmit={handleSubmit}
+        </BoxLogoSuperior>
+        {formData && (
+          <UserForm
+            onSwitch={onSwitch}
+            initialFormData={formData}
+            onSubmit={handleSubmit}
+          />
+        )}
+        <MessageDialog
+          title="Editar Usuario"
+          message={message}
+          isOpen={showMessage}
+          buttonText="Ok"
+          onClose={onClose}
         />
-      )}
-      <MessageDialog
-        title="Editar Usuario"
-        message={message}
-        isOpen={showMessage}
-        buttonText="Ok"
-        onClose={onClose}
-      />
+      </Box>
+      <Box
+        sx={{
+          display: {
+            xs: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            lg: 'none'
+          },
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          height: '100vh'
+        }}
+      >
+        <Typography
+          gutterBottom
+          variant="h6"
+          component="h6"
+          textAlign="center"
+          sx={{
+            paddingTop: 30,
+            fontWeight: 'bold'
+          }}
+        >
+          Funcionalidad no disponible en esta resolución
+        </Typography>
+      </Box>
     </MainCrearUsuario>
   )
 }

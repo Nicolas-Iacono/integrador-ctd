@@ -37,7 +37,7 @@ export const Instrument = () => {
 
   useEffect(() => {
     if (window) {
-      window.scrollTo(0, 0)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }, [])
 
@@ -90,7 +90,7 @@ export const Instrument = () => {
           <Box
             sx={{
               position: 'absolute',
-              top: { xs: '7%', md: '23%' },
+              top: { xs: '9%', md: '23%' },
               left: { xs: '91%', md: '95%' },
               transform: 'translate(-50%, -50%)'
             }}

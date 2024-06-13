@@ -41,6 +41,9 @@ export const Home = () => {
           )
         : instruments.data
       setSelectedInstruments(found)
+      if (window) {
+        window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
+      }
     }
   }, [searchOptions])
 
@@ -51,7 +54,7 @@ export const Home = () => {
       {!loading && (
         <main>
           <CssBaseline />
-          <MainWrapper isHeaderVisible={isHeaderVisible}>
+          <MainWrapper isHeaderVisible={isHeaderVisible} isHome={true}>
             {state.tematics?.map((tematic, index) => (
               <TematicCard
                 key={`tematic-card-${index}`}

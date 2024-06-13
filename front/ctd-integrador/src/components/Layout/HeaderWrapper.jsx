@@ -2,9 +2,9 @@ import { styled } from '@mui/material/styles'
 import AppBar from '@mui/material/AppBar'
 
 export const HeaderWrapper = styled(AppBar)(
-  ({ theme, backgroundImageUrl }) => ({
+  ({ theme, backgroundImageUrl, isHome }) => ({
     display: 'flex',
-    height: '19rem',
+    height: isHome ? '19rem' : '10rem',
     position: 'fixed',
     backgroundImage: `url(${backgroundImageUrl})`,
     backgroundSize: 'cover',

@@ -57,7 +57,7 @@ export const Header = () => {
     useAuthContext()
   const { toggleHeaderVisibility } = useHeaderVisibility()
   const { pathname } = useLocation()
-  const showButtonsAndSearch = pathname === '/'
+  const isHome = pathname === '/'
   const navigate = useNavigate()
 
   const navigationTo = (location) => {
@@ -109,6 +109,7 @@ export const Header = () => {
 
   return (
     <HeaderWrapper
+      isHome={isHome}
       backgroundImageUrl={background}
       sx={{ transition: 'top 1.2s', top: visible ? '0' : '-300px' }}
     >
@@ -246,7 +247,7 @@ export const Header = () => {
           sx={{
             display: {
               xs: 'none',
-              md: `${showButtonsAndSearch ? 'flex' : 'none'}`
+              md: `${isHome ? 'flex' : 'none'}`
             }
           }}
         >
@@ -342,9 +343,7 @@ export const Header = () => {
             )}
           </Box>
         </MiddleStyledToolbar>
-        <LowerStyledToolbar
-          sx={{ display: `${showButtonsAndSearch ? 'flex' : 'none'}` }}
-        >
+        <LowerStyledToolbar sx={{ display: `${isHome ? 'flex' : 'none'}` }}>
           <Finder />
         </LowerStyledToolbar>
       </Container>

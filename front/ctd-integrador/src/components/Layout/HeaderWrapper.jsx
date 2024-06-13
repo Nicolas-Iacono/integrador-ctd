@@ -4,13 +4,21 @@ import AppBar from '@mui/material/AppBar'
 export const HeaderWrapper = styled(AppBar)(
   ({ theme, backgroundImageUrl }) => ({
     display: 'flex',
-    height: 130,
+    height: '19rem',
     position: 'fixed',
     backgroundImage: `url(${backgroundImageUrl})`,
     backgroundSize: 'cover',
 
+    '& svg': {
+      height: '4rem'
+    },
+
     [theme.breakpoints.up('md')]: {
-      height: 300
+      height: 300,
+
+      '& svg': {
+        height: '7rem'
+      }
     }
   })
 )

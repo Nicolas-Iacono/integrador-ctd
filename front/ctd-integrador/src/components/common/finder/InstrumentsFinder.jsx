@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
@@ -21,6 +21,10 @@ export const Finder = () => {
   const [found, setFound] = useState(false)
   const [dateFrom, setDateFrom] = useState(null)
   const [dateTo, setDateTo] = useState(null)
+  const inputFinderRef = useRef()
+  const suggestsLeft = inputFinderRef.current?.getBoundingClientRect().left
+  const suggestsTop = `${inputFinderRef.current?.getBoundingClientRect().top + inputFinderRef.current?.getBoundingClientRect().height + 8}px`
+  const suggestWidth = inputFinderRef.current?.getBoundingClientRect().width
   const [instruments, instrumentsSearchCode] =
     searchInstrumentsByName(searchPattern)
   const [instrumentsByDate, instrumentsByDateCode] =
@@ -62,8 +66,11 @@ export const Finder = () => {
 
   useEffect(() => {
     if (instrumentsSearchCode === Code.SUCCESS) {
+      const showSuggests = !(
+        instruments.length === 1 && instruments[0].name === searchPattern
+      )
       setFound(true)
-      setShowSugests(true)
+      setShowSugests(showSuggests)
     } else {
       setFound(false)
     }
@@ -71,6 +78,7 @@ export const Finder = () => {
   }, [instruments, instrumentsSearchCode])
 
   const handleKeyUp = (keyCode) => {
+    console.log(keyCode)
     if (keyCode === 27) {
       setSearchPattern('')
       setDateFrom(null)
@@ -79,9 +87,12 @@ export const Finder = () => {
     }
   }
 
+  const handleKeyDown = (keyCode) => {
+    if (keyCode === 9) setShowSugests(false)
+  }
+
   const handleSelected = (value) => {
     setSearchPattern(value)
-    setShowSugests(true)
   }
 
   const handleSubmitSearch = () => {
@@ -92,10 +103,7 @@ export const Finder = () => {
     <Box
       sx={{
         padding: '.5rem',
-        display: {
-          xs: 'none',
-          md: 'flex'
-        },
+        display: 'flex',
         flexDirection: 'column',
         justifyContent: { md: 'center' },
         alignItems: { md: 'center' },
@@ -105,21 +113,21 @@ export const Finder = () => {
       <Box
         sx={{
           padding: '.5rem',
-          display: {
-            xs: 'none',
-            md: 'flex'
-          },
-          flexDirection: 'row',
-          justifyContent: { md: 'center' },
-          alignItems: { md: 'center' },
-          width: '100%'
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          gap: { xs: '.5rem', md: '1rem' }
         }}
       >
         <InputFinder
           label="Encuentra tu instrumento favorito"
-          onKeyup={handleKeyUp}
+          onKeyUp={handleKeyUp}
+          onKeyDown={handleKeyDown}
           value={searchPattern}
           setValue={setSearchPattern}
+          inputRef={inputFinderRef}
         />
         <DateRangeFinder
           dateFrom={dateFrom}
@@ -141,9 +149,12 @@ export const Finder = () => {
         <Box
           sx={{
             backgroundColor: 'white',
-            width: '60%',
+            width: { xs: suggestWidth, md: '60%' },
             borderRadius: '5px',
-            boxShadow: '5px 5px 10px rgba(0,0,0,0.5);'
+            boxShadow: '5px 5px 10px rgba(0,0,0,0.5);',
+            position: 'fixed',
+            left: suggestsLeft,
+            top: suggestsTop
           }}
         >
           <List>

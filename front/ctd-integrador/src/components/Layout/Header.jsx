@@ -243,15 +243,13 @@ export const Header = () => {
           </LogoWrapper>
         </UpperStyledToolbar>
         <MiddleStyledToolbar
-          sx={{ display: `${showButtonsAndSearch ? 'flex' : 'none'}` }}
+          sx={{
+            display: {
+              xs: 'none',
+              md: `${showButtonsAndSearch ? 'flex' : 'none'}`
+            }
+          }}
         >
-          <Box
-            sx={{
-              flexGrow: 0,
-              padding: '.5rem',
-              display: { xs: 'none', md: 'block' }
-            }}
-          ></Box>
           <Box
             sx={{
               flexGrow: 0,

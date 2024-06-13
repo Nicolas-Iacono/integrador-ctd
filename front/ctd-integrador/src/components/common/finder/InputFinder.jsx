@@ -3,11 +3,23 @@ import { SearchIconWrapper } from './SearchIconWrapper'
 import { StyledInputBase } from './StyledInputBase'
 import SearchIcon from '@mui/icons-material/Search'
 
-export const InputFinder = ({ value, setValue, onKeyup }) => {
-  const handleKeyup = (event) => {
+export const InputFinder = ({
+  value,
+  setValue,
+  onKeyUp,
+  onKeyDown,
+  inputRef
+}) => {
+  const handleKeyUp = (event) => {
     const keyCode = event.keyCode
 
-    if (typeof onKeyup === 'function') onKeyup(keyCode)
+    if (typeof onKeyUp === 'function') onKeyUp(keyCode)
+  }
+
+  const handleKeyDown = (event) => {
+    const keyCode = event.keyCode
+
+    if (typeof onKeyDown === 'function') onKeyDown(keyCode)
   }
 
   const handleChange = (event) => {
@@ -17,7 +29,7 @@ export const InputFinder = ({ value, setValue, onKeyup }) => {
   }
 
   return (
-    <Search className="busqueda">
+    <Search ref={inputRef}>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
@@ -25,7 +37,8 @@ export const InputFinder = ({ value, setValue, onKeyup }) => {
         placeholder="Busca tu instrumento favorito..."
         inputProps={{ 'aria-label': 'búsqueda' }}
         onChange={handleChange}
-        onKeyUp={handleKeyup}
+        onKeyUp={handleKeyUp}
+        onKeyDown={handleKeyDown}
         value={value}
       />
     </Search>

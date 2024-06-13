@@ -7,7 +7,7 @@ export const MainWrapper = styled(Container)(({ theme }) => ({
   justifyContent: 'center',
   flexWrap: 'wrap',
   gap: '.5rem',
-  paddingTop: 150,
+  paddingTop: '20rem',
   paddingBottom: '3rem',
   alignItems: 'center',
 

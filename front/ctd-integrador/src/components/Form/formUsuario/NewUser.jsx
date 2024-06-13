@@ -15,7 +15,7 @@ const NewUser = ({ onSwitch }) => {
     addresses: [
       {
         street: '',
-        number: 0,
+        number: '',
         city: '',
         state: '',
         country: ''

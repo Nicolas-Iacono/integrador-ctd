@@ -6,6 +6,7 @@ import { MessageDialog } from '../../common/MessageDialog'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { MainCrearUsuario } from '../../common/crearUsuario/MainCrearUsuario'
 import BoxLogoSuperior from '../../common/crearUsuario/BoxLogoSuperior'
+import BoxFormUnder from '../../common/crearUsuario/BoxFormUnder'
 import { Logo } from '../../Images/Logo'
 import { Code } from '../../../api/constants'
 import { roleById } from '../../utils/roles/constants'
@@ -24,6 +25,7 @@ const EditUser = ({ onSwitch }) => {
   const { user: loggedUser, isUserAdmin } = useAuthContext()
   const navigate = useNavigate()
   const isLoggedUser = loggedUser?.idUser && loggedUser.idUser === Number(id)
+  const canEditUser = !(isUserAdmin && !isLoggedUser)
 
   useEffect(() => {
     if (!(user || code)) return
@@ -133,59 +135,60 @@ const EditUser = ({ onSwitch }) => {
 
   return (
     <MainCrearUsuario>
-      <Box
-        sx={{
-          display: { xs: isUserAdmin ? 'none' : 'inherit', lg: 'inherit' }
-        }}
-      >
+      <>
         <BoxLogoSuperior>
           <Link to="/">
             <Logo />
           </Link>
-          <Logo />
         </BoxLogoSuperior>
         {formData && (
-          <UserForm
-            onSwitch={onSwitch}
-            initialFormData={formData}
-            onSubmit={handleSubmit}
-          />
+          <BoxFormUnder
+            sx={{ display: { xs: canEditUser ? 'flex' : 'none', lg: 'flex' } }}
+          >
+            <UserForm
+              onSwitch={onSwitch}
+              initialFormData={formData}
+              onSubmit={handleSubmit}
+            />
+            <MessageDialog
+              title="Editar Usuario"
+              message={message}
+              isOpen={showMessage}
+              buttonText="Ok"
+              onClose={onClose}
+            />
+          </BoxFormUnder>
         )}
-        <MessageDialog
-          title="Editar Usuario"
-          message={message}
-          isOpen={showMessage}
-          buttonText="Ok"
-          onClose={onClose}
-        />
-      </Box>
-      <Box
-        sx={{
-          display: {
-            xs: 'flex',
+      </>
+      {!canEditUser && (
+        <Box
+          sx={{
+            display: {
+              xs: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              lg: 'none'
+            },
             justifyContent: 'center',
             alignItems: 'center',
-            lg: 'none'
-          },
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          height: '100vh'
-        }}
-      >
-        <Typography
-          gutterBottom
-          variant="h6"
-          component="h6"
-          textAlign="center"
-          sx={{
-            paddingTop: 30,
-            fontWeight: 'bold'
+            width: '100%',
+            height: '100vh'
           }}
         >
-          Funcionalidad no disponible en esta resolución
-        </Typography>
-      </Box>
+          <Typography
+            gutterBottom
+            variant="h6"
+            component="h6"
+            textAlign="center"
+            sx={{
+              paddingTop: 30,
+              fontWeight: 'bold'
+            }}
+          >
+            Funcionalidad no disponible en esta resolución
+          </Typography>
+        </Box>
+      )}
     </MainCrearUsuario>
   )
 }

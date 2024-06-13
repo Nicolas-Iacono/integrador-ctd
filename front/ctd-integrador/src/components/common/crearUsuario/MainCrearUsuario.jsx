@@ -9,12 +9,15 @@ export const MainCrearUsuario = styled(Grid)(({ theme }) => ({
   alignItems: 'center',
   gap: '.5rem',
   backgroundImage: `url(${background})`,
-  backgroundPosition: 'center bottom',
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
-  height: '100vh',
+  backgroundPosition: 'left bottom',
+  height: '100%',
+  minHeight: '100vh',
+  transition: 'background-image 0.5s ease-in-out',
 
-  [theme.breakpoints.down('md')]: {
-    backgroundPosition: 'left bottom'
+  [theme.breakpoints.up('md')]: {
+    backgroundPosition: 'center bottom',
+    height: '100vh'
   }
 }))

@@ -6,24 +6,27 @@ import { Logo } from '../Images/Logo'
 import NewUser from '../Form/formUsuario/NewUser'
 import BoxFormUnder from '../common/crearUsuario/BoxFormUnder'
 import { useAuthContext } from '../utils/context/AuthGlobal'
+import { Link } from 'react-router-dom'
 
 export const CrearUsuario = () => {
   const { isUserAdmin } = useAuthContext()
 
   return (
     <MainCrearUsuario>
-      <Box
-        sx={{
-          display: { xs: isUserAdmin ? 'none' : 'inherit', lg: 'inherit' }
-        }}
-      >
+      <>
         <BoxLogoSuperior>
-          <Logo />
+          <Link to="/">
+            <Logo />
+          </Link>
         </BoxLogoSuperior>
-        <BoxFormUnder>
+        <BoxFormUnder
+          sx={{
+            display: { xs: isUserAdmin ? 'none' : 'flex', lg: 'flex' }
+          }}
+        >
           <NewUser />
         </BoxFormUnder>
-      </Box>
+      </>
       <Box
         sx={{
           display: { xs: 'flex', lg: 'none' },

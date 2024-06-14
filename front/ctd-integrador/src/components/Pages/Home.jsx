@@ -41,7 +41,7 @@ export const Home = () => {
           )
         : instruments.data
       setSelectedInstruments(found)
-      if (window) {
+      if (searchOptions.found && window) {
         window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
       }
     }
@@ -50,9 +50,9 @@ export const Home = () => {
   if (loading) return <p>Loading...</p>
 
   return (
-    <>
+    <main>
       {!loading && (
-        <main>
+        <>
           <CssBaseline />
           <MainWrapper isHeaderVisible={isHeaderVisible} isHome={true}>
             {state.tematics?.map((tematic, index) => (
@@ -106,8 +106,8 @@ export const Home = () => {
               )}
             </ProductsWrapper>
           </Container>
-        </main>
+        </>
       )}
-    </>
+    </main>
   )
 }

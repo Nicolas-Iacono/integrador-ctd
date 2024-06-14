@@ -108,7 +108,8 @@ const Login = ({ theme, onSwitch }) => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            gap: '20px'
+            gap: '20px',
+            marginRight: { md: '5rem' }
           }}
         >
           <Typography

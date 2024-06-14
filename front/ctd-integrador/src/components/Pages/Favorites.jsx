@@ -13,7 +13,7 @@ export const Favorites = () => {
   const [loading, setLoading] = useState(true)
   const [favorites, setFavorites] = useState()
   const { user } = useAuthContext()
-  const [data, code] = getAllFavorites(user?.idUser)
+  const [data, code] = getAllFavorites(user?.idUser, [])
 
   useEffect(() => {
     if (code === Code.SUCCESS) {
@@ -39,35 +39,33 @@ export const Favorites = () => {
   }
 
   return (
-    <>
-      {!loading && (
-        <main>
-          <MainWrapper
-            sx={{ paddingLeft: { xs: '0' }, paddingRight: { xs: '0' } }}
-          >
-            <CssBaseline />
-            <Container
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                paddingBottom: 5,
-                paddingLeft: { xs: '0' },
-                paddingRight: { xs: '0' }
-              }}
+    <main>
+      <MainWrapper sx={{ paddingLeft: { xs: '0' }, paddingRight: { xs: '0' } }}>
+        <CssBaseline />
+        <Container
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            paddingBottom: 5,
+            paddingLeft: { xs: '0' },
+            paddingRight: { xs: '0' }
+          }}
+        >
+          <Box>
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="h2"
+              textAlign="center"
+              sx={{ paddingBottom: 1, fontWeight: 'bold' }}
             >
-              <Box>
-                <Typography
-                  gutterBottom
-                  variant="h5"
-                  component="h2"
-                  textAlign="center"
-                  sx={{ paddingBottom: 1, fontWeight: 'bold' }}
-                >
-                  Favoritos
-                </Typography>
-              </Box>
-              <ProductsWrapper>
-                {favorites?.map((favorite, index) => (
+              Favoritos
+            </Typography>
+          </Box>
+          {!loading && (
+            <ProductsWrapper>
+              {favorites?.length > 0 ? (
+                favorites?.map((favorite, index) => (
                   <ProductCard
                     key={`favorite-card-${index}`}
                     name={favorite.instrument.name}
@@ -76,12 +74,22 @@ export const Favorites = () => {
                     isFavorite={true}
                     onClickTrash={() => handleRemoveFavorite(favorite)}
                   />
-                ))}
-              </ProductsWrapper>
-            </Container>
-          </MainWrapper>
-        </main>
-      )}
-    </>
+                ))
+              ) : (
+                <Typography
+                  gutterBottom
+                  variant="h6"
+                  component="h6"
+                  textAlign="center"
+                  sx={{ paddingBottom: 1, fontWeight: 'bold' }}
+                >
+                  No se han encontrado favoritos
+                </Typography>
+              )}
+            </ProductsWrapper>
+          )}
+        </Container>
+      </MainWrapper>
+    </main>
   )
 }

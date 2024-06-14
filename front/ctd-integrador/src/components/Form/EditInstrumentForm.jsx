@@ -1,21 +1,25 @@
 import { useState, useEffect } from 'react'
+import { Box } from '@mui/material'
 import InstrumentForm from './InstrumentForm'
 import { getInstrumentById, updateInstrument } from '../../api/instruments'
+import { addImage, removeImage } from '../../api/images'
 import {
   characteristicsToFormData,
   formDataToCharacteristics
 } from '../utils/editInstrument'
 import { MessageDialog } from '../common/MessageDialog'
 
-const EditInstrumentForm = ({ id }) => {
+const EditInstrumentForm = ({ id, onSaved }) => {
   const [instrument] = getInstrumentById(id)
   const [initialFormData, setInitialFormData] = useState()
   const [loading, setLoading] = useState(true)
   const [showMessage, setShowMessage] = useState(false)
   const [message, setMessage] = useState()
+  const imagesToUpdate = []
 
   const onClose = () => {
     setShowMessage(false)
+    if (typeof onSaved === 'function') onSaved()
   }
 
   useEffect(() => {
@@ -39,6 +43,25 @@ const EditInstrumentForm = ({ id }) => {
     setLoading(false)
   }, [instrument])
 
+  const isSameImages = (newImageUrls) => {
+    const actualImageUrls = instrument.data?.imageUrls
+
+    if (!(actualImageUrls instanceof Array && newImageUrls instanceof Array))
+      return true
+
+    if (actualImageUrls.length === newImageUrls.length) {
+      const isSame = actualImageUrls.reduce(
+        (accumulator, currentImage) =>
+          (accumulator =
+            accumulator && newImageUrls.includes(currentImage.imageUrl)),
+        true
+      )
+      return isSame
+    } else {
+      return false
+    }
+  }
+
   const onSubmit = (formData) => {
     if (!formData) return
 
@@ -46,17 +69,65 @@ const EditInstrumentForm = ({ id }) => {
       ...formData,
       characteristic: formDataToCharacteristics(formData)
     }
+    const isSame = isSameImages(formData.imageUrls)
 
     updateInstrument(data)
-      .then((response) => {
-        console.log(response)
+      .then(() => {
+        if (!isSame) {
+          const idInstrument = instrument.data?.idInstrument
+          const actualImages = instrument.data?.imageUrls
+          const newImages = formData.imageUrls
+          const totalImagesToUpdate = actualImages.length + newImages.length
+
+          newImages.forEach((image) => {
+            addImage(idInstrument, image)
+              .then(() => {
+                imagesToUpdate.push('ok')
+              })
+              .catch(() => {
+                imagesToUpdate.push('nok')
+              })
+              .finally(() => {
+                if (imagesToUpdate.length === totalImagesToUpdate) {
+                  if (imagesToUpdate.some((image) => image === 'nok')) {
+                    setMessage(
+                      'Se guardó el instrumento, pero algunas imágenes no pudieron ser actualizadas'
+                    )
+                  }
+                  setShowMessage(true)
+                }
+              })
+          })
+
+          actualImages.forEach((image) => {
+            removeImage(image.idImage, idInstrument)
+              .then(() => {
+                imagesToUpdate.push('ok')
+              })
+              .catch(() => {
+                imagesToUpdate.push('nok')
+              })
+              .finally(() => {
+                if (imagesToUpdate.length === totalImagesToUpdate) {
+                  if (imagesToUpdate.some((image) => image === 'nok')) {
+                    setMessage(
+                      'Se guardó el instrumento, pero algunas imágenes no pudieron ser actualizadas'
+                    )
+                  }
+                  setShowMessage(true)
+                }
+              })
+          })
+        }
+
         setMessage('Instrumento guardado exitosamente')
       })
-      .catch((error) => {
-        console.log(error)
+      .catch(() => {
         setMessage('No se pudo guardar instrumento')
       })
-      .finally(() => setShowMessage(true))
+      .finally(() => {
+        if (isSame) setShowMessage(true)
+      })
   }
 
   if (loading) {
@@ -64,7 +135,15 @@ const EditInstrumentForm = ({ id }) => {
   }
 
   return (
-    <>
+    <Box
+      sx={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
+    >
       <InstrumentForm initialFormData={initialFormData} onSubmit={onSubmit} />
       <MessageDialog
         title="Editar Instrumento"
@@ -73,7 +152,7 @@ const EditInstrumentForm = ({ id }) => {
         buttonText="Ok"
         onClose={onClose}
       />
-    </>
+    </Box>
   )
 }
 

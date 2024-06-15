@@ -30,6 +30,7 @@ import {
   getEmptyRows,
   useVisibleRows
 } from '../Admin/common/tableHelper'
+import { useAppStates } from '../../utils/global.context'
 
 const headCells = [
   {
@@ -59,9 +60,9 @@ const headCells = [
 ]
 
 export const Categories = () => {
-  const [categories] = getCategories()
-  const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(true)
+  const [categories, setCategories] = useState()
+  const [rows, setRows] = useState([])
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('number')
   const [selected, setSelected] = useState([])
@@ -71,13 +72,36 @@ export const Categories = () => {
   const [message, setMessage] = useState()
   const [showCancelButton, setShowCancelButton] = useState(false)
   const [onButtonPressed, setOnButtonPressed] = useState()
+  const { state } = useAppStates()
+  const { categoryCreated } = state
   const navigate = useNavigate()
+
+  useEffect(() => {
+    getAllGategories()
+  }, [])
+
+  const getAllGategories = () => {
+    setLoading(true)
+    getCategories()
+      .then(([categories, _]) => {
+        setCategories(categories)
+      })
+      .catch(([_, code]) => {
+        setCategories([])
+      })
+      .finally(() => setLoading(false))
+  }
+
+  useEffect(() => {
+    if (state.categoryCreated) {
+      getAllGategories()
+    }
+  }, [categoryCreated])
 
   useEffect(() => {
     if (!categories) return
 
     setRows(categories.data)
-    setLoading(false)
   }, [categories])
 
   const handleAdd = () => {
@@ -114,6 +138,7 @@ export const Categories = () => {
         setMessage('Categoría eliminada exitosamente')
         setShowCancelButton(false)
         setOnButtonPressed(false)
+        getAllGategories()
       })
       .catch(() => {
         setMessage(

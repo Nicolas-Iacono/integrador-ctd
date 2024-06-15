@@ -10,16 +10,26 @@ import {
 import { MessageDialog } from '../common/MessageDialog'
 
 const EditInstrumentForm = ({ id, onSaved }) => {
-  const [instrument] = getInstrumentById(id)
+  const [instrument, setInstrument] = useState(0)
   const [initialFormData, setInitialFormData] = useState()
   const [loading, setLoading] = useState(true)
   const [showMessage, setShowMessage] = useState(false)
   const [message, setMessage] = useState()
   const imagesToUpdate = []
 
-  const onClose = () => {
-    setShowMessage(false)
-    if (typeof onSaved === 'function') onSaved()
+  useEffect(() => {
+    getInstrument()
+  }, [])
+
+  const getInstrument = () => {
+    setLoading(true)
+    getInstrumentById(id)
+      .then(([instrument, _]) => {
+        setInstrument(instrument)
+      })
+      .catch(([_, code]) => {
+        setInstrument({})
+      })
   }
 
   useEffect(() => {
@@ -42,6 +52,11 @@ const EditInstrumentForm = ({ id, onSaved }) => {
     setInitialFormData(data)
     setLoading(false)
   }, [instrument])
+
+  const onClose = () => {
+    setShowMessage(false)
+    if (typeof onSaved === 'function') onSaved()
+  }
 
   const isSameImages = (newImageUrls) => {
     const actualImageUrls = instrument.data?.imageUrls
@@ -95,6 +110,7 @@ const EditInstrumentForm = ({ id, onSaved }) => {
                     )
                   }
                   setShowMessage(true)
+                  getInstrument()
                 }
               })
           })
@@ -115,6 +131,7 @@ const EditInstrumentForm = ({ id, onSaved }) => {
                     )
                   }
                   setShowMessage(true)
+                  getInstrument()
                 }
               })
           })
@@ -144,7 +161,9 @@ const EditInstrumentForm = ({ id, onSaved }) => {
         alignItems: 'center'
       }}
     >
-      <InstrumentForm initialFormData={initialFormData} onSubmit={onSubmit} />
+      {!loading && (
+        <InstrumentForm initialFormData={initialFormData} onSubmit={onSubmit} />
+      )}
       <MessageDialog
         title="Editar Instrumento"
         message={message}

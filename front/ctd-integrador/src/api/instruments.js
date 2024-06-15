@@ -1,5 +1,6 @@
 import {
   useGetFetch,
+  getFetch,
   postFetch,
   putFetch,
   deleteFetch
@@ -9,11 +10,11 @@ const URL_INSTRUMENTS = 'https://music-house.up.railway.app/api/instrument'
 const URL_THEMES = 'https://music-house.up.railway.app/api/theme'
 
 export const getInstruments = () => {
-  return useGetFetch(`${URL_INSTRUMENTS}/all`)
+  return getFetch(`${URL_INSTRUMENTS}/all`)
 }
 
 export const getInstrumentById = (id) => {
-  return useGetFetch(`${URL_INSTRUMENTS}/search/${id}`)
+  return getFetch(`${URL_INSTRUMENTS}/search/${id}`)
 }
 
 export const getThemes = () => {

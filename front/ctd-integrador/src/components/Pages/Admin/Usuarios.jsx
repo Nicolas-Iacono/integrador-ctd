@@ -64,7 +64,7 @@ const headCells = [
 ]
 
 export const Usuarios = () => {
-  const [usuarios] = UsersApi.getAllUsers()
+  const [usuarios, setUsuarios] = useState()
   const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(true)
   const [order, setOrder] = useState('asc')
@@ -75,6 +75,10 @@ export const Usuarios = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
+    getUsuarios()
+  }, [])
+
+  useEffect(() => {
     if (!usuarios) return
 
     if (usuarios) {
@@ -82,6 +86,17 @@ export const Usuarios = () => {
       setLoading(false)
     }
   }, [usuarios])
+
+  const getUsuarios = () => {
+    setLoading(true)
+    UsersApi.getAllUsers()
+      .then(([usuarios]) => {
+        setUsuarios(usuarios)
+      })
+      .catch(([_, code]) => {
+        setUsuarios([])
+      })
+  }
 
   const handleAdd = () => {
     navigate('/agregarUsuario')

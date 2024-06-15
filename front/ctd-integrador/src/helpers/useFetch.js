@@ -26,6 +26,25 @@ export const useGetFetch = (endpoint, initial) => {
   return [data, code]
 }
 
+export const getFetch = (endpoint, initial) => {
+  const promise = new Promise((resolve, reject) => {
+    axios
+      .get(endpoint)
+      .then((res) => {
+        resolve([res.data, Code.SUCCESS])
+      })
+      .catch((error) => {
+        let code = Code.SERVER_ERROR
+        if (error?.response?.status === 404) {
+          code = Code.NOT_FOUND
+        }
+        reject(initial, code)
+      })
+  })
+
+  return promise
+}
+
 export const postFetch = (endpoint, payload) => {
   const promise = new Promise((resolve, reject) => {
     axios

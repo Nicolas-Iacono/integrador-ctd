@@ -17,7 +17,6 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate } from 'react-router-dom'
 import { getInstruments, deleteInstrument } from '../../api/instruments'
-import { removeImage } from '../../api/images'
 import MainWrapper from '../common/MainWrapper'
 import { MessageDialog } from '../common/MessageDialog'
 import {
@@ -56,7 +55,7 @@ const headCells = [
 ]
 
 export const Instruments = () => {
-  const [instruments] = getInstruments()
+  const [instruments, setInstruments] = useState()
   const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(true)
   const [order, setOrder] = useState('asc')
@@ -71,11 +70,26 @@ export const Instruments = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
+    getAllInstruments()
+  }, [])
+
+  useEffect(() => {
     if (!instruments) return
 
     setRows(instruments.data)
     setLoading(false)
   }, [instruments])
+
+  const getAllInstruments = () => {
+    setLoading(true)
+    getInstruments()
+      .then(([instruments, _]) => {
+        setInstruments(instruments)
+      })
+      .catch(([_, code]) => {
+        setInstruments([])
+      })
+  }
 
   const handleAdd = () => {
     navigate('/agregarInstrumento')
@@ -106,9 +120,7 @@ export const Instruments = () => {
 
   const handleDelete = () => {
     setShowMessage(false)
-    removeImages().then(() => {
-      deleteSelectedInstrument()
-    })
+    deleteSelectedInstrument()
   }
 
   const deleteSelectedInstrument = () => {
@@ -130,33 +142,8 @@ export const Instruments = () => {
       .finally(() => {
         setSelected([])
         setShowMessage(true)
+        getAllInstruments()
       })
-  }
-
-  const removeImages = () => {
-    return new Promise((resolve, reject) => {
-      const idInstrument = selected[0]
-      const instrument = rows.filter((row) => row.idInstrument === idInstrument)
-      const images = instrument[0].imageUrls
-      const imagesToUpdate = []
-
-      if (images.length === 0) resolve()
-
-      images.forEach((image) => {
-        removeImage(image.idImage, idInstrument)
-          .then(() => {
-            imagesToUpdate.push('ok')
-          })
-          .catch(() => {
-            imagesToUpdate.push('nok')
-          })
-          .finally(() => {
-            if (imagesToUpdate.length === images.length) {
-              resolve()
-            }
-          })
-      })
-    })
   }
 
   const handleClose = () => {

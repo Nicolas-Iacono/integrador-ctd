@@ -1,5 +1,6 @@
 import {
   useGetFetch,
+  getFetch,
   postFetch,
   putFetch,
   deleteFetch
@@ -21,7 +22,7 @@ const URL_DELETE_ROLE_USER =
 
 export const UsersApi = {
   getAllUsers: () => {
-    return useGetFetch(URL_GET_USERS)
+    return getFetch(URL_GET_USERS)
   },
 
   getUserById: (id) => {

@@ -28,7 +28,9 @@ const initialState = {
   ],
   searchOptions: {
     found: undefined
-  }
+  },
+  categoryCreated: undefined,
+  categoryUpdated: undefined
 }
 
 const ContextGlobal = createContext()
@@ -43,6 +45,16 @@ const appReducer = (state, action) => {
         searchOptions: {
           found: action.payload.found
         }
+      }
+    case actions.CATEGORY_CREATED:
+      return {
+        ...state,
+        categoryCreated: action.payload.created
+      }
+    case actions.CATEGORY_UPDATED:
+      return {
+        ...state,
+        categoryUpdated: action.payload.updated
       }
     default:
       return state

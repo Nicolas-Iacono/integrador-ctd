@@ -1,5 +1,6 @@
 import {
   useGetFetch,
+  getFetch,
   postFetch,
   putFetch,
   deleteFetch
@@ -8,7 +9,23 @@ import {
 const URL_CATEGORIES = 'https://music-house.up.railway.app/api/category'
 
 export const getCategories = () => {
-  return useGetFetch(`${URL_CATEGORIES}/all`)
+  return getFetch(`${URL_CATEGORIES}/all`)
+}
+
+export const getCategoryById = (idCategory) => {
+  return getFetch(`${URL_CATEGORIES}/search/${idCategory}`)
+}
+
+export const createCategory = ({ categoryName, description }) => {
+  return postFetch(`${URL_CATEGORIES}/create`, { categoryName, description })
+}
+
+export const updateCategory = ({ idCategory, categoryName, description }) => {
+  return putFetch(`${URL_CATEGORIES}/update`, {
+    idCategory,
+    categoryName,
+    description
+  })
 }
 
 export const deleteCategory = (idCategory) => {

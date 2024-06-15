@@ -13,6 +13,8 @@ import { Usuarios } from './components/Pages/Admin/Usuarios'
 import CrearUsuario from './components/Pages/CrearUsuario'
 import EditUser from './components/Form/formUsuario/EditUser'
 import { Categories } from './components/Pages/Admin/categories'
+import { AgregarCategoria } from './components/Pages/Admin/AgregarCategoria'
+import { EditarCategoria } from './components/Pages/Admin/EditarCategoria'
 import { Favorites } from './components/Pages/Favorites'
 import { HeaderVisibilityProvider } from './components/utils/context/HeaderVisibilityGlobal'
 import { AuthContextProvider } from './components/utils/context/AuthGlobal'
@@ -60,6 +62,14 @@ export const App = () => {
                         element={<EditarInstrumento />}
                       />
                     </Route>
+                    <Route
+                      path="/agregarCategoria"
+                      element={<AgregarCategoria />}
+                    />
+                    <Route
+                      path="/editarCategoria/:id"
+                      element={<EditarCategoria />}
+                    />
                     <Route element={<ProtectedRoute />}>
                       <Route path="/favorites" element={<Favorites />} />
                     </Route>

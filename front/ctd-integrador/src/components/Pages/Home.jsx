@@ -20,7 +20,13 @@ export const Home = () => {
   const { searchOptions } = state
   const [selectedInstruments, setSelectedInstruments] = useState([])
   const [loading, setLoading] = useState(true)
-  const [instruments] = getInstruments()
+  const [instruments, setInstruments] = useState()
+
+  useEffect(() => {
+    getInstruments().then(([instruments, _]) => {
+      setInstruments(instruments)
+    })
+  }, [])
 
   useEffect(() => {
     if (instruments && instruments.data) {

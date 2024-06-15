@@ -9,13 +9,23 @@ const CategorySelect = ({
 }) => {
   const [loading, setLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState('')
-  const [categories] = getCategories()
+  const [categories, setCategories] = useState()
 
   useEffect(() => {
-    if (!categories) return
+    getAllGategories()
+  }, [])
 
-    setLoading(false)
-  }, [categories])
+  const getAllGategories = () => {
+    setLoading(true)
+    getCategories()
+      .then(([categories, _]) => {
+        setCategories(categories)
+      })
+      .catch(([_, code]) => {
+        setCategories([])
+      })
+      .finally(() => setLoading(false))
+  }
 
   useEffect(() => {
     if (!selectedCategoryId || !categories) return
@@ -49,11 +59,12 @@ const CategorySelect = ({
       label={label}
       color="secondary"
     >
-      {categories?.data?.map((category, index) => (
-        <MenuItem key={`category-select-${index}`} value={category}>
-          {category.categoryName}
-        </MenuItem>
-      ))}
+      {!loading &&
+        categories?.data?.map((category, index) => (
+          <MenuItem key={`category-select-${index}`} value={category}>
+            {category.categoryName}
+          </MenuItem>
+        ))}
     </Select>
   )
 }

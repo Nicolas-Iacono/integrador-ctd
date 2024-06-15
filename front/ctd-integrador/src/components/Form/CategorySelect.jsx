@@ -1,6 +1,6 @@
 import { Select, MenuItem } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { getCategories } from '../../api/instruments'
+import { getCategories } from '../../api/categories'
 
 const CategorySelect = ({
   label,

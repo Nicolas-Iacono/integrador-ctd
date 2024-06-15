@@ -12,6 +12,7 @@ import { EditarInstrumento } from './components/Pages/Admin/EditarInstrumento'
 import { Usuarios } from './components/Pages/Admin/Usuarios'
 import CrearUsuario from './components/Pages/CrearUsuario'
 import EditUser from './components/Form/formUsuario/EditUser'
+import { Categories } from './components/Pages/Admin/categories'
 import { Favorites } from './components/Pages/Favorites'
 import { HeaderVisibilityProvider } from './components/utils/context/HeaderVisibilityGlobal'
 import { AuthContextProvider } from './components/utils/context/AuthGlobal'
@@ -49,6 +50,7 @@ export const App = () => {
                     <Route element={<ProtectedRoute role="ADMIN" />}>
                       <Route path="/instruments" element={<Instruments />} />
                       <Route path="/usuarios" element={<Usuarios />} />
+                      <Route path="/categories" element={<Categories />} />
                       <Route
                         path="/agregarInstrumento"
                         element={<AgregarInstrumento />}

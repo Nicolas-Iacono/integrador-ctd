@@ -12,6 +12,8 @@ export const MessageDialog = ({
   message,
   isOpen,
   buttonText,
+  onButtonPressed,
+  showCancelButton = false,
   onClose
 }) => {
   return (
@@ -21,10 +23,17 @@ export const MessageDialog = ({
         <DialogContentText>{message}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="secondary">
+        <Button onClick={onButtonPressed} color="secondary">
           {buttonText}
         </Button>
       </DialogActions>
+      {showCancelButton && (
+        <DialogActions>
+          <Button onClick={onClose} color="secondary">
+            Cancelar
+          </Button>
+        </DialogActions>
+      )}
     </ScreenModal>
   )
 }

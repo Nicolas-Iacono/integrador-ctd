@@ -93,11 +93,9 @@ const EditUser = ({ onSwitch }) => {
     // Aquí puedes enviar los datos del formulario a través de una función prop o realizar otras acciones
     UsersApi.updateUser(formDataToSend)
       .then((response) => {
-        console.log('respuesta del servidor: ', response.data)
         setIsUserUpdated(true)
       })
       .catch((error) => {
-        console.error('Error en la solicitud:', error)
         setMessage(
           'No fue posible guardar usuario. Por favor, vuelve a intentarlo'
         )
@@ -156,6 +154,7 @@ const EditUser = ({ onSwitch }) => {
               isOpen={showMessage}
               buttonText="Ok"
               onClose={onClose}
+              onButtonPressed={onClose}
             />
           </BoxFormUnder>
         )}

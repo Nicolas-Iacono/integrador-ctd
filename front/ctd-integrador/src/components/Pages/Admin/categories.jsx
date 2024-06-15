@@ -16,10 +16,9 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate } from 'react-router-dom'
-import { getInstruments, deleteInstrument } from '../../api/instruments'
-import { removeImage } from '../../api/images'
-import MainWrapper from '../common/MainWrapper'
-import { MessageDialog } from '../common/MessageDialog'
+import { getCategories, deleteCategory } from '../../../api/categories'
+import MainWrapper from '../../common/MainWrapper'
+import { MessageDialog } from '../../common/MessageDialog'
 import {
   EnhancedTableHead,
   EnhancedTableToolbar,
@@ -30,22 +29,26 @@ import {
   handleSelected,
   getEmptyRows,
   useVisibleRows
-} from './Admin/common/tableHelper'
-
-import '../styles/instruments.styles.css'
+} from '../Admin/common/tableHelper'
 
 const headCells = [
   {
-    id: 'idInstrument',
+    id: 'idCategory',
     numeric: true,
     disablePadding: false,
     label: 'ID'
   },
   {
-    id: 'name',
+    id: 'categoryName',
     numeric: false,
     disablePadding: false,
     label: 'Nombre'
+  },
+  {
+    id: 'description',
+    numeric: false,
+    disablePadding: false,
+    label: 'Descripción'
   },
   {
     id: 'actions',
@@ -55,8 +58,8 @@ const headCells = [
   }
 ]
 
-export const Instruments = () => {
-  const [instruments] = getInstruments()
+export const Categories = () => {
+  const [categories] = getCategories()
   const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(true)
   const [order, setOrder] = useState('asc')
@@ -71,18 +74,18 @@ export const Instruments = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!instruments) return
+    if (!categories) return
 
-    setRows(instruments.data)
+    setRows(categories.data)
     setLoading(false)
-  }, [instruments])
+  }, [categories])
 
   const handleAdd = () => {
-    navigate('/agregarInstrumento')
+    navigate('/agregarCategoria')
   }
 
   const handleSelectAllClick = (event) => {
-    handleSelectAll(event, rows, 'idInstrument', setSelected)
+    handleSelectAll(event, rows, 'idCategory', setSelected)
   }
 
   const handleClick = (event, id) => {
@@ -94,35 +97,27 @@ export const Instruments = () => {
   }
 
   const handleEdit = (id) => {
-    navigate(`/editarInstrumento/${id}`)
+    navigate(`/editarCategoria/${id}`)
   }
 
   const handleConfirmDelete = () => {
-    setMessage('¿Desea eliminar este instrumento?')
+    setMessage('¿Desea eliminar esta categoría?')
     setShowCancelButton(true)
     setOnButtonPressed(true)
     setShowMessage(true)
   }
 
   const handleDelete = () => {
-    setShowMessage(false)
-    removeImages().then(() => {
-      deleteSelectedInstrument()
-    })
-  }
-
-  const deleteSelectedInstrument = () => {
-    const idInstrument = selected[0]
-
-    deleteInstrument(idInstrument)
+    const idCategory = selected[0]
+    deleteCategory(idCategory)
       .then(() => {
-        setMessage('Instrumento eliminado exitosamente')
+        setMessage('Categoría eliminada exitosamente')
         setShowCancelButton(false)
         setOnButtonPressed(false)
       })
       .catch(() => {
         setMessage(
-          'No fue posible eliminar instrumento. Por favor, vuelva a intentarlo'
+          'No fue posible eliminar categoría. Por favor, vuelva a intentarlo'
         )
         setShowCancelButton(false)
         setOnButtonPressed(false)
@@ -131,32 +126,6 @@ export const Instruments = () => {
         setSelected([])
         setShowMessage(true)
       })
-  }
-
-  const removeImages = () => {
-    return new Promise((resolve, reject) => {
-      const idInstrument = selected[0]
-      const instrument = rows.filter((row) => row.idInstrument === idInstrument)
-      const images = instrument[0].imageUrls
-      const imagesToUpdate = []
-
-      if (images.length === 0) resolve()
-
-      images.forEach((image) => {
-        removeImage(image.idImage, idInstrument)
-          .then(() => {
-            imagesToUpdate.push('ok')
-          })
-          .catch(() => {
-            imagesToUpdate.push('nok')
-          })
-          .finally(() => {
-            if (imagesToUpdate.length === images.length) {
-              resolve()
-            }
-          })
-      })
-    })
   }
 
   const handleClose = () => {
@@ -192,12 +161,13 @@ export const Instruments = () => {
           display: { xs: 'none', lg: 'initial' },
           width: '100%',
           mb: 2,
-          maxWidth: 1200
+          maxWidth: 1200,
+          minHeight: '50vh'
         }}
       >
         <EnhancedTableToolbar
-          title="Instrumentos"
-          titleAdd="Agregar instrumento"
+          title="Categorías"
+          titleAdd="Agregar categoría"
           handleAdd={handleAdd}
           numSelected={selected.length}
         />
@@ -218,7 +188,7 @@ export const Instruments = () => {
             />
             <TableBody>
               {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.idInstrument, selected)
+                const isItemSelected = isSelected(row.idCategory, selected)
                 const labelId = `enhanced-table-checkbox-${index}`
                 const isRowEven = index % 2 === 0
 
@@ -228,11 +198,11 @@ export const Instruments = () => {
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row.idInstrument}
+                    key={row.idCategory}
                     selected={isItemSelected}
                     className={isRowEven ? 'table-row-even' : 'table-row-odd'}
                     sx={{ cursor: 'pointer' }}
-                    onClick={(event) => handleClick(event, row.idInstrument)}
+                    onClick={(event) => handleClick(event, row.idCategory)}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
@@ -249,14 +219,13 @@ export const Instruments = () => {
                       scope="row"
                       align="center"
                     >
-                      {row.idInstrument}
+                      {row.idCategory}
                     </TableCell>
-                    <TableCell align="left">{row.name}</TableCell>
+                    <TableCell align="left">{row.categoryName}</TableCell>
+                    <TableCell align="left">{row.description}</TableCell>
                     <TableCell align="left" className="actions-cell">
                       <Tooltip title="Editar">
-                        <IconButton
-                          onClick={() => handleEdit(row.idInstrument)}
-                        >
+                        <IconButton onClick={() => handleEdit(row.idCategory)}>
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
@@ -313,7 +282,7 @@ export const Instruments = () => {
         </Typography>
       </Box>
       <MessageDialog
-        title="Eliminar Instrumento"
+        title="Eliminar Categoría"
         message={message}
         isOpen={showMessage}
         buttonText="Ok"
@@ -326,5 +295,3 @@ export const Instruments = () => {
     </MainWrapper>
   )
 }
-
-export default Instruments

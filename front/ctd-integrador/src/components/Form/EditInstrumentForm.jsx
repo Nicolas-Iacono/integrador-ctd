@@ -151,6 +151,7 @@ const EditInstrumentForm = ({ id, onSaved }) => {
         isOpen={showMessage}
         buttonText="Ok"
         onClose={onClose}
+        onButtonPressed={onClose}
       />
     </Box>
   )

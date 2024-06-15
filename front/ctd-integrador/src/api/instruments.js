@@ -1,41 +1,40 @@
-import { useGetFetch, postFetch, putFetch } from '../helpers/useFetch'
+import {
+  useGetFetch,
+  postFetch,
+  putFetch,
+  deleteFetch
+} from '../helpers/useFetch'
+
+const URL_INSTRUMENTS = 'https://music-house.up.railway.app/api/instrument'
+const URL_THEMES = 'https://music-house.up.railway.app/api/theme'
 
 export const getInstruments = () => {
-  return useGetFetch('https://music-house.up.railway.app/api/instrument/all')
+  return useGetFetch(`${URL_INSTRUMENTS}/all`)
 }
 
 export const getInstrumentById = (id) => {
-  return useGetFetch(
-    `https://music-house.up.railway.app/api/instrument/search/${id}`
-  )
-}
-
-export const getCategories = () => {
-  return useGetFetch('https://music-house.up.railway.app/api/category/all')
+  return useGetFetch(`${URL_INSTRUMENTS}/search/${id}`)
 }
 
 export const getThemes = () => {
-  return useGetFetch('https://music-house.up.railway.app/api/theme/all')
+  return useGetFetch(`${URL_THEMES}/all`)
 }
 
 export const createInstrument = (payload) => {
-  return postFetch(
-    'https://music-house.up.railway.app/api/instrument/create',
-    payload
-  )
+  return postFetch(`${URL_INSTRUMENTS}/create`, payload)
 }
 
 export const updateInstrument = (payload) => {
-  return putFetch(
-    'https://music-house.up.railway.app/api/instrument/update',
-    payload
-  )
+  return putFetch(`${URL_INSTRUMENTS}/update`, payload)
+}
+
+export const deleteInstrument = (idInstrument) => {
+  return deleteFetch(`${URL_INSTRUMENTS}/delete/${idInstrument}`)
 }
 
 export const searchInstrumentsByName = (name) => {
   return useGetFetch(
-    `https://music-house.up.railway.app/api/instrument/find/name/${name}`,
+    `${URL_INSTRUMENTS}/find/name/${name}`,
     (!name || name === '') && []
   )
 }
-

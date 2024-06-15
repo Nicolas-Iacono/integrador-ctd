@@ -40,6 +40,7 @@ const pagesDesktop = [
   { to: '/', text: 'Inicio', any: true },
   { to: '/instruments', text: 'Instrumentos', admin: true },
   { to: '/usuarios', text: 'Usuarios', admin: true },
+  { to: '/categories', text: 'Categorías', admin: true },
   { to: '/about', text: 'Acerca de', anonymous: true, user: true },
   { to: '/contact', text: 'Contáctanos', anonymous: true, user: true },
   { to: '/favorites', text: 'Favoritos', user: true }

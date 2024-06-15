@@ -78,7 +78,6 @@ export const Finder = () => {
   }, [instruments, instrumentsSearchCode])
 
   const handleKeyUp = (keyCode) => {
-    console.log(keyCode)
     if (keyCode === 27) {
       setSearchPattern('')
       setDateFrom(null)

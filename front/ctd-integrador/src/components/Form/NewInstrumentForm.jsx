@@ -58,6 +58,7 @@ const NewInstrumentForm = () => {
         isOpen={showMessage}
         buttonText="Ok"
         onClose={onClose}
+        onButtonPressed={onClose}
       />
     </>
   )

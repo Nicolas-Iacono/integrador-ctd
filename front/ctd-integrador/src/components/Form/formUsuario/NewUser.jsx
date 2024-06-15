@@ -50,14 +50,12 @@ const NewUser = ({ onSwitch }) => {
     // Aquí puedes enviar los datos del formulario a través de una función prop o realizar otras acciones
     UsersApi.registerUser(formDataToSend)
       .then((response) => {
-        console.log('respuesta del servidor: ', response.data)
         setMessage(
           `Usuario registrado exitosamente.${isUserAdmin ? '' : ' Ya puedes iniciar sesión'}`
         )
         setIsUserCreated(true)
       })
       .catch((error) => {
-        console.error('Error en la solicitud:', error)
         setMessage(
           'No se pudo registrar usuario\nPor favor, vuelve a intentarlo'
         )
@@ -79,6 +77,7 @@ const NewUser = ({ onSwitch }) => {
         isOpen={showMessage}
         buttonText="Ok"
         onClose={onClose}
+        onButtonPressed={onClose}
       />
     </>
   )

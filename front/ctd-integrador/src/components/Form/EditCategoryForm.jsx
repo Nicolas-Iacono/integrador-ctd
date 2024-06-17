@@ -3,6 +3,7 @@ import { Box } from '@mui/material'
 import { CategoryForm } from './CategoryForm'
 import { getCategoryById, updateCategory } from '../../api/categories'
 import { MessageDialog } from '../common/MessageDialog'
+import { Loader } from '../common/loader/Loader'
 
 export const EditCategoryForm = ({ id, onSaved }) => {
   const [category, setCategory] = useState()
@@ -59,7 +60,7 @@ export const EditCategoryForm = ({ id, onSaved }) => {
   }
 
   if (loading) {
-    return <p>Loading...</p>
+    return <Loader title="Un momento por favor" />
   }
 
   return (

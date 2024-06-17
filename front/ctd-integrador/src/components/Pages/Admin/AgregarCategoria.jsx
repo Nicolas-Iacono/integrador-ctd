@@ -12,7 +12,7 @@ export const AgregarCategoria = () => {
   return (
     <main>
       <CreateWrapper isHeaderVisible={isHeaderVisible}>
-        <Typography sx={{ fontSize: '35px' }}>Crear Instrumento</Typography>
+        <Typography sx={{ fontSize: '35px' }}>Crear Categoría</Typography>
         <NewCategoryForm />
       </CreateWrapper>
       <Box

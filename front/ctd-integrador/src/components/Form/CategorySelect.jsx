@@ -1,6 +1,7 @@
 import { Select, MenuItem } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { getCategories } from '../../api/categories'
+import { Loader } from '../common/loader/Loader'
 
 const CategorySelect = ({
   label,
@@ -45,7 +46,7 @@ const CategorySelect = ({
   }, [selectedCategory])
 
   if (loading) {
-    return <p>Loading...</p>
+    return <Loader fullSize={false} />
   }
 
   const handleCategoryChange = (event) => {

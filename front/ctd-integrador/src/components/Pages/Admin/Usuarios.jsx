@@ -30,6 +30,7 @@ import {
   useVisibleRows
 } from './common/tableHelper'
 import { MessageDialog } from '../../common/MessageDialog'
+import { Loader } from '../../common/loader/Loader'
 
 const headCells = [
   {
@@ -174,7 +175,7 @@ export const Usuarios = () => {
 
   const visibleRows = useVisibleRows(rows, order, orderBy, page, rowsPerPage)
 
-  if (loading) return <p>Loading...</p>
+  if (loading) return <Loader title="Cargando usuarios" />
 
   return (
     <>

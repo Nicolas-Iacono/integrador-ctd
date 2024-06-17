@@ -15,6 +15,7 @@ import { No } from '../Images/No'
 import { Favorite } from '@mui/icons-material'
 import { FavoriteIconWrapper } from '../common/favorito/FavoriteIcon'
 import { InstrumentTerms } from '../common/terms/InstrumentTerms'
+import { Loader } from '../common/loader/Loader'
 import {
   addFavorite,
   removeFavorite,
@@ -97,6 +98,7 @@ export const Instrument = () => {
   return (
     <main>
       <MainWrapper sx={{ alignItems: 'center', position: 'relative' }}>
+        {loading && <Loader title="Cargando detalle del instrumento" />}
         {!loading && (
           <>
             {isUser && (

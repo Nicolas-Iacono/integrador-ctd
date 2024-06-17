@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { getInstruments, deleteInstrument } from '../../api/instruments'
 import MainWrapper from '../common/MainWrapper'
 import { MessageDialog } from '../common/MessageDialog'
+import { Loader } from '../common/loader/Loader'
 import {
   EnhancedTableHead,
   EnhancedTableToolbar,
@@ -173,7 +174,7 @@ export const Instruments = () => {
 
   const visibleRows = useVisibleRows(rows, order, orderBy, page, rowsPerPage)
 
-  if (loading) return <p>Loading...</p>
+  if (loading) return <Loader title="Cargando instrumentos" />
 
   return (
     <MainWrapper>

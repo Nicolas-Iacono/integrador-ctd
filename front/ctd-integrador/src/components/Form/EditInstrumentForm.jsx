@@ -8,6 +8,7 @@ import {
   formDataToCharacteristics
 } from '../utils/editInstrument'
 import { MessageDialog } from '../common/MessageDialog'
+import { Loader } from '../common/loader/Loader'
 
 const EditInstrumentForm = ({ id, onSaved }) => {
   const [instrument, setInstrument] = useState(0)
@@ -148,7 +149,7 @@ const EditInstrumentForm = ({ id, onSaved }) => {
   }
 
   if (loading) {
-    return <p>Loading...</p>
+    return <Loader title="Un momento por favor" />
   }
 
   return (

@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { getCategories, deleteCategory } from '../../../api/categories'
 import MainWrapper from '../../common/MainWrapper'
 import { MessageDialog } from '../../common/MessageDialog'
+import { Loader } from '../../common/loader/Loader'
 import {
   EnhancedTableHead,
   EnhancedTableToolbar,
@@ -177,7 +178,7 @@ export const Categories = () => {
 
   const visibleRows = useVisibleRows(rows, order, orderBy, page, rowsPerPage)
 
-  if (loading) return <p>Loading...</p>
+  if (loading) return <Loader title="Cargando categorías" />
 
   return (
     <MainWrapper>

@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react'
-import CssBaseline from '@mui/material/CssBaseline'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
-import Container from '@mui/material/Container'
+import { CssBaseline, Typography, Box, Container } from '@mui/material'
 import { useAppStates } from '../utils/global.context'
 import { getInstruments } from '../../api/instruments'
 import { actions } from '../utils/actions'
@@ -10,6 +7,7 @@ import MainWrapper from '../common/MainWrapper'
 import TematicCard from '../common/TematicCard'
 import ProductsWrapper from '../common/ProductsWrapper'
 import ProductCard from '../common/ProductCard'
+import { Loader } from '../common/loader/Loader'
 import { useHeaderVisibility } from '../utils/context/HeaderVisibilityGlobal'
 
 import '../styles/home.styles.css'
@@ -53,7 +51,7 @@ export const Home = () => {
     }
   }, [searchOptions])
 
-  if (loading) return <p>Loading...</p>
+  if (loading) return <Loader title="Un momento por favor..." />
 
   return (
     <main>

@@ -5,6 +5,7 @@ import { Box, Typography } from '@mui/material'
 import { MessageDialog } from '../../common/MessageDialog'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { MainCrearUsuario } from '../../common/crearUsuario/MainCrearUsuario'
+import { Loader } from '../../common/loader/Loader'
 import BoxLogoSuperior from '../../common/crearUsuario/BoxLogoSuperior'
 import BoxFormUnder from '../../common/crearUsuario/BoxFormUnder'
 import { Logo } from '../../Images/Logo'
@@ -128,7 +129,7 @@ const EditUser = ({ onSwitch }) => {
   }
 
   if (loading) {
-    return <p>Loading...</p>
+    return <Loader title="Un momento por favor" />
   }
 
   return (

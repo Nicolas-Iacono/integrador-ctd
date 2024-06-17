@@ -29,6 +29,7 @@ import {
   getEmptyRows,
   useVisibleRows
 } from './common/tableHelper'
+import { MessageDialog } from '../../common/MessageDialog'
 
 const headCells = [
   {
@@ -72,6 +73,10 @@ export const Usuarios = () => {
   const [selected, setSelected] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
+  const [showMessage, setShowMessage] = useState(false)
+  const [message, setMessage] = useState()
+  const [showCancelButton, setShowCancelButton] = useState(false)
+  const [onButtonPressed, setOnButtonPressed] = useState()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -116,6 +121,43 @@ export const Usuarios = () => {
 
   const handleEdit = (idUser) => {
     navigate(`/editarUsuario/${idUser}`)
+  }
+
+  const handleConfirmDelete = () => {
+    setMessage('¿Desea eliminar este usuario?')
+    setShowCancelButton(true)
+    setOnButtonPressed(true)
+    setShowMessage(true)
+  }
+
+  const handleClose = () => {
+    setShowMessage(false)
+    setSelected([])
+  }
+  const handleDelete = () => {
+    setShowMessage(false)
+    deleteSelectedUser()
+  }
+
+  const deleteSelectedUser = () => {
+    const idUser = selected[0]
+
+    UsersApi.deleteUser(idUser)
+      .then(() => {
+        setMessage('Usuario eliminado exitosamente')
+        setShowCancelButton(false)
+        setOnButtonPressed(false)
+      })
+      .catch(() => {
+        setMessage('No fue posible eliminar usuario')
+        setShowCancelButton(false)
+        setOnButtonPressed(false)
+      })
+      .finally(() => {
+        setSelected([])
+        setShowMessage(true)
+        getUsuarios()
+      })
   }
 
   const handleChangePage = (event, newPage) => {
@@ -216,6 +258,11 @@ export const Usuarios = () => {
                                 <EditIcon />
                               </IconButton>
                             </Tooltip>
+                            <Tooltip title="Eliminar">
+                              <IconButton onClick={handleConfirmDelete}>
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
                           </TableCell>
                         </TableRow>
                       )
@@ -263,6 +310,17 @@ export const Usuarios = () => {
               Funcionalidad no disponible en esta resolución
             </Typography>
           </Box>
+          <MessageDialog
+            title="Eliminar usuario"
+            message={message}
+            isOpen={showMessage}
+            buttonText="Ok"
+            onClose={handleClose}
+            onButtonPressed={() =>
+              onButtonPressed ? handleDelete() : handleClose()
+            }
+            showCancelButton={showCancelButton}
+          />
         </MainWrapper>
       )}
     </>

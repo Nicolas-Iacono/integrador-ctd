@@ -30,6 +30,7 @@ import {
   getEmptyRows,
   useVisibleRows
 } from './Admin/common/tableHelper'
+import { Code } from '../../api/constants'
 
 import '../styles/instruments.styles.css'
 
@@ -132,9 +133,11 @@ export const Instruments = () => {
         setShowCancelButton(false)
         setOnButtonPressed(false)
       })
-      .catch(() => {
+      .catch(([error, code]) => {
         setMessage(
-          'No fue posible eliminar instrumento. Por favor, vuelva a intentarlo'
+          code === Code.BAD_REQUEST
+            ? 'Existen reservas asociadad al instrumento, no es posible eliminarlo'
+            : 'No fue posible eliminar instrumento.'
         )
         setShowCancelButton(false)
         setOnButtonPressed(false)

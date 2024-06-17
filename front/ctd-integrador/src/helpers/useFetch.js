@@ -38,7 +38,7 @@ export const getFetch = (endpoint, initial) => {
         if (error?.response?.status === 404) {
           code = Code.NOT_FOUND
         }
-        reject(initial, code)
+        reject([initial, code])
       })
   })
 
@@ -78,7 +78,19 @@ export const deleteFetch = (endpoint, payload) => {
     axios
       .delete(endpoint, { data: payload })
       .then((res) => resolve(res.data))
-      .catch((error) => reject(error))
+      .catch((error) => {
+        let code = Code.SERVER_ERROR
+        if (error?.response?.status === 404) {
+          code = Code.NOT_FOUND
+        }
+        if (error?.response?.status === 404) {
+          code = Code.BAD_REQUEST
+        }
+
+        reject([error?.response?.data?.message, code])
+
+        reject(error)
+      })
   })
 
   return promise

@@ -14,6 +14,7 @@ import { Si } from '../Images/Si'
 import { No } from '../Images/No'
 import { Favorite } from '@mui/icons-material'
 import { FavoriteIconWrapper } from '../common/favorito/FavoriteIcon'
+import { InstrumentTerms } from '../common/terms/InstrumentTerms'
 import {
   addFavorite,
   removeFavorite,
@@ -313,7 +314,7 @@ export const Instrument = () => {
               <Divider sx={{ width: '100%' }} />
               <Box sx={{ width: '100%' }}>
                 <Typography
-                  variant="h4"
+                  variant="h5"
                   sx={{
                     textAlign: 'center',
                     fontWeight: 'lighter'
@@ -323,34 +324,40 @@ export const Instrument = () => {
                 </Typography>
               </Box>
               {user && !isUserAdmin && (
-                <Box
-                  sx={{
-                    flexGrow: 1,
-                    display: 'flex',
-                    alignItems: 'center',
-                    flexDirection: 'row-reverse',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <Tooltip title="Reservar">
-                    <Button
-                      variant="contained"
-                      sx={{
-                        borderRadius: '1rem',
-                        padding: '1.3rem',
-                        maxHeight: '4.5rem'
-                      }}
-                    >
-                      <Typography
-                        textAlign="center"
-                        sx={{ fontWeight: 'bold' }}
-                        variant="h6"
+                <>
+                  <Box
+                    sx={{
+                      flexGrow: 1,
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: 'row-reverse',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <Tooltip title="Reservar">
+                      <Button
+                        variant="contained"
+                        sx={{
+                          borderRadius: '1rem',
+                          padding: '1.3rem',
+                          maxHeight: '4.5rem'
+                        }}
                       >
-                        Reservar
-                      </Typography>
-                    </Button>
-                  </Tooltip>
-                </Box>
+                        <Typography
+                          textAlign="center"
+                          sx={{ fontWeight: 'bold' }}
+                          variant="h6"
+                        >
+                          Reservar
+                        </Typography>
+                      </Button>
+                    </Tooltip>
+                  </Box>
+                  <Box sx={{ width: '100%' }}>
+                    <Divider sx={{ width: '100%' }} />
+                    <InstrumentTerms />
+                  </Box>
+                </>
               )}
             </Box>
           </>

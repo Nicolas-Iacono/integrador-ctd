@@ -10,10 +10,5 @@ export const FooterWrapper = styled(Grid)(({ theme, backgroundImageUrl }) => ({
   backgroundSize: 'cover',
   backgroundPosition: 'center bottom',
   backgroundRepeat: 'no-repeat',
-  width: '100vw',
-  marginTop: 10,
-
-  [theme.breakpoints.up('md')]: {
-    height: 100
-  }
+  width: '100vw'
 }))

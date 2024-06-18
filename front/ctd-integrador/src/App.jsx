@@ -20,6 +20,7 @@ import { HeaderVisibilityProvider } from './components/utils/context/HeaderVisib
 import { AuthContextProvider } from './components/utils/context/AuthGlobal'
 import './App.css'
 import AuthPage from './components/Pages/AuthPage'
+import { NotFoundPage } from './components/Pages/NotFound'
 import { ProtectedRoute } from './components/common/routes/ProtectedRoute'
 
 export const App = () => {
@@ -81,6 +82,7 @@ export const App = () => {
                   <Route element={<ProtectedRoute role="ADMIN" />}>
                     <Route path="/agregarUsuario" element={<CrearUsuario />} />
                   </Route>
+                  <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </ContextProvider>
             </AuthContextProvider>

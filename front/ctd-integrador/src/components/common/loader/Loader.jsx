@@ -14,7 +14,6 @@ export const Loader = ({ title, fullSize = true }) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        display: 'flex',
         flexDirection: 'column',
         gap: title ? '2rem' : '0'
       }}

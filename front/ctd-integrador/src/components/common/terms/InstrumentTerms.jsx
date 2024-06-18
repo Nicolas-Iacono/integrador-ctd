@@ -17,8 +17,8 @@ export const InstrumentTerms = () => {
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'row',
-            gap: '2rem'
+            flexDirection: { xs: 'column', md: 'row' },
+            gap: { xs: '0', md: '2rem' }
           }}
         >
           <List
@@ -26,7 +26,8 @@ export const InstrumentTerms = () => {
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'flex-start',
-              width: '50%'
+              width: { xs: '100%', md: '50%' },
+              paddingBottom: { xs: '0', md: '.5rem' }
             }}
           >
             <ListItem>
@@ -57,7 +58,8 @@ export const InstrumentTerms = () => {
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'flex-start',
-              width: '50%'
+              width: { xs: '100%', md: '50%' },
+              paddingTop: { xs: '0', md: '.5rem' }
             }}
           >
             <ListItem>

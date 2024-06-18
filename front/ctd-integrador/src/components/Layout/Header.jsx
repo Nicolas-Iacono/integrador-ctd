@@ -32,7 +32,6 @@ import background from '../../assets/background.svg'
 const pagesMobile = [
   { to: '/', text: 'Inicio', any: true },
   { to: '/about', text: 'Acerca de', anonymous: true, user: true },
-  { to: '/contact', text: 'Contáctanos', anonymous: true, user: true },
   { to: '/favorites', text: 'Favoritos', user: true }
 ]
 
@@ -42,7 +41,6 @@ const pagesDesktop = [
   { to: '/usuarios', text: 'Usuarios', admin: true },
   { to: '/categories', text: 'Categorías', admin: true },
   { to: '/about', text: 'Acerca de', anonymous: true, user: true },
-  { to: '/contact', text: 'Contáctanos', anonymous: true, user: true },
   { to: '/favorites', text: 'Favoritos', user: true }
 ]
 const settings = ['Crear Cuenta', 'Iniciar sesión']

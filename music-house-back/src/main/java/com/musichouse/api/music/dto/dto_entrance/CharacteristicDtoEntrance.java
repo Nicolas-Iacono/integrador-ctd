@@ -31,4 +31,5 @@ public class CharacteristicDtoEntrance {
     @NotBlank(message = "El soporte para teléfono es obligatorio")
     @Size(max = 50, message = "El soporte para teléfono no puede tener más de {max} caracteres")
     private String phoneHolder;
+
 }

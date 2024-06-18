@@ -38,4 +38,7 @@ public class MailManager {
             throw new RuntimeException(e);
         }
     }
+
+
 }
+

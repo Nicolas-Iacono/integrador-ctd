@@ -10,14 +10,10 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressDtoExit {
-    private Long idAddress;
-    private Long idUser;
+public class PrivacyPolicyDtoExit {
+    private Long idPrivacyPolicy;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date registDate;
-    private String street;
-    private Long number;
-    private String city;
-    private String state;
-    private String country;
+    private String title;
+    private String content;
 }

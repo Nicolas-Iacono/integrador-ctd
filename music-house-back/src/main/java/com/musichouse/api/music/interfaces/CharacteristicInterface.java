@@ -6,6 +6,7 @@ import com.musichouse.api.music.exception.ResourceNotFoundException;
 
 import java.util.List;
 
+
 public interface CharacteristicInterface {
 
 

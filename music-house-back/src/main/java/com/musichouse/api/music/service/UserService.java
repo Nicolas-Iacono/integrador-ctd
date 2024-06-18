@@ -22,6 +22,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,6 +35,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
 
 @Service
 @AllArgsConstructor
@@ -47,6 +50,7 @@ public class UserService implements UserInterface {
     private final RolRepository rolRepository;
     private final AddressRepository addressRepository;
     private final PhoneRepository phoneRepository;
+    @Autowired
     private final MailManager mailManager;
 
 
@@ -125,11 +129,10 @@ public class UserService implements UserInterface {
         return tokenDtoSalida;
     }
 
-    @Override
     public List<UserDtoExit> getAllUser() {
-        List<UserDtoExit> userDtoExits = userRepository.findAll().stream()
-                .map(user -> mapper.map(user, UserDtoExit.class)).toList();
-        return userDtoExits;
+        return userRepository.findAll().stream()
+                .map(user -> mapper.map(user, UserDtoExit.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -161,6 +164,7 @@ public class UserService implements UserInterface {
         return mapper.map(userToUpdate, UserDtoExit.class);
 
     }
+
 
     @Override
     public void deleteUser(Long idUser) throws ResourceNotFoundException {

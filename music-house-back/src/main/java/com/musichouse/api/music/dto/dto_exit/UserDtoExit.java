@@ -22,4 +22,5 @@ public class UserDtoExit {
     private List<Role> roles;
     private List<AddressDtoExit> addresses;
     private List<PhoneDtoExit> phones;
+
 }

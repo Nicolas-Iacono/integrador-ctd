@@ -65,7 +65,7 @@ public class AddressService implements AddressInterface {
         if (address != null) {
             addressDtoExit = mapper.map(address, AddressDtoExit.class);
         } else {
-            throw new ResourceNotFoundException("Address not found with id: " + idAddress);
+            throw new ResourceNotFoundException("User not found with id: " + idAddress);
         }
 
         return addressDtoExit;
@@ -97,3 +97,10 @@ public class AddressService implements AddressInterface {
 
     }
 }
+
+
+
+
+
+
+

@@ -8,7 +8,6 @@ import com.musichouse.api.music.exception.ResourceNotFoundException;
 import java.util.List;
 
 public interface PhoneInterface {
-
     PhoneDtoExit addPhone(PhoneAddDtoEntrance phoneAddDtoEntrance) throws ResourceNotFoundException;
 
     List<PhoneDtoExit> getAllPhone();

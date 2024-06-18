@@ -8,7 +8,6 @@ import com.musichouse.api.music.exception.ResourceNotFoundException;
 import java.util.List;
 
 public interface AddressInterface {
-
     AddressDtoExit addAddress(AddressAddDtoEntrance addressAddDtoEntrance) throws ResourceNotFoundException;
 
     List<AddressDtoExit> getAllAddress();

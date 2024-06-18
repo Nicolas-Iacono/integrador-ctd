@@ -18,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/characteristic")
 public class CharacteristicController {
+
     private final CharacteristicService characteristicService;
 
     @GetMapping("/all")

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddressDtoModify {
-
     @NotNull(message = "El idAdrress  es obligatorio")
     @Positive(message = "El idAdrress debe ser un número positivo")
     private Long idAddress;
@@ -33,5 +32,4 @@ public class AddressDtoModify {
     @NotBlank(message = "El país es obligatorio")
     @Size(min = 2, max = 100, message = "El país debe tener entre {min} y {max} caracteres")
     private String country;
-
 }

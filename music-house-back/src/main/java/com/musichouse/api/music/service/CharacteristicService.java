@@ -57,6 +57,4 @@ public class CharacteristicService implements CharacteristicInterface {
         return mapper.map(characteristicsToUpdate, CharacteristicDtoExit.class);
 
     }
-
-
 }

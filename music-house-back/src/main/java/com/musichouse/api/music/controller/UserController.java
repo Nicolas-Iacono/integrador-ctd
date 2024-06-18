@@ -1,6 +1,5 @@
 package com.musichouse.api.music.controller;
 
-
 import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
@@ -8,6 +7,7 @@ import com.musichouse.api.music.service.UserService;
 import com.musichouse.api.music.util.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/search/{idUser}")
-    public ResponseEntity<ApiResponse<?>> searchUserById(@PathVariable Long idUser) {
+    public ResponseEntity<ApiResponse<UserDtoExit>> searchUserById(@PathVariable Long idUser) {
         try {
             UserDtoExit foundUser = userService.getUserById(idUser);
             return ResponseEntity.ok(new ApiResponse<>("Usuario encontrado.", foundUser));
@@ -42,16 +42,20 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ApiResponse<?>> updateUser(@Valid @RequestBody UserDtoModify userDtoModify) {
+    public ResponseEntity<ApiResponse<UserDtoExit>> updateUser(@Valid @RequestBody UserDtoModify userDtoModify) {
         try {
             UserDtoExit userDtoExit = userService.updateUser(userDtoModify);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse<>("Usuario actualizado con éxito.", userDtoExit));
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>("El correo electrónico ingresado ya está en uso. Por favor, elija otro correo electrónico.", null));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ApiResponse<>("No se encontró el usuario con el ID proporcionado.", null));
         }
     }
+
 
     @DeleteMapping("/delete/{idUser}")
     public ResponseEntity<?> deleteUser(@PathVariable Long idUser) {

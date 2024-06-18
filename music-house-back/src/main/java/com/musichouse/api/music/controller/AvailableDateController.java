@@ -25,14 +25,14 @@ public class AvailableDateController {
     private final AvailableDateService availableDateService;
 
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse<?>> addAvailableDate(@RequestBody @Valid AvailableDateDtoEntrance availableDateDtoEntrance) {
+    public ResponseEntity<ApiResponse<?>> addAvailableDates(@RequestBody @Valid List<AvailableDateDtoEntrance> availableDatesDtoList) {
         try {
-            AvailableDateDtoExit availableDateDtoExit = availableDateService.addAvailableDate(availableDateDtoEntrance);
+            List<AvailableDateDtoExit> addedDates = availableDateService.addAvailableDates(availableDatesDtoList);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>("Fecha Disponible agregadas exitosamente.", availableDateDtoExit));
+                    .body(new ApiResponse<>("Fechas disponibles agregadas exitosamente.", addedDates));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>("No se encontro  el instrumento con el ID :" + availableDateDtoEntrance.getIdInstrument(), null));
+                    .body(new ApiResponse<>("No se encontró el instrumento con el ID proporcionado", null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(e.getMessage(), null));
@@ -55,6 +55,21 @@ public class AvailableDateController {
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ApiResponse<>("No se encontró la fecha disponible con el ID :" + idAvailableDate, null));
+        }
+    }
+
+    @GetMapping("/find/all/{idInstrument}/instrument")
+    public ResponseEntity<ApiResponse<List<AvailableDateDtoExit>>> findAllAvailableDatesByInstrumentId(
+            @PathVariable Long idInstrument) {
+        try {
+            List<AvailableDateDtoExit> availableDates = availableDateService.findByInstrumentIdInstrument(idInstrument);
+            return ResponseEntity.ok(new ApiResponse<>("Lista de fechas disponibles asociadas al instrumento exitosa.", availableDates));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(e.getMessage(), null));
         }
     }
 
@@ -94,12 +109,17 @@ public class AvailableDateController {
             }
             List<AvailableDateDtoExit> availableDates = availableDateService.findAllInstrumentsOfADates(dateAvailable);
             return ResponseEntity.ok(new ApiResponse<>("Lista de fechas disponibles exitosa.", availableDates));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(e.getMessage(), null));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(e.getMessage(), null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(e.getMessage(), null));
         }
     }
-
     @GetMapping("/find/all/{dateAvailable}/{idInstrument}")
     public ResponseEntity<ApiResponse<List<AvailableDateDtoExit>>> findAllAvailableDatesByInstrumentId(
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateAvailable,
@@ -110,6 +130,12 @@ public class AvailableDateController {
             }
             List<AvailableDateDtoExit> availableDates = availableDateService.findAllAvailableDatesByInstrumentId(dateAvailable, idInstrument);
             return ResponseEntity.ok(new ApiResponse<>("Lista de fechas disponibles exitosa.", availableDates));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(e.getMessage(), null));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(e.getMessage(), null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(e.getMessage(), null));
@@ -128,6 +154,9 @@ public class AvailableDateController {
             }
             List<AvailableDateDtoExit> availableDates = availableDateService.findAllInstrumentByDatesRange(startDate, endDate);
             return ResponseEntity.ok(new ApiResponse<>("Lista de fechas disponibles exitosa.", availableDates));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(e.getMessage(), null));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse<>(e.getMessage(), null));
@@ -150,9 +179,16 @@ public class AvailableDateController {
             }
             List<AvailableDateDtoExit> availableDates = availableDateService.findAvailableDatesByInstrumentIDAndRange(startDate, endDate, idInstrument);
             return ResponseEntity.ok(new ApiResponse<>("Lista de fechas disponibles exitosa.", availableDates));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(e.getMessage(), null));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(e.getMessage(), null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(e.getMessage(), null));
         }
     }
+
 }

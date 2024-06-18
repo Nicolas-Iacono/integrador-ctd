@@ -22,7 +22,7 @@ public class ImageUrlsController {
 
     private final ImageUrlsService imageUrlsService;
 
-    @PostMapping("/addimage")
+    @PostMapping("/add_image")
     public ResponseEntity<ApiResponse<?>> createImageUrls(@RequestBody @Valid ImageUrlsDtoEntrance imageUrlsDtoEntrance) {
         try {
             ImagesUrlsDtoExit imagesUrlsDtoExit = imageUrlsService.addImageUrls(imageUrlsDtoEntrance);
@@ -30,7 +30,7 @@ public class ImageUrlsController {
                     .body(new ApiResponse<>("Imágenes agregadas exitosamente.", imagesUrlsDtoExit));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>("No se encontró la categoría o el instrumento asociado.", null));
+                    .body(new ApiResponse<>("No se encontro  el instrumento con el ID proporcionado.", null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
@@ -69,10 +69,10 @@ public class ImageUrlsController {
     }
 
     @DeleteMapping("/delete/{idInstrument}/{idImage}")
-    public ResponseEntity<ApiResponse<?>> deleteImageUrls(@PathVariable Long idInstrument, @PathVariable Long idImage) {
+    public ResponseEntity<ApiResponse<String>> deleteImageUrls(@PathVariable Long idInstrument, @PathVariable Long idImage) {
         try {
             imageUrlsService.deleteImageUrls(idInstrument, idImage);
-            return ResponseEntity.ok(new ApiResponse<>("Imagen Urls eliminadas exitosamente.", null));
+            return ResponseEntity.ok(new ApiResponse<>("Urls de imagen eliminadas exitosamente.", null));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ApiResponse<>(e.getMessage(), null));

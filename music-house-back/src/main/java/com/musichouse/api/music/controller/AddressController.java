@@ -22,7 +22,7 @@ public class AddressController {
 
     private final AddressService addressService;
 
-    @PostMapping("/add-address")
+    @PostMapping("/add_address")
     public ResponseEntity<?> createAddress(@Valid @RequestBody AddressAddDtoEntrance addressAddDtoEntrance) {
         try {
             AddressDtoExit createdAddress = addressService.addAddress(addressAddDtoEntrance);
@@ -68,7 +68,7 @@ public class AddressController {
     }
 
     @DeleteMapping("/delete/{idAddress}")
-    public ResponseEntity<ApiResponse<?>> deleteAddress(@PathVariable Long idAddress) {
+    public ResponseEntity<ApiResponse<String>> deleteAddress(@PathVariable Long idAddress) {
         try {
             addressService.deleteAddress(idAddress);
             return ResponseEntity.ok(new ApiResponse<>("Dirección eliminada exitosamente.", null));
@@ -81,3 +81,5 @@ public class AddressController {
         }
     }
 }
+
+

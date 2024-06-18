@@ -21,7 +21,7 @@ import java.util.List;
 public class PhoneController {
     private final PhoneService phoneService;
 
-    @PostMapping("/add-phone")
+    @PostMapping("/add_phone")
     public ResponseEntity<ApiResponse<?>> addPhone(@Valid @RequestBody PhoneAddDtoEntrance phoneAddDtoEntrance) throws ResourceNotFoundException {
         try {
             PhoneDtoExit createPhone = phoneService.addPhone(phoneAddDtoEntrance);
@@ -67,7 +67,7 @@ public class PhoneController {
     }
 
     @DeleteMapping("/delete/{idPhone}")
-    public ResponseEntity<ApiResponse<?>> deletePhone(@PathVariable Long idPhone) {
+    public ResponseEntity<ApiResponse<String>> deletePhone(@PathVariable Long idPhone) {
         try {
             phoneService.deletePhone(idPhone);
             return ResponseEntity.ok(new ApiResponse<>("Telefono eliminado exitosamente.", null));

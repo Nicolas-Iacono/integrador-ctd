@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChangeOfRole {
+
     @NotNull(message = "El idUser es obligatorio")
     @Positive(message = "El idUser debe ser un número positivo")
     private Long idUser;

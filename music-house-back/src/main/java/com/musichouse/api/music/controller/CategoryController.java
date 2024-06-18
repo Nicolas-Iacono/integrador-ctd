@@ -3,6 +3,7 @@ package com.musichouse.api.music.controller;
 import com.musichouse.api.music.dto.dto_entrance.CategoryDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.CategoryDtoExit;
 import com.musichouse.api.music.dto.dto_modify.CategoryDtoModify;
+import com.musichouse.api.music.entity.Category;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.CategoryService;
 import com.musichouse.api.music.util.ApiResponse;
@@ -23,7 +24,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<?>> createCategory(@RequestBody @Valid CategoryDtoEntrance categoryDtoEntrance) {
+    public ResponseEntity<ApiResponse<CategoryDtoExit>> createCategory(@RequestBody @Valid CategoryDtoEntrance categoryDtoEntrance) {
         try {
             CategoryDtoExit categoryDtoExit = categoryService.createCategory(categoryDtoEntrance);
             return ResponseEntity.status(HttpStatus.CREATED)
@@ -82,4 +83,18 @@ public class CategoryController {
         }
     }
 
+    @GetMapping("/find/nameCategory/{categoryName}")
+    public ResponseEntity<?> searchTheme(@PathVariable String categoryName) {
+        try {
+            List<Category> categories = categoryService.searchCategory(categoryName);
+            if (categories.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ApiResponse<>("No se encontraron las categorias con el nombre proporcionado.", null));
+            }
+            return ResponseEntity.ok(categories);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>("Parámetro de búsqueda inválido.", null));
+        }
+    }
 }

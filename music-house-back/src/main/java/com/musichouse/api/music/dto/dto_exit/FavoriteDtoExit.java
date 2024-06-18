@@ -1,5 +1,6 @@
 package com.musichouse.api.music.dto.dto_exit;
 
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.musichouse.api.music.entity.Instrument;
 import lombok.AllArgsConstructor;
@@ -19,4 +20,5 @@ public class FavoriteDtoExit {
     private Date registDate;
     private Instrument instrument;
     private String imageUrl;
+
 }

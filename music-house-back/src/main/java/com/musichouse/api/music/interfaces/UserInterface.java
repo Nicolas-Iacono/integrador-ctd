@@ -12,7 +12,6 @@ import jakarta.mail.MessagingException;
 import java.util.List;
 
 public interface UserInterface {
-
     TokenDtoExit createUser(UserDtoEntrance userDtoEntrance) throws MessagingException;
 
     TokenDtoExit createUserAdmin(UserAdminDtoEntrance userAdminDtoEntrance) throws MessagingException;

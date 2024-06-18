@@ -20,7 +20,11 @@ export const Loader = ({ title, fullSize = true }) => {
     >
       <CustomLoader disableShrink size={fullSize ? '4rem' : '1.5rem'} />
       {title && (
-        <Typography variant="h5" component="h2">
+        <Typography
+          variant="h5"
+          component="h2"
+          sx={{ fontSize: { xs: '1.2rem', md: '1.5rem' } }}
+        >
           {title}
         </Typography>
       )}

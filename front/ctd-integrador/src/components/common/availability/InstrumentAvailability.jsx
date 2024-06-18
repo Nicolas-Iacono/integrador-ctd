@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
-import { styled, alpha } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
-import { PickersDay } from '@mui/x-date-pickers/PickersDay'
 import dayjs from 'dayjs'
+import { AvailabiltyPickersDay } from './AvailabiltyPickersDay'
+import { isAvailableDate } from './availabilityHelper'
 import { Code } from '../../../api/constants'
 import { findInstrumentAvailability } from '../../../api/availability'
-import { Box, Tooltip } from '@mui/material'
+import { Box } from '@mui/material'
 
 const CustomLocalizationProvider = styled(LocalizationProvider)(
   ({ theme }) => ({
@@ -26,40 +27,6 @@ const CustomDateCalendar = styled(DateCalendar)(({ theme }) => ({
     display: 'none'
   }
 }))
-
-const CustomPickersDay = styled(PickersDay)(({ theme }) => ({
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.primary.main, 0.7)
-  }
-}))
-
-const handleSelectedDay = (day) => {
-  console.log('CLICK ON DAY', day)
-}
-
-const AvailabiltyPickersDay = (props) => {
-  const {
-    day,
-    disabled,
-    outsideCurrentMonth,
-    isFirstVisibleCell,
-    isLastVisibleCell,
-    today
-  } = props
-  return (
-    <Tooltip title={!disabled && 'Disponible'}>
-      <CustomPickersDay
-        day={day}
-        disabled={disabled}
-        outsideCurrentMonth={outsideCurrentMonth}
-        isFirstVisibleCell={isFirstVisibleCell}
-        isLastVisibleCell={isLastVisibleCell}
-        today={today}
-        onDaySelect={handleSelectedDay}
-      />
-    </Tooltip>
-  )
-}
 
 export const InstrumentAvailability = ({ id }) => {
   const [startDate, setStartDate] = useState(dayjs().add(1, 'day'))
@@ -81,7 +48,7 @@ export const InstrumentAvailability = ({ id }) => {
   }, [data, code])
 
   const handleAvailableDate = (day) => {
-    return !availableDates?.includes(dayjs(day).format('YYYY-MM-DD'))
+    return isAvailableDate(day, availableDates)
   }
 
   return (

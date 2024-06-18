@@ -16,6 +16,7 @@ import { Favorite } from '@mui/icons-material'
 import { FavoriteIconWrapper } from '../common/favorito/FavoriteIcon'
 import { InstrumentTerms } from '../common/terms/InstrumentTerms'
 import { Loader } from '../common/loader/Loader'
+import { DateRangeBooking } from '../common/booking/DateRangeBooking'
 import {
   addFavorite,
   removeFavorite,
@@ -314,53 +315,78 @@ export const Instrument = () => {
               }}
             >
               <Divider sx={{ width: '100%' }} />
-              <Box sx={{ width: '100%' }}>
-                <Typography
-                  variant="h5"
-                  sx={{
-                    textAlign: 'center',
-                    fontWeight: 'lighter'
-                  }}
-                >
-                  Valor día: $ {instrumentSelected?.rentalPrice}
-                </Typography>
-              </Box>
-              {user && !isUserAdmin && (
-                <>
-                  <Box
+              <Box
+                sx={{
+                  border: '1px solid black',
+                  borderRadius: '1rem',
+                  width: { xs: '100%', md: '50%' },
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center'
+                }}
+              >
+                <Box sx={{ width: '100%', padding: '1rem', flexGrow: 1 }}>
+                  <Typography
+                    variant="h5"
                     sx={{
-                      flexGrow: 1,
-                      display: 'flex',
-                      alignItems: 'center',
-                      flexDirection: 'row-reverse',
-                      cursor: 'pointer'
+                      textAlign: 'center',
+                      fontWeight: 'lighter'
                     }}
                   >
-                    <Tooltip title="Reservar">
-                      <Button
-                        variant="contained"
-                        sx={{
-                          borderRadius: '1rem',
-                          padding: '1.3rem',
-                          maxHeight: '4.5rem'
-                        }}
-                      >
-                        <Typography
-                          textAlign="center"
-                          sx={{ fontWeight: 'bold' }}
-                          variant="h6"
+                    Valor día: $ {instrumentSelected?.rentalPrice}
+                  </Typography>
+                </Box>
+                {user && !isUserAdmin && (
+                  <>
+                    <Box
+                      sx={{
+                        width: '100%',
+                        padding: '1rem',
+                        flexGrow: 1,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <DateRangeBooking id={id} />
+                    </Box>
+                    <Box
+                      sx={{
+                        flexGrow: 1,
+                        cursor: 'pointer',
+                        padding: '1rem',
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      <Tooltip title="Reservar">
+                        <Button
+                          variant="contained"
+                          sx={{
+                            borderRadius: '1rem',
+                            padding: '1.3rem',
+                            maxHeight: '4.5rem'
+                          }}
                         >
-                          Reservar
-                        </Typography>
-                      </Button>
-                    </Tooltip>
-                  </Box>
-                  <Box sx={{ width: '100%' }}>
-                    <Divider sx={{ width: '100%' }} />
-                    <InstrumentTerms />
-                  </Box>
-                </>
-              )}
+                          <Typography
+                            textAlign="center"
+                            sx={{ fontWeight: 'bold' }}
+                            variant="h6"
+                          >
+                            Reservar
+                          </Typography>
+                        </Button>
+                      </Tooltip>
+                    </Box>
+                  </>
+                )}
+              </Box>
+              <Box sx={{ width: '100%' }}>
+                <Divider sx={{ width: '100%' }} />
+                <InstrumentTerms />
+              </Box>
             </Box>
           </>
         )}

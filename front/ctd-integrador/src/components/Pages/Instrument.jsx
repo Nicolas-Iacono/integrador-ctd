@@ -17,6 +17,7 @@ import { FavoriteIconWrapper } from '../common/favorito/FavoriteIcon'
 import { InstrumentTerms } from '../common/terms/InstrumentTerms'
 import { Loader } from '../common/loader/Loader'
 import { DateRangeBooking } from '../common/booking/DateRangeBooking'
+import { MessageDialog } from '../common/MessageDialog'
 import {
   addFavorite,
   removeFavorite,
@@ -38,6 +39,10 @@ export const Instrument = () => {
   const { user, isUser, isUserAdmin } = useAuthContext()
   const [favorites] = getAllFavorites(user?.idUser)
   const [idFavorite, setIdFavorite] = useState()
+  const [bookingDateFrom, setBookingDateFrom] = useState()
+  const [bookingDateTo, setBookingDateTo] = useState()
+  const [isValidBookingRange, setIsValidBookingRange] = useState()
+  const [showMessage, setShowMessage] = useState(false)
 
   useEffect(() => {
     setIsLoading(true)
@@ -94,6 +99,12 @@ export const Instrument = () => {
         setIdFavorite(undefined)
       })
       .catch((error) => console.log(error))
+  }
+
+  const handleBooking = () => {
+    if (!isValidBookingRange) {
+      setShowMessage(true)
+    }
   }
 
   return (
@@ -349,7 +360,12 @@ export const Instrument = () => {
                         alignItems: 'center'
                       }}
                     >
-                      <DateRangeBooking id={id} />
+                      <DateRangeBooking
+                        id={id}
+                        setBookingDateFrom={setBookingDateFrom}
+                        setBookingDateTo={setBookingDateTo}
+                        setIsValidBookingRange={setIsValidBookingRange}
+                      />
                     </Box>
                     <Box
                       sx={{
@@ -369,6 +385,7 @@ export const Instrument = () => {
                             padding: '1.3rem',
                             maxHeight: '4.5rem'
                           }}
+                          onClick={handleBooking}
                         >
                           <Typography
                             textAlign="center"
@@ -390,6 +407,14 @@ export const Instrument = () => {
             </Box>
           </>
         )}
+        <MessageDialog
+          title="Reservar instrumento"
+          message="Hay días no disponibles en el periodo seleccionado. Modifica las fechas y vuelva a intentarlo"
+          isOpen={showMessage}
+          buttonText="Ok"
+          onClose={() => setShowMessage(false)}
+          onButtonPressed={() => setShowMessage(false)}
+        />
       </MainWrapper>
       <ScreenModal isOpen={showGallery} onClose={onClose} fullScreen>
         <InstrumentGallery itemData={instrumentSelected?.imageUrls} />

@@ -15,11 +15,12 @@ export const AvailabiltyPickersDay = (props) => {
     outsideCurrentMonth,
     isFirstVisibleCell,
     isLastVisibleCell,
-    today
+    today,
+    onDaySelect
   } = props
 
   const handleSelectedDay = (day) => {
-    console.log('CLICK ON DAY', day)
+    if (typeof onDaySelect === 'function') onDaySelect(day)
   }
 
   return (

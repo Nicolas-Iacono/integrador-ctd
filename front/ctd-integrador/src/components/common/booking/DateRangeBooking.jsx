@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePickerBooking } from './DatePickerBooking'
+import { Box, Typography } from '@mui/material'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import dayjs from 'dayjs'
 import { Code } from '../../../api/constants'
 import { AvailabiltyPickersDay } from '../availability/AvailabiltyPickersDay'
@@ -10,6 +12,7 @@ import { isAvailableDate } from '../availability/availabilityHelper'
 import { findInstrumentAvailability } from '../../../api/availability'
 
 dayjs.extend(isSameOrBefore)
+dayjs.extend(isSameOrAfter)
 
 export const DateRangeBooking = ({
   id,
@@ -39,7 +42,7 @@ export const DateRangeBooking = ({
 
   useEffect(() => {
     if (typeof setIsValidBookingRange === 'function')
-      setIsValidBookingRange(isValidaDateRange())
+      setIsValidBookingRange(isValidDateRange())
   }, [dateFrom, dateTo])
 
   const handleAvailableDate = (day) => {
@@ -52,9 +55,10 @@ export const DateRangeBooking = ({
     setDateFrom(day)
 
     if (day && typeof setBookingDateFrom === 'function') setBookingDateFrom(day)
-    if (day && day.isAfter(dateTo)) {
-      setDateTo(day)
-      if (typeof setBookingDateTo === 'function') setBookingDateTo(day)
+    if (day && day.isSameOrAfter(dateTo)) {
+      const dayTo = day.add(1, 'day')
+      setDateTo(dayTo)
+      if (typeof setBookingDateTo === 'function') setBookingDateTo(dayTo)
     }
   }
 
@@ -64,14 +68,15 @@ export const DateRangeBooking = ({
     setDateTo(day)
 
     if (day && typeof setBookingDateTo === 'function') setBookingDateTo(day)
-    if (day && day.isBefore(dateFrom)) {
-      setDateFrom(day)
-      if (typeof setBookingDateFrom === 'function') setBookingDateFrom(day)
+    if (day && day.isSameOrBefore(dateFrom)) {
+      const dayFrom = day.subtract(1, 'day')
+      setDateFrom(dayFrom)
+      if (typeof setBookingDateFrom === 'function') setBookingDateFrom(dayFrom)
     }
   }
 
-  const isValidaDateRange = () => {
-    if (!dateFrom || !dateTo) return true
+  const isValidDateRange = () => {
+    if (!dateFrom || !dateTo) return false
 
     const range = []
     let go = true
@@ -93,40 +98,96 @@ export const DateRangeBooking = ({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DatePickerBooking
-        format="DD-MM-YYYY"
-        shouldDisableDate={handleAvailableDate}
-        slots={{
-          day: AvailabiltyPickersDay
-        }}
-        value={dateFrom}
-        onChange={handleDateFromChange}
+      <Box
         sx={{
-          borderRadius: '10px 0 0 10px',
-          borderColor: 'transparent',
-          '& .MuiOutlinedInput-notchedOutline': {
-            borderRadius: '10px 0 0 10px',
-            borderColor: 'black'
-          }
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center'
         }}
-      />
-      <DatePickerBooking
-        format="DD-MM-YYYY"
-        shouldDisableDate={handleAvailableDate}
-        slots={{
-          day: AvailabiltyPickersDay
-        }}
-        value={dateTo}
-        onChange={handleDateToChange}
-        sx={{
-          borderRadius: '0 10px 10px 0px',
-          borderColor: 'transparent',
-          '& .MuiOutlinedInput-notchedOutline': {
-            borderRadius: '0 10px 10px 0px',
-            borderColor: 'black'
-          }
-        }}
-      />
+      >
+        <Box
+          sx={{ width: '100%', display: 'flex', flexDirection: 'row-reverse' }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative'
+            }}
+          >
+            <Typography
+              variant="caption"
+              sx={{ position: 'absolute', top: 3, left: 15 }}
+            >
+              Inicio
+            </Typography>
+            <DatePickerBooking
+              format="DD-MM-YYYY"
+              shouldDisableDate={handleAvailableDate}
+              slots={{
+                day: AvailabiltyPickersDay
+              }}
+              value={dateFrom}
+              onChange={handleDateFromChange}
+              sx={{
+                borderRadius: '10px 0 0 10px',
+                borderColor: 'transparent',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderRadius: '10px 0 0 10px',
+                  borderColor: 'black'
+                },
+                '& .MuiInputBase-root': {
+                  height: '3.5rem',
+                  '& .MuiInputBase-input': {
+                    alignSelf: 'flex-end'
+                  }
+                }
+              }}
+            />
+          </Box>
+        </Box>
+        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative'
+            }}
+          >
+            <Typography
+              variant="caption"
+              sx={{ position: 'absolute', top: 3, left: 15 }}
+            >
+              Entrega
+            </Typography>
+            <DatePickerBooking
+              format="DD-MM-YYYY"
+              shouldDisableDate={handleAvailableDate}
+              slots={{
+                day: AvailabiltyPickersDay
+              }}
+              value={dateTo}
+              onChange={handleDateToChange}
+              sx={{
+                borderRadius: '0 10px 10px 0px',
+                borderColor: 'transparent',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderRadius: '0 10px 10px 0px',
+                  borderColor: 'black'
+                },
+                '& .MuiInputBase-root': {
+                  height: '3.5rem',
+                  '& .MuiInputBase-input': {
+                    alignSelf: 'flex-end'
+                  }
+                }
+              }}
+            />
+          </Box>
+        </Box>
+      </Box>
     </LocalizationProvider>
   )
 }

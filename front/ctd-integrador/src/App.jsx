@@ -16,11 +16,13 @@ import { Categories } from './components/Pages/Admin/categories'
 import { AgregarCategoria } from './components/Pages/Admin/AgregarCategoria'
 import { EditarCategoria } from './components/Pages/Admin/EditarCategoria'
 import { Favorites } from './components/Pages/Favorites'
+import { ConfirmBooking } from './components/Pages/ConfirmBooking'
 import { HeaderVisibilityProvider } from './components/utils/context/HeaderVisibilityGlobal'
 import { AuthContextProvider } from './components/utils/context/AuthGlobal'
 import './App.css'
 import AuthPage from './components/Pages/AuthPage'
 import { NotFoundPage } from './components/Pages/NotFound'
+import { ServerError } from './components/Pages/ServerError'
 import { ProtectedRoute } from './components/common/routes/ProtectedRoute'
 
 export const App = () => {
@@ -62,18 +64,22 @@ export const App = () => {
                         path="/editarInstrumento/:id"
                         element={<EditarInstrumento />}
                       />
+                      <Route
+                        path="/agregarCategoria"
+                        element={<AgregarCategoria />}
+                      />
+                      <Route
+                        path="/editarCategoria/:id"
+                        element={<EditarCategoria />}
+                      />
                     </Route>
-                    <Route
-                      path="/agregarCategoria"
-                      element={<AgregarCategoria />}
-                    />
-                    <Route
-                      path="/editarCategoria/:id"
-                      element={<EditarCategoria />}
-                    />
                     <Route element={<ProtectedRoute />}>
                       <Route path="/favorites" element={<Favorites />} />
                     </Route>
+                    <Route
+                      path="/confirmBooking"
+                      element={<ConfirmBooking />}
+                    />
                   </Route>
                   <Route element={<ProtectedRoute />}>
                     <Route path="/editarUsuario/:id" element={<EditUser />} />
@@ -82,6 +88,7 @@ export const App = () => {
                   <Route element={<ProtectedRoute role="ADMIN" />}>
                     <Route path="/agregarUsuario" element={<CrearUsuario />} />
                   </Route>
+                  <Route path="/noDisponible" element={<ServerError />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </ContextProvider>

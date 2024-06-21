@@ -30,7 +30,8 @@ const initialState = {
     found: undefined
   },
   categoryCreated: undefined,
-  categoryUpdated: undefined
+  categoryUpdated: undefined,
+  bookingInfo: undefined
 }
 
 const ContextGlobal = createContext()
@@ -55,6 +56,11 @@ const appReducer = (state, action) => {
       return {
         ...state,
         categoryUpdated: action.payload.updated
+      }
+    case actions.BOOKING_CONFIRM:
+      return {
+        ...state,
+        bookingInfo: action.payload
       }
     default:
       return state

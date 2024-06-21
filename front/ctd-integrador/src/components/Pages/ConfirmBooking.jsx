@@ -18,6 +18,9 @@ import { Loader } from '../common/loader/Loader'
 import { UsersApi } from '../../api/users'
 import { Code } from '../../api/constants'
 import { createReservation } from '../../api/reservations'
+import { getBookingInfo } from '../utils/global.context'
+import { actions } from '../utils/actions'
+import { useNavigate } from 'react-router-dom'
 
 dayjs.extend(duration)
 
@@ -29,14 +32,33 @@ export const ConfirmBooking = () => {
   const [message, setMessage] = useState()
   const [showMessage, setShowMessage] = useState(false)
   const [disableSubmit, setDisableSubmit] = useState(false)
+  const [bookingInfo, setBookingInfo] = useState()
   const onButtonPressed = useRef()
-  const { state } = useAppStates()
-  const { bookingInfo } = state
+  const { state, dispatch } = useAppStates()
+  const { bookingInfo: stateBookingInfo } = state
   const { user: loggedUser } = useAuthContext()
+  const savedBookingInfo = getBookingInfo()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (loggedUser) getUserInfo(loggedUser.idUser)
   }, [loggedUser])
+
+  useEffect(() => {
+    if (stateBookingInfo) {
+      setBookingInfo(stateBookingInfo)
+    } else if (!stateBookingInfo && savedBookingInfo) {
+      const info = {
+        instrument: savedBookingInfo?.instrument,
+        bookingDateFrom: dayjs(savedBookingInfo?.bookingDateFrom),
+        bookingDateTo: dayjs(savedBookingInfo?.bookingDateTo),
+        created: savedBookingInfo?.created,
+        idReservation: savedBookingInfo?.idReservation
+      }
+
+      setBookingInfo(info)
+    }
+  }, [stateBookingInfo, savedBookingInfo])
 
   useEffect(() => {
     if (bookingInfo && user) {
@@ -95,7 +117,15 @@ export const ConfirmBooking = () => {
       bookingInfo.bookingDateFrom.format('YYYY-MM-DD'),
       bookingInfo.bookingDateTo.format('YYYY-MM-DD')
     )
-      .then(() => {
+      .then((response) => {
+        dispatch({
+          type: actions.BOOKING_UPDATE,
+          payload: {
+            ...bookingInfo,
+            created: true,
+            idReservation: response?.data?.idReservation
+          }
+        })
         setMessage('Reserva Creada exitosamente!')
         setDisableSubmit(true)
       })
@@ -485,7 +515,7 @@ export const ConfirmBooking = () => {
             <Tooltip title="Confirmar reserva">
               <Button
                 variant="contained"
-                disabled={disableSubmit}
+                disabled={disableSubmit || bookingInfo?.created}
                 sx={{
                   borderRadius: '1rem',
                   padding: '1.3rem',

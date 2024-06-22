@@ -61,7 +61,7 @@ export const ConfirmBooking = () => {
   }, [stateBookingInfo, savedBookingInfo])
 
   useEffect(() => {
-    if (bookingInfo && user) {
+    if (loading && bookingInfo && user) {
       const duration = dayjs.duration(
         bookingInfo.bookingDateTo.diff(bookingInfo.bookingDateFrom)
       )
@@ -88,15 +88,14 @@ export const ConfirmBooking = () => {
   }
 
   const getUserAddress = () => {
-    if (!(user?.addresses?.addresses?.length > 0))
-      return 'Dirección no especificada'
+    if (!(user?.addresses?.length > 0)) return 'Dirección no especificada'
 
     const address = user.addresses[0]
     return `${address?.street} ${address?.number}`
   }
 
   const getUserAddressLocation = () => {
-    if (!(user?.addresses?.addresses?.length > 0)) return ''
+    if (!(user?.addresses?.length > 0)) return ''
 
     const address = user.addresses[0]
     return `${address?.city}, ${address?.state} - ${address?.country}`
@@ -182,11 +181,15 @@ export const ConfirmBooking = () => {
               flexDirection: { xs: 'column', md: 'row' },
               justifyContent: 'space-evenly',
               padding: { xs: '0', md: '1rem 5rem' },
-              gap: '4rem'
+              gap: { xs: '1rem', md: '4rem' }
             }}
           >
             <Box
-              sx={{ width: '50%', display: 'flex', flexDirection: 'column' }}
+              sx={{
+                width: { xs: '100%', md: '50%' },
+                display: 'flex',
+                flexDirection: 'column'
+              }}
             >
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography
@@ -305,7 +308,7 @@ export const ConfirmBooking = () => {
                 </Typography>
               </Box>
             </Box>
-            <Box sx={{ width: '50%' }}>
+            <Box sx={{ width: { xs: '100%', md: '50%' } }}>
               <Box
                 sx={{
                   border: '1px solid black',
@@ -315,7 +318,8 @@ export const ConfirmBooking = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
-                  padding: '1rem'
+                  padding: '1rem',
+                  gap: '1rem'
                 }}
               >
                 <Typography
@@ -323,7 +327,7 @@ export const ConfirmBooking = () => {
                   sx={{
                     textAlign: 'center',
                     fontWeight: '400',
-                    padding: '1rem'
+                    padding: '0rem 1rem 1rem 1rem'
                   }}
                 >
                   {bookingInfo.instrument.name}
@@ -360,7 +364,8 @@ export const ConfirmBooking = () => {
                           textAlign: 'left',
                           fontWeight: '300',
                           padding: '.2rem 1rem .2rem 2rem',
-                          width: '35%'
+                          width: '35%',
+                          fontSize: { xs: '1rem', md: '1.25rem' }
                         }}
                       >
                         Medidas:
@@ -371,7 +376,8 @@ export const ConfirmBooking = () => {
                           textAlign: 'left',
                           fontWeight: '300',
                           padding: '.2rem 1rem .2rem 2rem',
-                          width: '60%'
+                          width: '60%',
+                          fontSize: { xs: '1rem', md: '1.25rem' }
                         }}
                       >
                         {bookingInfo.instrument.measures}
@@ -390,7 +396,8 @@ export const ConfirmBooking = () => {
                           textAlign: 'left',
                           fontWeight: '300',
                           padding: '.2rem 1rem .2rem 2rem',
-                          width: '35%'
+                          width: '35%',
+                          fontSize: { xs: '1rem', md: '1.25rem' }
                         }}
                       >
                         Peso:
@@ -401,7 +408,8 @@ export const ConfirmBooking = () => {
                           textAlign: 'left',
                           fontWeight: '300',
                           padding: '.2rem 1rem .2rem 2rem',
-                          width: '60%'
+                          width: '60%',
+                          fontSize: { xs: '1rem', md: '1.25rem' }
                         }}
                       >
                         {bookingInfo.instrument.weight}
@@ -420,7 +428,8 @@ export const ConfirmBooking = () => {
                           textAlign: 'left',
                           fontWeight: '300',
                           padding: '.2rem 1rem .2rem 2rem',
-                          width: '35%'
+                          width: '35%',
+                          fontSize: { xs: '1rem', md: '1.25rem' }
                         }}
                       >
                         Tipo:
@@ -431,7 +440,8 @@ export const ConfirmBooking = () => {
                           textAlign: 'left',
                           fontWeight: '300',
                           padding: '.2rem 1rem .2rem 2rem',
-                          width: '60%'
+                          width: '60%',
+                          fontSize: { xs: '1rem', md: '1.25rem' }
                         }}
                       >
                         {bookingInfo.instrument.category.categoryName}
@@ -450,7 +460,8 @@ export const ConfirmBooking = () => {
                           textAlign: 'left',
                           fontWeight: '300',
                           padding: '.2rem 1rem .2rem 2rem',
-                          width: '35%'
+                          width: '35%',
+                          fontSize: { xs: '1rem', md: '1.25rem' }
                         }}
                       >
                         Temática:
@@ -461,7 +472,8 @@ export const ConfirmBooking = () => {
                           textAlign: 'left',
                           fontWeight: '300',
                           padding: '.2rem 1rem .2rem 2rem',
-                          width: '60%'
+                          width: '60%',
+                          fontSize: { xs: '1rem', md: '1.25rem' }
                         }}
                       >
                         {bookingInfo.instrument.theme.themeName}
@@ -469,7 +481,7 @@ export const ConfirmBooking = () => {
                     </Box>
                   </Box>
                 </Box>
-                <Divider sx={{ width: '100%' }} />
+                <Divider sx={{ width: '100%', paddingTop: '1rem' }} />
                 <Box
                   sx={{
                     display: 'flex',

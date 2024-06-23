@@ -23,16 +23,13 @@ export const ReservationApi = {
     return deleteFetch(`${URL_RESERVATIONS}/delete/${idInstrument}/${idUser}/${idReservation}`)
   }
  
-  const createReservation = (idUser, idInstrument, startDate, endDate) => {
-  return postFetch(`${URL_RESERVATIONS}/create`, {
-    idUser,
-    idInstrument,
-    startDate,
-    endDate
-  })
-}
-  
-  
   }
 
-
+  export const createReservation = (idUser, idInstrument, startDate, endDate) => {
+    return postFetch(`${URL_RESERVATIONS}/create`, {
+      idUser,
+      idInstrument,
+      startDate,
+      endDate
+    })
+  }

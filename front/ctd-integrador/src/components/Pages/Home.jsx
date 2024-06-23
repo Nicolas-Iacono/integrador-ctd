@@ -9,7 +9,6 @@ import ProductsWrapper from '../common/ProductsWrapper'
 import ProductCard from '../common/ProductCard'
 import { Loader } from '../common/loader/Loader'
 import { useHeaderVisibility } from '../utils/context/HeaderVisibilityGlobal'
-
 import '../styles/home.styles.css'
 
 export const Home = () => {
@@ -19,6 +18,7 @@ export const Home = () => {
   const [selectedInstruments, setSelectedInstruments] = useState([])
   const [loading, setLoading] = useState(true)
   const [instruments, setInstruments] = useState()
+ 
 
   useEffect(() => {
     getInstruments().then(([instruments, _]) => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { getInstrumentById } from '../../api/instruments'
 import { MainWrapper } from '../common/MainWrapper'
 import { InstrumentDetailWrapper } from '../common/InstrumentDetailWrapper'
@@ -26,10 +26,12 @@ import {
 import { Code } from '../../api/constants'
 
 import '../styles/instrument.styles.css'
+import { actions } from '../utils/actions'
 
 export const Instrument = () => {
   const { id } = useParams()
-  const { state } = useAppStates()
+  const { state, dispatch } = useAppStates()
+  const navigate = useNavigate()
   const [loading, setIsLoading] = useState(true)
   const [instrumentSelected, setInstrumentSelected] = useState({
     characteristics: {}
@@ -42,6 +44,7 @@ export const Instrument = () => {
   const [bookingDateFrom, setBookingDateFrom] = useState()
   const [bookingDateTo, setBookingDateTo] = useState()
   const [isValidBookingRange, setIsValidBookingRange] = useState()
+  const [message, setMessage] = useState()
   const [showMessage, setShowMessage] = useState(false)
 
   useEffect(() => {
@@ -52,6 +55,7 @@ export const Instrument = () => {
       })
       .catch(([_, code]) => {
         setInstrument(undefined)
+        navigate('/noDisponible')
       })
   }, [])
 
@@ -103,7 +107,22 @@ export const Instrument = () => {
 
   const handleBooking = () => {
     if (!isValidBookingRange) {
+      const message =
+        !bookingDateFrom && !bookingDateTo
+          ? 'No has seleccionado las fechas para reservar'
+          : 'Hay días no disponibles en el periodo seleccionado. Modifica las fechas y vuelva a intentarlo'
+      setMessage(message)
       setShowMessage(true)
+    } else {
+      dispatch({
+        type: actions.BOOKING_CONFIRM,
+        payload: {
+          instrument: instrument.data,
+          bookingDateFrom,
+          bookingDateTo
+        }
+      })
+      navigate('/confirmBooking')
     }
   }
 
@@ -409,7 +428,7 @@ export const Instrument = () => {
         )}
         <MessageDialog
           title="Reservar instrumento"
-          message="Hay días no disponibles en el periodo seleccionado. Modifica las fechas y vuelva a intentarlo"
+          message={message}
           isOpen={showMessage}
           buttonText="Ok"
           onClose={() => setShowMessage(false)}

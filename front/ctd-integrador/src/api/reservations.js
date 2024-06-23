@@ -1,3 +1,4 @@
+
 import {
   useGetFetch,
   getFetch,
@@ -18,12 +19,20 @@ export const ReservationApi = {
   },
 
 
-  createReservation: (payload) => {
-    return postFetch(`${URL_RESERVATIONS}/create`, payload)
-  },
-
   deleteReservation: (idInstrument, idUser, idReservation) => {
     return deleteFetch(`${URL_RESERVATIONS}/delete/${idInstrument}/${idUser}/${idReservation}`)
   }
-
+ 
+  const createReservation = (idUser, idInstrument, startDate, endDate) => {
+  return postFetch(`${URL_RESERVATIONS}/create`, {
+    idUser,
+    idInstrument,
+    startDate,
+    endDate
+  })
+}
+  
+  
   }
+
+

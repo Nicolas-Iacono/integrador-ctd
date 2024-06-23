@@ -27,7 +27,7 @@ export const UsersApi = {
   },
 
   getUserById: (id) => {
-    return useGetFetch(`${URL_GET_USER}${id}`)
+    return getFetch(`${URL_GET_USER}${id}`)
   },
 
   registerUser: (user) => {

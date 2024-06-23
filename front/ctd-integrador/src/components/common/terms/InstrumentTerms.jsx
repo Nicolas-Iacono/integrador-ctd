@@ -37,7 +37,7 @@ export const InstrumentTerms = () => {
             </ListItem>
             <ListItem>
               <Typography variant="body1" sx={{ fontWeight: '300' }}>
-                Los daños ocacionados deben ser asumidos por el usuario.
+                Los daños ocasionados deben ser asumidos por el usuario.
               </Typography>
             </ListItem>
             <ListItem>

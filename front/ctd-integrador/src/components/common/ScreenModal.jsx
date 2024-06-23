@@ -25,6 +25,7 @@ export const ScreenModal = ({
       open={isOpen}
       onClose={handleClose}
       TransitionComponent={Transition}
+      maxWidth="md"
     >
       <IconButton
         aria-label="close"

@@ -3,22 +3,21 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 export const DatePickerBooking = styled(DatePicker)(({ theme }) => ({
   backgroundColor: 'transparent',
-  height: '2.5rem',
   width: '100%',
+  height: '3.5rem',
 
   input: {
     height: '2.5rem',
     border: 'none'
   },
 
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: '60%'
+  [theme.breakpoints.up('md')]: {
+    maxWidth: '9rem'
   },
 
   [theme.breakpoints.up('md')]: {
-    margin: 0,
-    width: '28%',
-    maxWidth: '10.5rem'
+    width: 'auto',
+    maxWidth: '11rem',
+    margin: 0
   }
 }))

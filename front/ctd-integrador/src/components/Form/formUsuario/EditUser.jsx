@@ -15,7 +15,7 @@ import { useAuthContext } from '../../utils/context/AuthGlobal'
 
 const EditUser = ({ onSwitch }) => {
   const { id } = useParams()
-  const [user, code] = UsersApi.getUserById(id)
+  const [user, setUser] = useState()
   const [formData, setFormData] = useState()
   const [showMessage, setShowMessage] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -29,27 +29,24 @@ const EditUser = ({ onSwitch }) => {
   const canEditUser = !(isUserAdmin && !isLoggedUser)
 
   useEffect(() => {
-    if (!(user || code)) return
+    getUserInfo()
+  }, [])
 
-    if (code === Code.SUCCESS) {
-      const initialFormData = {
-        idUser: id,
-        name: user.data.name,
-        lastName: user.data.lastName,
-        email: user.data.email,
-        addresses: user.data.addresses,
-        phones: user.data.phones,
-        idRol: user.data.roles.length && user.data.roles[0].idRol
-      }
-      setFormData(initialFormData)
-    }
-    if (code === Code.NOT_FOUND) {
-      setMessage('Usuario no encontrado')
-      setShowMessage(true)
-    }
+  useEffect(() => {
+    if (!user) return
 
+    const initialFormData = {
+      idUser: id,
+      name: user.data.name,
+      lastName: user.data.lastName,
+      email: user.data.email,
+      addresses: user.data.addresses,
+      phones: user.data.phones,
+      idRol: user.data.roles.length && user.data.roles[0].idRol
+    }
+    setFormData(initialFormData)
     setLoading(false)
-  }, [user, code])
+  }, [user])
 
   useEffect(() => {
     if (
@@ -76,6 +73,21 @@ const EditUser = ({ onSwitch }) => {
     setIsOldRoleDeleted(undefined)
     setShowMessage(true)
   }, [isUserUpdated, isNewRoleAdded, isOldRoleDeleted])
+
+  const getUserInfo = () => {
+    UsersApi.getUserById(id)
+      .then(([user, code]) => {
+        if (code === Code.SUCCESS) {
+          setUser(user)
+        }
+      })
+      .catch(([_, code]) => {
+        if (code === Code.NOT_FOUND) {
+          setMessage('Usuario no encontrado')
+          setShowMessage(true)
+        }
+      })
+  }
 
   const onClose = () => {
     setShowMessage(false)

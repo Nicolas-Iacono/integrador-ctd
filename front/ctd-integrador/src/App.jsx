@@ -60,6 +60,7 @@ export const App = () => {
                     </Route>
                   </Route>
                   <Route element={<AdminLayout />}>
+
                     <Route element={<ProtectedRoute role="ADMIN" />}>
                       <Route path="/instruments" element={<Instruments />} />
                       <Route path="/usuarios" element={<Usuarios />} />
@@ -70,6 +71,7 @@ export const App = () => {
                       <Route path="/editarCategoria/:id" element={<EditarCategoria />} />
                       <Route path="/agregarUsuario" element={<CrearUsuario />} />
                     </Route>
+
                   </Route>
                   <Route path="/noDisponible" element={<ServerError />} />
                   <Route path="*" element={<NotFoundPage />} />

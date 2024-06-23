@@ -274,7 +274,20 @@ export const Usuarios = () => {
                         height: 53 * emptyRows
                       }}
                     >
-                      <TableCell colSpan={6} />
+                      <TableCell colSpan={5} />
+                    </TableRow>
+                  )}
+                  {page == 0 && rows.length === 0 && (
+                    <TableRow
+                      style={{
+                        height: 53 * emptyRows
+                      }}
+                    >
+                      <TableCell colSpan={5}>
+                        <Typography align="center">
+                          {page === 0 ? 'No se encontraron usuarios' : ''}
+                        </Typography>
+                      </TableCell>
                     </TableRow>
                   )}
                 </TableBody>

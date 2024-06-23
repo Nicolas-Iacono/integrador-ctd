@@ -1,3 +1,4 @@
+
 import {
   useGetFetch,
   getFetch,
@@ -22,9 +23,6 @@ export const ReservationApi = {
     return deleteFetch(`${URL_RESERVATIONS}/delete/${idInstrument}/${idUser}/${idReservation}`)
   }
  
-
-  
-  
   }
 
   export const createReservation = (idUser, idInstrument, startDate, endDate) => {
@@ -35,4 +33,3 @@ export const ReservationApi = {
       endDate
     })
   }
-

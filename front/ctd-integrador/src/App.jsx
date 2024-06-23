@@ -53,7 +53,6 @@ export const App = () => {
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/instrument/:id" element={<Instrument />} />
-                    <Route path="/reservations" element={<MisReservas/>}/>
                     <Route element={<ProtectedRoute role="ADMIN" />}>
                       <Route path="/instruments" element={<Instruments />} />
                       <Route path="/usuarios" element={<Usuarios />} />
@@ -77,6 +76,7 @@ export const App = () => {
                     </Route>
                     <Route element={<ProtectedRoute />}>
                       <Route path="/favorites" element={<Favorites />} />
+                      <Route path="/reservations" element={<MisReservas />} />
                     </Route>
                     <Route
                       path="/confirmBooking"
@@ -85,7 +85,6 @@ export const App = () => {
                   </Route>
                   <Route element={<ProtectedRoute />}>
                     <Route path="/editarUsuario/:id" element={<EditUser />} />
-                    <Route path="/favorites" element={<Favorites />} />
                   </Route>
                   <Route element={<ProtectedRoute role="ADMIN" />}>
                     <Route path="/agregarUsuario" element={<CrearUsuario />} />

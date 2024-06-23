@@ -125,8 +125,8 @@ export const ConfirmBooking = () => {
             idReservation: response?.data?.idReservation
           }
         })
+        setBookingInfo({ ...bookingInfo, created: true })
         setMessage('Reserva Creada exitosamente!')
-        setDisableSubmit(true)
       })
       .catch(([_, code]) => {
         if (code === Code.ALREADY_EXISTS) {
@@ -327,11 +327,12 @@ export const ConfirmBooking = () => {
                   sx={{
                     textAlign: 'center',
                     fontWeight: '400',
-                    padding: '0rem 1rem 1rem 1rem'
+                    padding: '0rem 1rem'
                   }}
                 >
                   {bookingInfo.instrument.name}
                 </Typography>
+                <Divider sx={{ width: '100%' }} />
                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                   <Box sx={{ width: '30%' }}>
                     <img
@@ -524,23 +525,31 @@ export const ConfirmBooking = () => {
               justifyContent: 'center'
             }}
           >
-            <Tooltip title="Confirmar reserva">
+            <Tooltip
+              title={
+                bookingInfo?.created ? 'Ir a Mis reservas' : 'Confirmar reserva'
+              }
+            >
               <Button
                 variant="contained"
-                disabled={disableSubmit || bookingInfo?.created}
+                disabled={disableSubmit}
                 sx={{
                   borderRadius: '1rem',
                   padding: '1.3rem',
                   maxHeight: '4.5rem'
                 }}
-                onClick={handleConfirmReservation}
+                onClick={() =>
+                  bookingInfo?.created
+                    ? navigate('/reservations')
+                    : handleConfirmReservation()
+                }
               >
                 <Typography
                   textAlign="center"
                   sx={{ fontWeight: 'bold' }}
                   variant="h6"
                 >
-                  Confirmar
+                  {bookingInfo?.created ? 'Ir a Mis Reservas' : 'Confirmar'}
                 </Typography>
               </Button>
             </Tooltip>

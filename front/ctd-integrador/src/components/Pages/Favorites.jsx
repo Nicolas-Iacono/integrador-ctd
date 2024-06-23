@@ -24,7 +24,7 @@ export const Favorites = () => {
       setFavorites([])
       setLoading(false)
     }
-  }, [data])
+  }, [data, code])
 
   const handleRemoveFavorite = (favorite) => {
     removeFavorite(
@@ -45,7 +45,11 @@ export const Favorites = () => {
     <main>
       {!loading && (
         <MainWrapper
-          sx={{ paddingLeft: { xs: '0' }, paddingRight: { xs: '0' } }}
+          sx={{
+            paddingLeft: { xs: '0' },
+            paddingRight: { xs: '0' },
+            minHeight: '90vh'
+          }}
         >
           <CssBaseline />
           <Container

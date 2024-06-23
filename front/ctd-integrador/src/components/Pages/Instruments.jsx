@@ -89,7 +89,7 @@ export const Instruments = () => {
         setInstruments(instruments)
       })
       .catch(([_, code]) => {
-        setInstruments([])
+        setInstruments({ data: [] })
       })
   }
 
@@ -156,7 +156,6 @@ export const Instruments = () => {
   }
 
   const handleDeletes = () => {
-    console.log('SELECTED', selected)
     setRows(rows.filter((row) => row.id !== id))
   }
 
@@ -266,7 +265,20 @@ export const Instruments = () => {
                     height: 53 * emptyRows
                   }}
                 >
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={3} />
+                </TableRow>
+              )}
+              {page === 0 && rows.length === 0 && (
+                <TableRow
+                  style={{
+                    height: 53 * emptyRows
+                  }}
+                >
+                  <TableCell colSpan={3}>
+                    <Typography align="center">
+                      {page === 0 ? 'No se encontraron instrumentos' : ''}
+                    </Typography>
+                  </TableCell>
                 </TableRow>
               )}
             </TableBody>

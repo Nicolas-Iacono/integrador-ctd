@@ -10,8 +10,10 @@ export const WhatsAppContact = () => {
       position: 'fixed',
       bottom: 16,
       right: 16,
+      width:"70px",
+      height:"70px",
       backgroundColor: '#00c853',
-      borderRadius: "40px 40px 40px 10px",
+      borderRadius: "70px 70px 70px 20px",
       boxShadow: 3,
       p: 2,
       zIndex: 1000,
@@ -24,8 +26,8 @@ export const WhatsAppContact = () => {
         }
     }}
   >
-    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-    <img src={logo} alt="logo de whatsapp" style={{ width: 35, height: 35 }} />
+    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" style={{ display:"flex",}}>
+    <img src={logo} alt="logo de whatsapp" style={{ width: 45, height: 45 }} />
     </a>
   </Box>
 )

@@ -15,7 +15,7 @@ const theme = createTheme({
   }
 })
 
-export const Layout = () => {
+export const UserLayout = () => {
   return (
     <ThemeProvider theme={theme}>
     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -25,6 +25,20 @@ export const Layout = () => {
       </Box>
       <Footer />
       <WhatsAppContact />
+    </Box>
+  </ThemeProvider>
+  )
+}
+
+export const AdminLayout = () => {
+  return (
+    <ThemeProvider theme={theme}>
+    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Header />
+      <Box sx={{ flex: 1 }}>
+        <Outlet />
+      </Box>
+      <Footer />
     </Box>
   </ThemeProvider>
   )

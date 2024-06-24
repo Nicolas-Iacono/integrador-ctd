@@ -56,7 +56,8 @@ export const EnhancedTableHead = (props) => {
     orderBy,
     numSelected,
     rowCount,
-    onRequestSort
+    onRequestSort,
+    disableSelectAll = false
   } = props
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property)
@@ -66,18 +67,21 @@ export const EnhancedTableHead = (props) => {
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'se seleccionaron todos los instrumentos'
-            }}
-          />
+          {!disableSelectAll && (
+            <Checkbox
+              color="primary"
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={rowCount > 0 && numSelected === rowCount}
+              onChange={onSelectAllClick}
+              inputProps={{
+                'aria-label': 'se seleccionaron todos los instrumentos'
+              }}
+            />
+          )}
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
+            sx={{ display: headCell.hidden ? 'none' : 'table-cell' }}
             key={headCell.id}
             align={headCell.numeric ? 'center' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}

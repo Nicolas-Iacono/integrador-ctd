@@ -83,7 +83,7 @@ export const deleteFetch = (endpoint, payload) => {
         if (error?.response?.status === 404) {
           code = Code.NOT_FOUND
         }
-        if (error?.response?.status === 404) {
+        if (error?.response?.status === 400) {
           code = Code.BAD_REQUEST
         }
 

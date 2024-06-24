@@ -51,6 +51,13 @@ const headCells = [
   },
 
   {
+    id: 'idInstrument',
+    numeric: true,
+    disablePadding: false,
+    label: 'Instrumento',
+    hidden: true
+  },
+  {
     id: 'startDate',
     numeric: false,
     Date: true,

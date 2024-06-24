@@ -160,7 +160,6 @@ export const Categories = () => {
   }
 
   const handleDeletes = () => {
-    console.log('SELECTED', selected)
     setRows(rows.filter((row) => row.id !== id))
   }
 
@@ -270,7 +269,20 @@ export const Categories = () => {
                     height: 53 * emptyRows
                   }}
                 >
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={4} />
+                </TableRow>
+              )}
+              {page === 0 && rows === 0 && (
+                <TableRow
+                  style={{
+                    height: 53 * emptyRows
+                  }}
+                >
+                  <TableCell colSpan={4}>
+                    <Typography align="center">
+                      {page === 0 ? 'No se encontraron categorías' : ''}
+                    </Typography>
+                  </TableCell>
                 </TableRow>
               )}
             </TableBody>

@@ -49,6 +49,7 @@ const headCells = [
     disablePadding: false,
     label: 'Instrumento'
   },
+
   {
     id: 'idInstrument',
     numeric: true,

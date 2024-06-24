@@ -46,7 +46,6 @@ export const WhatsAppContact = () => {
         right: 16,
         width: hover ? "170px" : "70px",
         height: "70px",
-        backgroundColor: '#00c853',
         borderRadius: "70px 70px 70px 20px",
         boxShadow: 3,
         p: 1,

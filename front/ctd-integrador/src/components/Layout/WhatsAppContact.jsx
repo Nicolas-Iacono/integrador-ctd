@@ -1,5 +1,5 @@
 import { Box, Typography, keyframes } from '@mui/material';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import logo from "../../assets/whatsAppLogo.png";
 
 // Define keyframes for the slide-in animation
@@ -23,17 +23,39 @@ export const WhatsAppContact = () => {
   const whatsappUrl = `https://wa.me/${phoneNumber}`;
   const [hover, setHover] = useState(false);
   const elementRef = useRef(null);
-
-
+  const [userRole, setUserRole] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
   const handleMouseEnter = () => {
     setHover(true);
      const width = elementRef.current.getBoundingClientRect().width;
-    console.log('Ancho del elemento:', width);
+
   };
+
+
+  useEffect(() => {
+    const checkUser = () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user && user.roles && user.roles.length > 0) {
+        setUserRole(user.roles[0].rol);
+        if (user.roles[0].rol === 'ADMIN') {
+          setIsAdmin(true);
+        } else if (user.roles[0].rol === 'USER') {
+          setIsAdmin(false);
+        }
+      }
+    };
+
+    checkUser();
+  }, []);
+
+
 
   const handleMouseLeave = () => {
     setHover(false);
   };
+  if (isAdmin) {
+    return null;
+  }
 
   return (
     <Box
@@ -56,10 +78,9 @@ export const WhatsAppContact = () => {
         cursor: "pointer",
         transition: "width ease-in-out 0.3s",
         backgroundColor: hover ? "#00e676" : "#00c853",
-
       }}
     >
-      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center",textDecoration:"none" }}>
+      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
         <img src={logo} alt="logo de whatsapp" style={{ width: 45, height: 45 }} />
         {hover && (
           <Typography
@@ -68,7 +89,7 @@ export const WhatsAppContact = () => {
               flex: 1,
               color: "#fff",
               animation: `${slideIn} 0.3s ease-in-out`,
-              textDecoration:"none",
+              textDecoration: "none",
             }}
           >
             Quiero contactarme

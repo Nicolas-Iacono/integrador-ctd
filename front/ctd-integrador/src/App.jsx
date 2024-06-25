@@ -47,20 +47,20 @@ export const App = () => {
               <ContextProvider>
                 <Routes>
                   <Route path="/autentificacion" element={<AuthPage />} />
-                  <Route element={<UserLayout />}>
+                  <Route element={<UserLayout role="USER"/>}>
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/instrument/:id" element={<Instrument />} />
                     <Route path="/reservations" element={<MisReservas />} />
-                    <Route path="/confirmBooking" element={<ConfirmBooking />} />
+                    <Route path="/confirmBooking" element={<ConfirmBooking />}/>
                     <Route element={<ProtectedRoute />}>
                       <Route path="/favorites" element={<Favorites />} />
                       <Route path="/editarUsuario/:id" element={<EditUser />} />
                     </Route>
                   </Route>
-                  <Route element={<AdminLayout />}>
-
+                  
+                  <Route element={<AdminLayout role="ADMIN"/>}>
                     <Route element={<ProtectedRoute role="ADMIN" />}>
                       <Route path="/instruments" element={<Instruments />} />
                       <Route path="/usuarios" element={<Usuarios />} />
@@ -69,7 +69,7 @@ export const App = () => {
                       <Route path="/editarInstrumento/:id" element={<EditarInstrumento />} />
                       <Route path="/agregarCategoria" element={<AgregarCategoria />} />
                       <Route path="/editarCategoria/:id" element={<EditarCategoria />} />
-                      <Route path="/agregarUsuario" element={<CrearUsuario />} />
+                      <Route path="/agregarUsuario" element={<CrearUsuario />}/>
                     </Route>
 
                   </Route>

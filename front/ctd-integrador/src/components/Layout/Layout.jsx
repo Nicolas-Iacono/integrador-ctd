@@ -33,13 +33,13 @@ export const UserLayout = () => {
 export const AdminLayout = () => {
   return (
     <ThemeProvider theme={theme}>
-    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Header />
-      <Box sx={{ flex: 1 }}>
-        <Outlet />
+      <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Header />
+        <Box sx={{ flex: 1 }}>
+          <Outlet />
+        </Box>
+        <Footer />
       </Box>
-      <Footer />
-    </Box>
-  </ThemeProvider>
+    </ThemeProvider>
   )
 }

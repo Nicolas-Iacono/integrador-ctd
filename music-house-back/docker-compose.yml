@@ -1,53 +1,37 @@
 version: '3.4'
 
-
 services:
   java_music_house:
-    # Nombre del contenedor para el servicio de la aplicación Java
     container_name: container_music_house_v1_1.0.0
-    # Imagen a utilizar para el contenedor de la aplicación Java
     image: music_house:1.0.0
-    # Construye la imagen de Docker usando el Dockerfile en el directorio actual
     build: .
-    # Mapea el puerto 8080 del contenedor al puerto 8080 del host
     ports:
       - "8080:8080"  # Asegúrate de usar comillas en los puertos
-    # Variables de entorno para configurar la conexión a la base de datos
     environment:
       - DB_HOST=mysql_container_music_house_v1_1.0.0
       - DB_PORT=3306
       - DB_NAME=music_house
       - DB_USER=root
       - DB_PASSWORD=secret
-    # Red definida para la comunicación entre servicios
     networks:
       - my_net_music_house
-    # Define la dependencia del contenedor de MySQL
     depends_on:
       - mysql_container_music_house_v1_1.0.0
-    # Reinicia el contenedor automáticamente en caso de fallos
     restart: always
 
   mysql_container_music_house_v1_1.0.0:
-    # Nombre del contenedor para el servicio de MySQL
     container_name: mysql_container_music_house_v1_1.0.0
-    # Imagen a utilizar para el contenedor de MySQL
     image: mysql:latest
-    # Mapea el puerto 3306 del contenedor al puerto 13307 del host
     ports:
       - "13307:3306"  # Asegúrate de usar comillas en los puertos
-    # Variables de entorno para configurar la base de datos MySQL
     environment:
       - MYSQL_ROOT_PASSWORD=secret
       - MYSQL_DATABASE=music_house
       - MYSQL_PASSWORD=secret
-    # Red definida para la comunicación entre servicios
     networks:
       - my_net_music_house
-    # Reinicia el contenedor automáticamente en caso de fallos
     restart: always
 
-# Definición de la red para la comunicación entre servicios
 networks:
   my_net_music_house:
     driver: bridge

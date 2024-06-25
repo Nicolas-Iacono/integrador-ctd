@@ -1,6 +1,5 @@
 package com.musichouse.api.music.infra;
 
-import com.musichouse.api.music.util.Constans;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
@@ -18,7 +17,6 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Random;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -50,13 +48,13 @@ public class MailManager {
             helper.setText(content, true);
             helper.setFrom(sender);
 
-            ClassPathResource whatsappIcon = new ClassPathResource("static/img/whatsapp.png");
+            ClassPathResource whatsappIcon = new ClassPathResource("static/img/whatsapp01.png");
             helper.addInline("whatsappIcon", whatsappIcon);
-            ClassPathResource instagramIcon = new ClassPathResource("static/img/instagram.png");
+            ClassPathResource instagramIcon = new ClassPathResource("static/img/instagram01.png");
             helper.addInline("instagramIcon", instagramIcon);
-            ClassPathResource facebookIcon = new ClassPathResource("static/img/facebook.png");
+            ClassPathResource facebookIcon = new ClassPathResource("static/img/facebook01.png");
             helper.addInline("facebookIcon", facebookIcon);
-            ClassPathResource xIcon = new ClassPathResource("static/img/x-twitter.png");
+            ClassPathResource xIcon = new ClassPathResource("static/img/x-twitter01.png");
             helper.addInline("xIcon", xIcon);
             ClassPathResource logoImage = new ClassPathResource("static/img/logomusichousenegro-letranegro.png");
             helper.addInline("logoImage", logoImage);
@@ -99,13 +97,13 @@ public class MailManager {
             helper.setText(content, true);
             helper.setFrom(sender);
 
-            ClassPathResource whatsappIcon = new ClassPathResource("static/img/whatsapp.png");
+            ClassPathResource whatsappIcon = new ClassPathResource("static/img/whatsapp01.png");
             helper.addInline("whatsappIcon", whatsappIcon);
-            ClassPathResource instagramIcon = new ClassPathResource("static/img/instagram.png");
+            ClassPathResource instagramIcon = new ClassPathResource("static/img/instagram01.png");
             helper.addInline("instagramIcon", instagramIcon);
-            ClassPathResource facebookIcon = new ClassPathResource("static/img/facebook.png");
+            ClassPathResource facebookIcon = new ClassPathResource("static/img/facebook01.png");
             helper.addInline("facebookIcon", facebookIcon);
-            ClassPathResource xIcon = new ClassPathResource("static/img/x-twitter.png");
+            ClassPathResource xIcon = new ClassPathResource("static/img/x-twitter01.png");
             helper.addInline("xIcon", xIcon);
             ClassPathResource logoImage = new ClassPathResource("static/img/logomusichousenegro-letranegro.png");
             helper.addInline("logoImage", logoImage);
@@ -118,15 +116,6 @@ public class MailManager {
         }
     }
 
-    public String generateReservationCode() {
-        int length = 10;
-        String characters = Constans.CODE;
-        Random random = new Random();
-        StringBuilder code = new StringBuilder(length);
-        for (int i = 0; i < length; i++) {
-            code.append(characters.charAt(random.nextInt(characters.length())));
-        }
-        return code.toString();
-    }
+
 }
 

@@ -11,11 +11,9 @@ import com.musichouse.api.music.entity.User;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.infra.MailManager;
 import com.musichouse.api.music.interfaces.UserInterface;
-import com.musichouse.api.music.repository.AddressRepository;
-import com.musichouse.api.music.repository.PhoneRepository;
-import com.musichouse.api.music.repository.RolRepository;
-import com.musichouse.api.music.repository.UserRepository;
+import com.musichouse.api.music.repository.*;
 import com.musichouse.api.music.security.JwtService;
+import com.musichouse.api.music.telegramchat.TelegramService;
 import com.musichouse.api.music.util.RoleConstants;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
@@ -50,36 +48,42 @@ public class UserService implements UserInterface {
     private final RolRepository rolRepository;
     private final AddressRepository addressRepository;
     private final PhoneRepository phoneRepository;
+    private final ModelMapper modelMapper;
+    private final TelegramService telegramService;
+    private final FavoriteRepository favoriteRepository;
     @Autowired
     private final MailManager mailManager;
 
 
     @Transactional
     @Override
-    public TokenDtoExit createUser(UserDtoEntrance userDtoEntrance) throws DataIntegrityViolationException
-            , MessagingException {
+    public TokenDtoExit createUser(UserDtoEntrance userDtoEntrance) throws DataIntegrityViolationException, MessagingException {
         User user = mapper.map(userDtoEntrance, User.class);
         String contraseñaEncriptada = passwordEncoder.encode(user.getPassword());
         user.setPassword(contraseñaEncriptada);
+
         Role role = rolRepository.findByRol(RoleConstants.USER)
                 .orElseGet(() -> rolRepository.save(new Role(RoleConstants.USER)));
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
+        user.setTelegramChatId(userDtoEntrance.getTelegramChatId());
         user.getAddresses().forEach(address -> address.setUser(user));
         user.getPhones().forEach(phone -> phone.setUser(user));
-        String token = jwtService.generateToken(user);
         User userSaved = userRepository.save(user);
+        String token = jwtService.generateToken(userSaved);
         TokenDtoExit tokenDtoSalida = new TokenDtoExit(
-                user.getIdUser(),
-                user.getName(),
-                user.getLastName(),
-                new ArrayList<>(user.getRoles()),
+                userSaved.getIdUser(),
+                userSaved.getName(),
+                userSaved.getLastName(),
+                new ArrayList<>(userSaved.getRoles()),
                 token
         );
         sendMessageUser(user.getEmail(), user.getName(), user.getLastName());
+        telegramService.enviarMensajeDeBienvenida(userSaved.getTelegramChatId(), userSaved.getName(), userSaved.getLastName());
         return tokenDtoSalida;
     }
+
 
     @Transactional
     @Override
@@ -103,6 +107,7 @@ public class UserService implements UserInterface {
                 token
         );
         sendMessageUser(user.getEmail(), user.getName(), user.getLastName());
+
         return tokenDtoSalida;
     }
 
@@ -130,7 +135,8 @@ public class UserService implements UserInterface {
     }
 
     public List<UserDtoExit> getAllUser() {
-        return userRepository.findAll().stream()
+        List<User> users = userRepository.findAll();
+        return users.stream()
                 .map(user -> mapper.map(user, UserDtoExit.class))
                 .collect(Collectors.toList());
     }
@@ -171,6 +177,7 @@ public class UserService implements UserInterface {
         Optional<User> usuarioOptional = userRepository.findById(idUser);
         if (usuarioOptional.isPresent()) {
             User usuario = usuarioOptional.get();
+            favoriteRepository.deleteByUserId(idUser);
             usuario.getRoles().clear();
             userRepository.save(usuario);
             userRepository.deleteById(idUser);
@@ -179,9 +186,11 @@ public class UserService implements UserInterface {
         }
     }
 
+
     public void sendMessageUser(String email, String name, String lastName) throws MessagingException {
         mailManager.sendMessage(email, name, lastName);
 
     }
+
 
 }

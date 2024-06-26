@@ -10,6 +10,7 @@ import { Code } from '../../../api/constants'
 import { AvailabiltyPickersDay } from '../availability/AvailabiltyPickersDay'
 import { isAvailableDate } from '../availability/availabilityHelper'
 import { findInstrumentAvailability } from '../../../api/availability'
+import { BookingPickersActionBar } from './BookingPickersActionBar'
 
 dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)
@@ -127,24 +128,12 @@ export const DateRangeBooking = ({
               format="DD-MM-YYYY"
               shouldDisableDate={handleAvailableDate}
               slots={{
-                day: AvailabiltyPickersDay
+                day: AvailabiltyPickersDay,
+                toolbar: null,
+                actionBar: BookingPickersActionBar
               }}
               value={dateFrom}
               onChange={handleDateFromChange}
-              sx={{
-                borderRadius: '10px 0 0 10px',
-                borderColor: 'transparent',
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderRadius: '10px 0 0 10px',
-                  borderColor: 'black'
-                },
-                '& .MuiInputBase-root': {
-                  height: '3.5rem',
-                  '& .MuiInputBase-input': {
-                    alignSelf: 'flex-end'
-                  }
-                }
-              }}
             />
           </Box>
         </Box>
@@ -166,24 +155,13 @@ export const DateRangeBooking = ({
               format="DD-MM-YYYY"
               shouldDisableDate={handleAvailableDate}
               slots={{
-                day: AvailabiltyPickersDay
+                day: AvailabiltyPickersDay,
+                toolbar: null,
+                actionBar: BookingPickersActionBar
               }}
               value={dateTo}
               onChange={handleDateToChange}
-              sx={{
-                borderRadius: '0 10px 10px 0px',
-                borderColor: 'transparent',
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderRadius: '0 10px 10px 0px',
-                  borderColor: 'black'
-                },
-                '& .MuiInputBase-root': {
-                  height: '3.5rem',
-                  '& .MuiInputBase-input': {
-                    alignSelf: 'flex-end'
-                  }
-                }
-              }}
+              left={false}
             />
           </Box>
         </Box>

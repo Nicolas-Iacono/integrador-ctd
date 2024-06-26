@@ -81,7 +81,10 @@ export const EnhancedTableHead = (props) => {
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
-            sx={{ display: headCell.hidden ? 'none' : 'table-cell' }}
+            sx={{
+              ...{ display: headCell.hidden ? 'none' : 'table-cell' },
+              ...(headCell.sx ? headCell.sx : {})
+            }}
             key={headCell.id}
             align={headCell.numeric ? 'center' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}

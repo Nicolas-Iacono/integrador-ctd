@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import {
+  Box,
+  Collapse,
   Table,
   TableBody,
   TableCell,
@@ -13,6 +15,7 @@ import {
   Typography
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
 import MainWrapper from '../common/MainWrapper'
 import {
   EnhancedTableHead,
@@ -38,7 +41,7 @@ const headCells = [
     label: 'ID Reserva'
   },
   {
-    id: 'idUser',
+    id: 'imageUrl',
     numeric: true,
     disablePadding: false,
     label: 'Imagen'
@@ -47,7 +50,8 @@ const headCells = [
     id: 'instrumentName',
     numeric: true,
     disablePadding: false,
-    label: 'Instrumento'
+    label: 'Instrumento',
+    sx: { display: { xs: 'none', md: 'table-cell' } }
   },
 
   {
@@ -62,41 +66,326 @@ const headCells = [
     numeric: false,
     Date: true,
     disablePadding: false,
-    label: 'Inicio'
+    label: 'Inicio',
+    sx: { display: { xs: 'none', md: 'table-cell' } }
   },
   {
     id: 'endDate',
     numeric: false,
     Date: true,
     disablePadding: false,
-    label: 'Entrega'
+    label: 'Entrega',
+    sx: { display: { xs: 'none', md: 'table-cell' } }
   },
   {
     id: 'totalPrice',
     numeric: true,
     disablePadding: false,
-    label: 'Precio Total'
+    label: 'Precio Total',
+    sx: { display: { xs: 'none', md: 'table-cell' } }
   },
   {
     id: 'email',
     numeric: false,
     disablePadding: false,
-    label: 'email'
+    label: 'email',
+    sx: { display: { xs: 'none', md: 'table-cell' } }
   },
   {
     id: 'actions',
     numeric: false,
     disablePadding: false,
-    label: 'Acciones'
+    label: 'Acciones',
+    sx: { display: { xs: 'none', md: 'table-cell' } }
   }
 ]
+
+const ReservationRow = ({
+  row,
+  isItemSelected,
+  labelId,
+  isRowEven,
+  handleClick,
+  handleConfirmDelete
+}) => {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <>
+      <TableRow
+        hover
+        role="checkbox"
+        aria-checked={isItemSelected}
+        tabIndex={-1}
+        key={row.idReservation}
+        selected={isItemSelected}
+        sx={{
+          cursor: 'pointer',
+          backgroundColor: isRowEven ? '#fbf194' : 'inherit'
+        }}
+        onClick={(event) => handleClick(event, row.idReservation)}
+      >
+        <TableCell
+          padding="checkbox"
+          sx={{ display: { xs: 'none', md: 'table-cell' } }}
+        >
+          <Checkbox
+            color="primary"
+            checked={isItemSelected}
+            inputProps={{
+              'aria-labelledby': labelId
+            }}
+          />
+        </TableCell>
+        <TableCell sx={{ display: { xs: 'table-cell', md: 'none' } }}>
+          <IconButton
+            aria-label="Expandir detalle"
+            size="small"
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+          </IconButton>
+        </TableCell>
+        <TableCell
+          component="th"
+          id={labelId}
+          scope="row"
+          padding="none"
+          align="center"
+        >
+          {row.idReservation}
+        </TableCell>
+        <TableCell align="left">
+          <img src={row.imageUrl} alt="" width="100px" />
+        </TableCell>
+        <TableCell
+          align="left"
+          sx={{ display: { xs: 'none', md: 'table-cell' } }}
+        >
+          {row.instrumentName}
+        </TableCell>
+        <TableCell sx={{ display: 'none' }} align="left">
+          {row.idInstrument}
+        </TableCell>
+        <TableCell
+          align="left"
+          sx={{ display: { xs: 'none', md: 'table-cell' } }}
+        >
+          {dayjs(row.startDate).format('DD-MM-YYYY')}
+        </TableCell>
+        <TableCell
+          align="left"
+          sx={{ display: { xs: 'none', md: 'table-cell' } }}
+        >
+          {dayjs(row.endDate).format('DD-MM-YYYY')}
+        </TableCell>
+        <TableCell
+          align="left"
+          sx={{ display: { xs: 'none', md: 'table-cell' } }}
+        >
+          $ {row.totalPrice}
+        </TableCell>
+        <TableCell
+          align="left"
+          sx={{ display: { xs: 'none', md: 'table-cell' } }}
+        >
+          {row.email}
+        </TableCell>
+        <TableCell
+          align="left"
+          sx={{ display: { xs: 'none', md: 'table-cell' } }}
+        >
+          <Tooltip title="Eliminar">
+            <IconButton onClick={handleConfirmDelete}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </TableCell>
+      </TableRow>
+      <TableRow
+        sx={{
+          paddingBottom: 0,
+          paddingTop: 0,
+          display: { xs: 'table-row', md: 'none' }
+        }}
+      >
+        <TableCell
+          sx={{ paddingBottom: 0, paddingTop: 0, backgroundColor: '#E4E4E4' }}
+          colSpan={3}
+        >
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box sx={{ margin: 1 }}>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  display: 'inline-block',
+                  textAlign: 'left',
+                  fontWeight: '300',
+                  fontSize: '1rem',
+                  width: '35%',
+                  padding: '.2rem 1rem .2rem 0'
+                }}
+              >
+                Instrumento:
+              </Typography>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  display: 'inline-block',
+                  textAlign: 'left',
+                  fontWeight: '300',
+                  fontSize: '1rem',
+                  width: '35%',
+                  padding: '.2rem 1rem .2rem 0'
+                }}
+              >
+                {row.instrumentName}
+              </Typography>
+            </Box>
+            <Box sx={{ margin: 1 }}>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  display: 'inline-block',
+                  textAlign: 'left',
+                  fontWeight: '300',
+                  fontSize: '1rem',
+                  width: '35%',
+                  padding: '.2rem 1rem .2rem 0'
+                }}
+              >
+                Inicio:
+              </Typography>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  display: 'inline-block',
+                  textAlign: 'left',
+                  fontWeight: '300',
+                  fontSize: '1rem',
+                  width: '35%',
+                  padding: '.2rem 1rem .2rem 0'
+                }}
+              >
+                {dayjs(row.startDate).format('DD-MM-YYYY')}
+              </Typography>
+            </Box>
+            <Box sx={{ margin: 1 }}>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  display: 'inline-block',
+                  textAlign: 'left',
+                  fontWeight: '300',
+                  fontSize: '1rem',
+                  width: '35%',
+                  padding: '.2rem 1rem .2rem 0'
+                }}
+              >
+                Entrega:
+              </Typography>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  display: 'inline-block',
+                  textAlign: 'left',
+                  fontWeight: '300',
+                  fontSize: '1rem',
+                  width: '35%',
+                  padding: '.2rem 1rem .2rem 0'
+                }}
+              >
+                {dayjs(row.endDate).format('DD-MM-YYYY')}
+              </Typography>
+            </Box>
+            <Box sx={{ margin: 1 }}>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  display: 'inline-block',
+                  textAlign: 'left',
+                  fontWeight: '300',
+                  fontSize: '1rem',
+                  width: '35%',
+                  padding: '.2rem 1rem .2rem 0'
+                }}
+              >
+                Precio total:
+              </Typography>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  display: 'inline-block',
+                  textAlign: 'left',
+                  fontWeight: '300',
+                  fontSize: '1rem',
+                  width: '35%',
+                  padding: '.2rem 1rem .2rem 0'
+                }}
+              >
+                {row.totalPrice}
+              </Typography>
+            </Box>
+            <Box sx={{ margin: 1 }}>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  display: 'inline-block',
+                  textAlign: 'left',
+                  fontWeight: '300',
+                  fontSize: '1rem',
+                  width: '35%',
+                  padding: '.2rem 1rem .2rem 0'
+                }}
+              >
+                Mail:
+              </Typography>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  display: 'inline-block',
+                  textAlign: 'left',
+                  fontWeight: '300',
+                  fontSize: '1rem',
+                  width: '35%',
+                  padding: '.2rem 1rem .2rem 0'
+                }}
+              >
+                {row.email}
+              </Typography>
+            </Box>
+            <Box sx={{ margin: 1 }}>
+              <IconButton
+                size="large"
+                onClick={handleConfirmDelete}
+                sx={{ width: '100%' }}
+              >
+                <DeleteIcon fontSize="large" color="black" />
+              </IconButton>
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>
+    </>
+  )
+}
 
 const MisReservas = () => {
   const [reservations, setReservations] = useState()
   const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(true)
-  const [order, setOrder] = useState('asc')
-  const [orderBy, setOrderBy] = useState('number')
+  const [order, setOrder] = useState('desc')
+  const [orderBy, setOrderBy] = useState('idReservation')
   const [selected, setSelected] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
@@ -231,60 +520,14 @@ const MisReservas = () => {
                   const isRowEven = index % 2 === 0
 
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.idReservation}
-                      selected={isItemSelected}
-                      sx={{
-                        cursor: 'pointer',
-                        backgroundColor: isRowEven ? '#fbf194' : 'inherit'
-                      }}
-                      onClick={(event) => handleClick(event, row.idReservation)}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                        align="center"
-                      >
-                        {row.idReservation}
-                      </TableCell>
-                      <TableCell align="left">
-                        <img src={row.imageUrl} alt="" width="100px" />
-                      </TableCell>
-                      <TableCell align="left">{row.instrumentName}</TableCell>
-                      <TableCell sx={{ display: 'none' }} align="left">
-                        {row.idInstrument}
-                      </TableCell>
-                      <TableCell align="left">
-                        {dayjs(row.startDate).format('DD-MM-YYYY')}
-                      </TableCell>
-                      <TableCell align="left">
-                        {dayjs(row.endDate).format('DD-MM-YYYY')}
-                      </TableCell>
-                      <TableCell align="left">$ {row.totalPrice}</TableCell>
-                      <TableCell align="left">{row.email}</TableCell>
-                      <TableCell align="left">
-                        <Tooltip title="Eliminar">
-                          <IconButton onClick={handleConfirmDelete}>
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                    </TableRow>
+                    <ReservationRow
+                      row={row}
+                      isItemSelected={isItemSelected}
+                      labelId={labelId}
+                      isRowEven={isRowEven}
+                      handleClick={handleClick}
+                      handleConfirmDelete={handleConfirmDelete}
+                    />
                   )
                 })}
               {emptyRows > 0 && (
@@ -321,6 +564,7 @@ const MisReservas = () => {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           labelDisplayedRows={getLabelDisplayedRows}
+          labelRowsPerPage="Filas por página"
         />
       </Paper>
       <MessageDialog

@@ -1,10 +1,4 @@
-import {
-  useGetFetch,
-  getFetch,
-  postFetch,
-  putFetch,
-  deleteFetch
-} from '../helpers/useFetch'
+import { getFetch, postFetch, putFetch, deleteFetch } from '../helpers/useFetch'
 
 const URL_CATEGORIES = 'https://music-house.up.railway.app/api/category'
 

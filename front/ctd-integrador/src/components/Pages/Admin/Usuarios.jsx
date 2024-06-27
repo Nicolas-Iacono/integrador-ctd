@@ -208,6 +208,7 @@ export const Usuarios = () => {
                   onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
                   rowCount={rows.length}
+                  disableSelectAll
                 />
                 <TableBody>
                   {visibleRows &&

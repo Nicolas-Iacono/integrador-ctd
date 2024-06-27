@@ -18,27 +18,60 @@ const theme = createTheme({
 export const UserLayout = () => {
   return (
     <ThemeProvider theme={theme}>
-    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Header />
-      <Box sx={{ flex: 1 }}>
-        <Outlet />
+      <Box
+        sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
+      >
+        <Header />
+        <Box sx={{ flex: 1 }}>
+          <Outlet />
+        </Box>
+        <Footer />
+        <WhatsAppContact />
       </Box>
-      <Footer />
-      <WhatsAppContact />
-    </Box>
-  </ThemeProvider>
+    </ThemeProvider>
+  )
+}
+
+export const UserLayoutWithoutHeaderFooter = () => {
+  return (
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
+      >
+        <Box sx={{ flex: 1 }}>
+          <Outlet />
+        </Box>
+        <WhatsAppContact />
+      </Box>
+    </ThemeProvider>
   )
 }
 
 export const AdminLayout = () => {
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Box
+        sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
+      >
         <Header />
         <Box sx={{ flex: 1 }}>
           <Outlet />
         </Box>
         <Footer />
+      </Box>
+    </ThemeProvider>
+  )
+}
+
+export const AdminLayoutWithoutHeaderFooter = () => {
+  return (
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
+      >
+        <Box sx={{ flex: 1 }}>
+          <Outlet />
+        </Box>
       </Box>
     </ThemeProvider>
   )

@@ -210,6 +210,7 @@ export const Categories = () => {
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
+              disableSelectAll
             />
             <TableBody>
               {visibleRows.map((row, index) => {

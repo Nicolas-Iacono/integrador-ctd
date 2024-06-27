@@ -147,7 +147,7 @@ export const EnhancedTableToolbar = (props) => {
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Eliminar">
+        <Tooltip title="Eliminar (Aún no implementado)">
           <IconButton>
             <DeleteIcon />
           </IconButton>

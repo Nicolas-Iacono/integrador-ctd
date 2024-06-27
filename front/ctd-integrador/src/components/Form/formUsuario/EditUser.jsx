@@ -12,6 +12,8 @@ import { Logo } from '../../Images/Logo'
 import { Code } from '../../../api/constants'
 import { roleById } from '../../utils/roles/constants'
 import { useAuthContext } from '../../utils/context/AuthGlobal'
+import { updateAddress } from '../../../api/addresses'
+import { updatePhone } from '../../../api/phones'
 
 const EditUser = ({ onSwitch }) => {
   const { id } = useParams()
@@ -23,6 +25,8 @@ const EditUser = ({ onSwitch }) => {
   const [isUserUpdated, setIsUserUpdated] = useState()
   const [isNewRoleAdded, setIsNewRoleAdded] = useState()
   const [isOldRoleDeleted, setIsOldRoleDeleted] = useState()
+  const [isAddressUpdated, setIsAddressUpdated] = useState()
+  const [isPhoneUpdated, setIsPhoneUpdated] = useState()
   const { user: loggedUser, isUserAdmin } = useAuthContext()
   const navigate = useNavigate()
   const isLoggedUser = loggedUser?.idUser && loggedUser.idUser === Number(id)
@@ -52,13 +56,20 @@ const EditUser = ({ onSwitch }) => {
     if (
       isUserUpdated === undefined ||
       isNewRoleAdded === undefined ||
-      isOldRoleDeleted === undefined
+      isOldRoleDeleted === undefined ||
+      isAddressUpdated === undefined ||
+      isPhoneUpdated === undefined
     )
       return
 
     if (
-      (isLoggedUser && isUserUpdated === true) ||
+      (isLoggedUser &&
+        isUserUpdated === true &&
+        isAddressUpdated === true &&
+        isPhoneUpdated === true) ||
       (isUserAdmin &&
+        isAddressUpdated === true &&
+        isPhoneUpdated === true &&
         isUserUpdated === true &&
         isNewRoleAdded === true &&
         isOldRoleDeleted === true)
@@ -71,8 +82,16 @@ const EditUser = ({ onSwitch }) => {
     }
     setIsNewRoleAdded(undefined)
     setIsOldRoleDeleted(undefined)
+    setIsAddressUpdated(undefined)
+    setIsPhoneUpdated(undefined)
     setShowMessage(true)
-  }, [isUserUpdated, isNewRoleAdded, isOldRoleDeleted])
+  }, [
+    isUserUpdated,
+    isNewRoleAdded,
+    isOldRoleDeleted,
+    isAddressUpdated,
+    isPhoneUpdated
+  ])
 
   const getUserInfo = () => {
     UsersApi.getUserById(id)
@@ -103,7 +122,11 @@ const EditUser = ({ onSwitch }) => {
     const oldRol =
       (user.data.roles.length && user.data.roles[0].rol) || undefined
     const newRol = roleById(formDataToSend.idRol)
-    // Aquí puedes enviar los datos del formulario a través de una función prop o realizar otras acciones
+    const address = formDataToSend.addresses[0]
+    const { idAddress, street, number, city, state, country } = address
+    const phone = formDataToSend.phones[0]
+    const { idPhone, phoneNumber } = phone
+
     UsersApi.updateUser(formDataToSend)
       .then((response) => {
         setIsUserUpdated(true)
@@ -114,6 +137,14 @@ const EditUser = ({ onSwitch }) => {
         )
         setIsUserUpdated(false)
       })
+
+    updateAddress({ idAddress, street, number, city, state, country })
+      .then(() => setIsAddressUpdated(true))
+      .catch(() => setIsAddressUpdated(false))
+
+    updatePhone({ idPhone, phoneNumber })
+      .then(() => setIsPhoneUpdated(true))
+      .catch(() => setIsPhoneUpdated(false))
 
     if (!isUserAdmin || oldRol === undefined) setIsOldRoleDeleted(true)
     if (!isUserAdmin || newRol === undefined) setIsNewRoleAdded(true)

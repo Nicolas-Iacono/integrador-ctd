@@ -33,7 +33,7 @@ const pagesMobile = [
   { to: '/', text: 'Inicio', any: true },
   { to: '/about', text: 'Acerca de', anonymous: true, user: true },
   { to: '/favorites', text: 'Favoritos', user: true },
-  { to: '/reservations', text: 'Mis reservas', user: true}
+  { to: '/reservations', text: 'Mis reservas', user: true }
 ]
 
 const pagesDesktop = [
@@ -43,9 +43,7 @@ const pagesDesktop = [
   { to: '/categories', text: 'Categorías', admin: true },
   { to: '/about', text: 'Acerca de', anonymous: true, user: true },
   { to: '/favorites', text: 'Favoritos', user: true },
-  { to: '/reservations', text: 'Mis reservas', user: true}
-
-  
+  { to: '/reservations', text: 'Mis reservas', user: true }
 ]
 const settings = ['Crear Cuenta', 'Iniciar sesión']
 
@@ -63,8 +61,6 @@ export const Header = () => {
   const isHome = pathname === '/'
   const navigate = useNavigate()
 
-
-  
   const navigationTo = (location) => {
     navigate(location)
   }

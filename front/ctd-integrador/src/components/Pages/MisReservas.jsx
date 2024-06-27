@@ -106,9 +106,10 @@ const ReservationRow = ({
   labelId,
   isRowEven,
   handleClick,
-  handleConfirmDelete
+  handleConfirmDelete,
+  isOpen = false
 }) => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(isOpen)
 
   return (
     <>
@@ -406,6 +407,9 @@ const MisReservas = () => {
 
     setRows(reservations.data)
     setLoading(false)
+    if (window) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
   }, [reservations])
 
   const getReservations = () => {
@@ -527,6 +531,7 @@ const MisReservas = () => {
                       isRowEven={isRowEven}
                       handleClick={handleClick}
                       handleConfirmDelete={handleConfirmDelete}
+                      isOpen={index === 0}
                     />
                   )
                 })}

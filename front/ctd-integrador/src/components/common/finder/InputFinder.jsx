@@ -50,10 +50,10 @@ export const InputFinder = ({
       />
       <Box
         sx={{
-          display: { xs: 'block', md: 'none' },
+          display: { xs: 'flex', md: 'none' },
           position: 'absolute',
           right: '3px',
-          top: '1px',
+          top: '0',
           '& svg': { height: '1.5rem' }
         }}
       >

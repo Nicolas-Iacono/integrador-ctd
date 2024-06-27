@@ -3,6 +3,7 @@ import { CssBaseline, Typography, Box, Container } from '@mui/material'
 import MainWrapper from '../common/MainWrapper'
 import { AboutUs } from '../Images/AboutUs'
 import { isMobile } from 'react-device-detect'
+import { useEffect } from 'react'
 
 const CustomTypography = styled(Typography)(({ theme, primary = false }) => ({
   padding: '1.3rem',
@@ -15,6 +16,22 @@ const CustomTypography = styled(Typography)(({ theme, primary = false }) => ({
 }))
 
 export const About = () => {
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      event.preventDefault()
+    }
+
+    if (window) {
+      window.addEventListener('beforeunload', handleBeforeUnload)
+    }
+
+    return () => {
+      if (window) {
+        window.removeEventListener('beforeunload', handleBeforeUnload)
+      }
+    }
+  }, [])
+
   return (
     <main>
       <>

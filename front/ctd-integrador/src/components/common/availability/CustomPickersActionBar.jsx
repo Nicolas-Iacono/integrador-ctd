@@ -1,14 +1,14 @@
 import { styled } from '@mui/material/styles'
 import { PickersActionBar } from '@mui/x-date-pickers/PickersActionBar'
 
-const CustomPickersActionBar = styled(PickersActionBar)(({ theme }) => ({
+const StyledPickersActionBar = styled(PickersActionBar)(({ theme }) => ({
   padding: '1rem',
   button: {
     color: theme.palette.secondary.main
   }
 }))
 
-export const BookingPickersActionBar = (props) => {
+export const CustomPickersActionBar = (props) => {
   const {
     actions,
     className,
@@ -20,7 +20,7 @@ export const BookingPickersActionBar = (props) => {
   } = props
 
   return (
-    <CustomPickersActionBar
+    <StyledPickersActionBar
       actions={actions}
       className={className}
       onAccept={onAccept}

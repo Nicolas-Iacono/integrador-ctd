@@ -10,7 +10,7 @@ import { Code } from '../../../api/constants'
 import { AvailabiltyPickersDay } from '../availability/AvailabiltyPickersDay'
 import { isAvailableDate } from '../availability/availabilityHelper'
 import { findInstrumentAvailability } from '../../../api/availability'
-import { BookingPickersActionBar } from './BookingPickersActionBar'
+import { CustomPickersActionBar } from '../availability/CustomPickersActionBar'
 
 dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)
@@ -130,7 +130,7 @@ export const DateRangeBooking = ({
               slots={{
                 day: AvailabiltyPickersDay,
                 toolbar: null,
-                actionBar: BookingPickersActionBar
+                actionBar: CustomPickersActionBar
               }}
               value={dateFrom}
               onChange={handleDateFromChange}
@@ -157,7 +157,7 @@ export const DateRangeBooking = ({
               slots={{
                 day: AvailabiltyPickersDay,
                 toolbar: null,
-                actionBar: BookingPickersActionBar
+                actionBar: CustomPickersActionBar
               }}
               value={dateTo}
               onChange={handleDateToChange}

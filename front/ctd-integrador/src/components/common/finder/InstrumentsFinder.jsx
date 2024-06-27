@@ -3,6 +3,8 @@ import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
+import Close from '@mui/icons-material/Close'
+import { IconButton } from '@mui/material'
 import { searchInstrumentsByName } from '../../../api/instruments'
 import { Code } from '../../../api/constants'
 import { useAppStates } from '../../utils/global.context'
@@ -79,9 +81,7 @@ export const Finder = () => {
 
   const handleKeyUp = (keyCode) => {
     if (keyCode === 27) {
-      setSearchPattern('')
-      setDateFrom(null)
-      setDateTo(null)
+      clearFinder()
       setSendPattern(true)
     }
   }
@@ -96,6 +96,12 @@ export const Finder = () => {
 
   const handleSubmitSearch = () => {
     setSendPattern(true)
+  }
+
+  const clearFinder = () => {
+    setSearchPattern('')
+    setDateFrom(null)
+    setDateTo(null)
   }
 
   return (
@@ -127,6 +133,7 @@ export const Finder = () => {
           value={searchPattern}
           setValue={setSearchPattern}
           inputRef={inputFinderRef}
+          onClose={() => clearFinder()}
         />
         <DateRangeFinder
           dateFrom={dateFrom}
@@ -156,6 +163,14 @@ export const Finder = () => {
             top: suggestsTop
           }}
         >
+          <Box sx={{ position: 'relative', '& svg': { height: '1.5rem' } }}>
+            <IconButton
+              sx={{ position: 'absolute', right: 3, top: 3, zIndex: 1300 }}
+              onClick={() => setShowSugests(false)}
+            >
+              <Close />
+            </IconButton>
+          </Box>
           <List>
             {instruments &&
               instruments.map((instrument, index) => (

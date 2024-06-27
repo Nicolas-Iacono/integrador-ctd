@@ -1,8 +1,8 @@
-export const AboutUs = () => {
+export const AboutUs = ({ width, height }) => {
   return (
     <svg
-      width="638"
-      height="303"
+      width={width ? width : '638'}
+      height={height ? height : '303'}
       viewBox="0 0 638 303"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

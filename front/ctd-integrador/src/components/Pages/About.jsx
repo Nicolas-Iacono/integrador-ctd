@@ -2,6 +2,7 @@ import { styled } from '@mui/material/styles'
 import { CssBaseline, Typography, Box, Container } from '@mui/material'
 import MainWrapper from '../common/MainWrapper'
 import { AboutUs } from '../Images/AboutUs'
+import { isMobile } from 'react-device-detect'
 
 const CustomTypography = styled(Typography)(({ theme, primary = false }) => ({
   padding: '1.3rem',
@@ -49,7 +50,7 @@ export const About = () => {
                 sx={{ fontWeight: '300', padding: '2rem' }}
               >
                 Transformamos en emociones satisfactorias, las experiencias que
-                podrían impedir la realización de nuestros sueños
+                podrían impedir la realización de nuestros sueños.
               </Typography>
             </Box>
             <Box
@@ -65,7 +66,12 @@ export const About = () => {
                   ¿Quiénes somos?
                 </CustomTypography>
               </Box>
-              <AboutUs />
+              <Box sx={{ marginBottom: isMobile ? '2rem' : '.35em' }}>
+                <AboutUs
+                  width={isMobile ? '100%' : undefined}
+                  height={isMobile ? '100%' : undefined}
+                />
+              </Box>
             </Box>
             <Box>
               <Typography

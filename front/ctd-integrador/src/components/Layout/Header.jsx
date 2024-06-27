@@ -243,9 +243,11 @@ export const Header = () => {
               ]
             })}
           </Box>
-          <LogoWrapper variant="h5" noWrap component="a" href="">
-            <Logo />
-          </LogoWrapper>
+          <Link to="/">
+            <LogoWrapper variant="h5" noWrap>
+              <Logo />
+            </LogoWrapper>
+          </Link>
         </UpperStyledToolbar>
         <MiddleStyledToolbar
           sx={{

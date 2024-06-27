@@ -52,8 +52,9 @@ export const InputFinder = ({
         sx={{
           display: { xs: 'flex', md: 'none' },
           position: 'absolute',
-          right: '3px',
-          top: '0',
+          height: '100%',
+          top: 0,
+          right: 0,
           '& svg': { height: '1.5rem' }
         }}
       >

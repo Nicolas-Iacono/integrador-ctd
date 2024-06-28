@@ -132,44 +132,47 @@ export const Instrument = () => {
         {loading && <Loader title="Cargando detalle del instrumento" />}
         {!loading && (
           <>
-            {isUser && (
-              <Box
+            <Box sx={{ position: 'relative', width: '100%' }}>
+              <Typography
+                variant="h2"
                 sx={{
-                  position: 'absolute',
-                  top: { xs: '9%', md: '23%' },
-                  left: { xs: '91%', md: '95%' },
-                  transform: 'translate(-50%, -50%)'
+                  fontSize: { xs: '1.5rem', sm: '2rem', md: '3rem' },
+                  textAlign: 'center',
+                  fontWeight: 'lighter',
+                  paddingTop: '2rem',
+                  paddingBottom: '3rem'
                 }}
               >
-                <Tooltip
-                  title={
-                    !!idFavorite
-                      ? 'Remover de favoritos'
-                      : 'Agregar a favoritos'
-                  }
+                {instrumentSelected?.name}
+              </Typography>
+              {isUser && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    position: 'absolute',
+                    top: { xs: '2.7rem', md: '3.5rem' },
+                    right: { xs: '0', md: '0' },
+                    transform: 'translate(-50%, -50%)'
+                  }}
                 >
-                  <FavoriteIconWrapper
-                    aria-label="Agregar a favoritos"
-                    onClick={handleFavoriteClick}
-                    isFavorite={!!idFavorite}
+                  <Tooltip
+                    title={
+                      !!idFavorite
+                        ? 'Remover de favoritos'
+                        : 'Agregar a favoritos'
+                    }
                   >
-                    <Favorite sx={{ color: '#000000 !important' }} />
-                  </FavoriteIconWrapper>
-                </Tooltip>
-              </Box>
-            )}
-            <Typography
-              variant="h2"
-              sx={{
-                fontSize: { xs: '1.5rem', sm: '2rem', md: '3rem' },
-                textAlign: 'center',
-                fontWeight: 'lighter',
-                paddingTop: '2rem',
-                paddingBottom: '3rem'
-              }}
-            >
-              {instrumentSelected?.name}
-            </Typography>
+                    <FavoriteIconWrapper
+                      aria-label="Agregar a favoritos"
+                      onClick={handleFavoriteClick}
+                      isFavorite={!!idFavorite}
+                    >
+                      <Favorite sx={{ color: '#000000 !important' }} />
+                    </FavoriteIconWrapper>
+                  </Tooltip>
+                </Box>
+              )}
+            </Box>
             <InstrumentDetailWrapper>
               <Box
                 sx={{
@@ -229,7 +232,13 @@ export const Instrument = () => {
               </Box>
               <Box
                 sx={{
-                  width: { xs: '100%', md: '40%' },
+                  width: {
+                    xs: '100%',
+                    md: '40%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center'
+                  },
                   cursor: 'pointer',
                   borderRadius: '.625rem'
                 }}

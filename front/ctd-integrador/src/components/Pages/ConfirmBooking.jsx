@@ -209,7 +209,7 @@ export const ConfirmBooking = () => {
                       textAlign: 'left',
                       fontWeight: '300',
                       padding: '.2rem 1rem .2rem 2rem',
-                      width: '40%'
+                      width: '45%'
                     }}
                   >
                     Inicio:
@@ -220,7 +220,7 @@ export const ConfirmBooking = () => {
                       textAlign: 'left',
                       fontWeight: '300',
                       padding: '.2rem 1rem .2rem 2rem',
-                      width: '40%'
+                      width: '45%'
                     }}
                   >
                     {dayjs(bookingInfo.bookingDateFrom).format('DD-MM-YYYY')}
@@ -233,7 +233,7 @@ export const ConfirmBooking = () => {
                       textAlign: 'left',
                       fontWeight: '300',
                       padding: '.2rem 1rem .2rem 2rem',
-                      width: '40%'
+                      width: '45%'
                     }}
                   >
                     Entrega:
@@ -244,7 +244,7 @@ export const ConfirmBooking = () => {
                       textAlign: 'left',
                       fontWeight: '300',
                       padding: '.2rem 1rem .2rem 2rem',
-                      width: '40%'
+                      width: '45%'
                     }}
                   >
                     {dayjs(bookingInfo.bookingDateTo).format('DD-MM-YYYY')}
@@ -377,7 +377,7 @@ export const ConfirmBooking = () => {
                           textAlign: 'left',
                           fontWeight: '300',
                           padding: '.2rem 1rem .2rem 2rem',
-                          width: '60%',
+                          width: '65%',
                           fontSize: { xs: '1rem', md: '1.25rem' }
                         }}
                       >
@@ -409,7 +409,7 @@ export const ConfirmBooking = () => {
                           textAlign: 'left',
                           fontWeight: '300',
                           padding: '.2rem 1rem .2rem 2rem',
-                          width: '60%',
+                          width: '65%',
                           fontSize: { xs: '1rem', md: '1.25rem' }
                         }}
                       >
@@ -441,7 +441,7 @@ export const ConfirmBooking = () => {
                           textAlign: 'left',
                           fontWeight: '300',
                           padding: '.2rem 1rem .2rem 2rem',
-                          width: '60%',
+                          width: '65%',
                           fontSize: { xs: '1rem', md: '1.25rem' }
                         }}
                       >
@@ -473,7 +473,7 @@ export const ConfirmBooking = () => {
                           textAlign: 'left',
                           fontWeight: '300',
                           padding: '.2rem 1rem .2rem 2rem',
-                          width: '60%',
+                          width: '65%',
                           fontSize: { xs: '1rem', md: '1.25rem' }
                         }}
                       >

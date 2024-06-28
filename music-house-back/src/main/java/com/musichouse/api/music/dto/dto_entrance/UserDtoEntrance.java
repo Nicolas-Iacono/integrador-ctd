@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDtoEntrance {
+
     @NotNull(message = "El nombre es obligatorio")
     @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
     @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]+$", message = "El nombre solo debe contener letras, acentos y espacios")
@@ -40,4 +41,6 @@ public class UserDtoEntrance {
     @Valid
     @NotNull(message = "El campo phones debe estar presente y no puede estar vacío")
     private List<PhoneDtoEntrance> phones;
+    @NotNull(message = "El campo telegram id  debe estar presente y no puede estar vacío")
+    private Long telegramChatId;
 }

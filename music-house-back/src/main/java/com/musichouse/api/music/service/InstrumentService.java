@@ -7,16 +7,16 @@ import com.musichouse.api.music.dto.dto_modify.InstrumentDtoModify;
 import com.musichouse.api.music.entity.*;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.InstrumentInterface;
-import com.musichouse.api.music.repository.CategoryRepository;
-import com.musichouse.api.music.repository.InstrumentRepository;
-import com.musichouse.api.music.repository.ThemeRepository;
+import com.musichouse.api.music.repository.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +26,8 @@ public class InstrumentService implements InstrumentInterface {
     private final ModelMapper mapper;
     private final CategoryRepository categoryRepository;
     private final ThemeRepository themeRepository;
+    private final AvailableDateRepository availableDateRepository;
+    private final FavoriteRepository favoriteRepository;
 
     @Override
     public InstrumentDtoExit createInstrument(InstrumentDtoEntrance instrumentsDtoEntrance) throws ResourceNotFoundException {
@@ -69,7 +71,10 @@ public class InstrumentService implements InstrumentInterface {
     @Override
     public List<InstrumentDtoExit> getAllInstruments() {
         List<InstrumentDtoExit> instrumentDtoExits = instrumentRepository.findAll().stream()
-                .map(instrument -> mapper.map(instrument, InstrumentDtoExit.class)).toList();
+                .map(instrument -> {
+                    InstrumentDtoExit dto = mapper.map(instrument, InstrumentDtoExit.class);
+                    return dto;
+                }).toList();
         return instrumentDtoExits;
     }
 
@@ -112,20 +117,30 @@ public class InstrumentService implements InstrumentInterface {
         characteristics.setMicrophone(characteristicsDtoEntrance.getMicrophone());
         characteristics.setPhoneHolder(characteristicsDtoEntrance.getPhoneHolder());
         instrumentRepository.save(instrumentToUpdate);
-        return mapper.map(instrumentToUpdate, InstrumentDtoExit.class);
+        InstrumentDtoExit instrumentDtoExit = mapper.map(instrumentToUpdate, InstrumentDtoExit.class);
+        return instrumentDtoExit;
     }
 
     @Override
+    @Transactional
     public void deleteInstrument(Long idInstrument) throws ResourceNotFoundException {
-        if (instrumentRepository.findById(idInstrument).orElse(null) != null) {
-            instrumentRepository.deleteById(idInstrument);
-        } else {
-            throw new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado");
+        Instrument instrument = instrumentRepository.findById(idInstrument)
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado"));
+
+        boolean hasReservedDates = availableDateRepository.existsByInstrumentIdInstrumentAndAvailableFalse(idInstrument);
+
+        if (hasReservedDates) {
+            throw new IllegalArgumentException("No se puede eliminar el instrumento porque tiene fechas reservadas.");
         }
+        favoriteRepository.deleteByInstrumentIdInstrument(idInstrument);
+        // Si no tiene fechas reservadas, se elimina sin importar si está marcado como favorito
+        instrumentRepository.delete(instrument);
     }
 
-    public List<Instrument> searchInstruments(String name) {
-        return instrumentRepository.findByNameContainingIgnoreCase(name);
+    public List<InstrumentDtoExit> searchInstruments(String name) {
+        List<Instrument> instruments = instrumentRepository.findByNameContainingIgnoreCase(name);
+        return instruments.stream()
+                .map(instrument -> mapper.map(instrument, InstrumentDtoExit.class))
+                .collect(Collectors.toList());
     }
-
 }

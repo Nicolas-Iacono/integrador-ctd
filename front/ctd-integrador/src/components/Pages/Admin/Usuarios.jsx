@@ -1,16 +1,12 @@
-import { useState, useEffect, useMemo } from 'react'
-import { alpha } from '@mui/material/styles'
+import { useState, useEffect } from 'react'
 import {
   Box,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TablePagination,
   TableRow,
-  TableSortLabel,
-  Toolbar,
   Typography,
   Paper,
   Checkbox,
@@ -18,45 +14,23 @@ import {
   Tooltip
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
-import FilterListIcon from '@mui/icons-material/FilterList'
-import AddIcon from '@mui/icons-material/Add'
-import { Edit } from '@mui/icons-material'
-import { visuallyHidden } from '@mui/utils'
+import EditIcon from '@mui/icons-material/Edit'
 import MainWrapper from '../../common/MainWrapper'
 import { UsersApi } from '../../../api/users'
 import { useNavigate } from 'react-router-dom'
-
-const descendingComparator = (a, b, orderBy) => {
-  if (b[orderBy] < a[orderBy]) {
-    return -1
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1
-  }
-  return 0
-}
-
-const getComparator = (order, orderBy) => {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy)
-}
-
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
-const stableSort = (array, comparator) => {
-  const stabilizedThis = array.map((el, index) => [el, index])
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0])
-    if (order !== 0) {
-      return order
-    }
-    return a[1] - b[1]
-  })
-  return stabilizedThis.map((el) => el[0])
-}
+import {
+  EnhancedTableHead,
+  EnhancedTableToolbar,
+  getLabelDisplayedRows,
+  isSelected,
+  handleSort,
+  handleSelectAll,
+  handleSelected,
+  getEmptyRows,
+  useVisibleRows
+} from './common/tableHelper'
+import { MessageDialog } from '../../common/MessageDialog'
+import { Loader } from '../../common/loader/Loader'
 
 const headCells = [
   {
@@ -91,120 +65,8 @@ const headCells = [
   }
 ]
 
-const EnhancedTableHead = (props) => {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort
-  } = props
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property)
-  }
-
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts'
-            }}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'center' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  )
-}
-
-const EnhancedTableToolbar = (props) => {
-  const { numSelected } = props
-  const navigate = useNavigate()
-
-  const handleAdd = () => {
-    navigate('/agregarUsuario')
-  }
-
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            )
-        })
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} seleccionado{numSelected > 1 ? 's' : ''}
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Usuarios
-        </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Agregar usuario">
-          <IconButton onClick={handleAdd}>
-            <AddIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  )
-}
-
 export const Usuarios = () => {
-  const [usuarios] = UsersApi.getAllUsers()
+  const [usuarios, setUsuarios] = useState()
   const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(true)
   const [order, setOrder] = useState('asc')
@@ -212,7 +74,15 @@ export const Usuarios = () => {
   const [selected, setSelected] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
+  const [showMessage, setShowMessage] = useState(false)
+  const [message, setMessage] = useState()
+  const [showCancelButton, setShowCancelButton] = useState(false)
+  const [onButtonPressed, setOnButtonPressed] = useState()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    getUsuarios()
+  }, [])
 
   useEffect(() => {
     if (!usuarios) return
@@ -223,42 +93,72 @@ export const Usuarios = () => {
     }
   }, [usuarios])
 
+  const getUsuarios = () => {
+    setLoading(true)
+    UsersApi.getAllUsers()
+      .then(([usuarios]) => {
+        setUsuarios(usuarios)
+      })
+      .catch(([_, code]) => {
+        setUsuarios([])
+      })
+  }
+
+  const handleAdd = () => {
+    navigate('/agregarUsuario')
+  }
+
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc'
-    setOrder(isAsc ? 'desc' : 'asc')
-    setOrderBy(property)
+    handleSort(event, property, orderBy, order, setOrderBy, setOrder)
   }
 
   const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((n) => n.idUser)
-      setSelected(newSelected)
-      return
-    }
-    setSelected([])
+    handleSelectAll(event, rows, 'idUser', setSelected)
   }
 
   const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id)
-    let newSelected = []
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id)
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1))
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1))
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      )
-    }
-    setSelected(newSelected)
+    handleSelected(event, id, selected, setSelected)
   }
 
   const handleEdit = (idUser) => {
     navigate(`/editarUsuario/${idUser}`)
+  }
+
+  const handleConfirmDelete = () => {
+    setMessage('¿Desea eliminar este usuario?')
+    setShowCancelButton(true)
+    setOnButtonPressed(true)
+    setShowMessage(true)
+  }
+
+  const handleClose = () => {
+    setShowMessage(false)
+    setSelected([])
+  }
+  const handleDelete = () => {
+    setShowMessage(false)
+    deleteSelectedUser()
+  }
+
+  const deleteSelectedUser = () => {
+    const idUser = selected[0]
+
+    UsersApi.deleteUser(idUser)
+      .then(() => {
+        setMessage('Usuario eliminado exitosamente')
+        setShowCancelButton(false)
+        setOnButtonPressed(false)
+      })
+      .catch(() => {
+        setMessage('No fue posible eliminar usuario')
+        setShowCancelButton(false)
+        setOnButtonPressed(false)
+      })
+      .finally(() => {
+        setSelected([])
+        setShowMessage(true)
+        getUsuarios()
+      })
   }
 
   const handleChangePage = (event, newPage) => {
@@ -270,35 +170,30 @@ export const Usuarios = () => {
     setPage(0)
   }
 
-  const isSelected = (idUser) => selected.indexOf(idUser) !== -1
-
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
+  const emptyRows = getEmptyRows(page, rowsPerPage, rows)
 
-  const visibleRows = useMemo(
-    () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [rows, order, orderBy, page, rowsPerPage]
-  )
+  const visibleRows = useVisibleRows(rows, order, orderBy, page, rowsPerPage)
 
-  const getLabelDisplayedRows = ({ from, to, count }) => {
-    {
-      return `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`
-    }
-  }
-
-  if (loading) return <p>Loading...</p>
+  if (loading) return <Loader title="Cargando usuarios" />
 
   return (
     <>
       {!loading && (
         <MainWrapper sx={{ width: '100%' }}>
-          <Paper sx={{ width: '100%', mb: 2 }}>
-            <EnhancedTableToolbar numSelected={selected.length} />
+          <Paper
+            sx={{
+              display: { xs: 'none', lg: 'initial' },
+              width: '100%',
+              mb: 2
+            }}
+          >
+            <EnhancedTableToolbar
+              title="Usuarios"
+              titleAdd="Agregar usuario"
+              handleAdd={handleAdd}
+              numSelected={selected.length}
+            />
             <TableContainer>
               <Table
                 sx={{ minWidth: 750 }}
@@ -306,17 +201,19 @@ export const Usuarios = () => {
                 size="medium"
               >
                 <EnhancedTableHead
+                  headCells={headCells}
                   numSelected={selected.length}
                   order={order}
                   orderBy={orderBy}
                   onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
                   rowCount={rows.length}
+                  disableSelectAll
                 />
                 <TableBody>
                   {visibleRows &&
                     visibleRows.map((row, index) => {
-                      const isItemSelected = isSelected(row.idUser)
+                      const isItemSelected = isSelected(row.idUser, selected)
                       const labelId = `enhanced-table-checkbox-${index}`
                       const isRowEven = index % 2 === 0
 
@@ -360,7 +257,12 @@ export const Usuarios = () => {
                               <IconButton
                                 onClick={() => handleEdit(row.idUser)}
                               >
-                                <Edit />
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Eliminar">
+                              <IconButton onClick={handleConfirmDelete}>
+                                <DeleteIcon />
                               </IconButton>
                             </Tooltip>
                           </TableCell>
@@ -373,7 +275,20 @@ export const Usuarios = () => {
                         height: 53 * emptyRows
                       }}
                     >
-                      <TableCell colSpan={6} />
+                      <TableCell colSpan={5} />
+                    </TableRow>
+                  )}
+                  {page == 0 && rows.length === 0 && (
+                    <TableRow
+                      style={{
+                        height: 53 * emptyRows
+                      }}
+                    >
+                      <TableCell colSpan={5}>
+                        <Typography align="center">
+                          {page === 0 ? 'No se encontraron usuarios' : ''}
+                        </Typography>
+                      </TableCell>
                     </TableRow>
                   )}
                 </TableBody>
@@ -391,6 +306,36 @@ export const Usuarios = () => {
               labelDisplayedRows={getLabelDisplayedRows}
             />
           </Paper>
+          <Box
+            sx={{
+              display: { xs: 'flex', lg: 'none' },
+              height: '100vh'
+            }}
+          >
+            <Typography
+              gutterBottom
+              variant="h6"
+              component="h6"
+              textAlign="center"
+              sx={{
+                paddingTop: 30,
+                fontWeight: 'bold'
+              }}
+            >
+              Funcionalidad no disponible en esta resolución
+            </Typography>
+          </Box>
+          <MessageDialog
+            title="Eliminar usuario"
+            message={message}
+            isOpen={showMessage}
+            buttonText="Ok"
+            onClose={handleClose}
+            onButtonPressed={() =>
+              onButtonPressed ? handleDelete() : handleClose()
+            }
+            showCancelButton={showCancelButton}
+          />
         </MainWrapper>
       )}
     </>

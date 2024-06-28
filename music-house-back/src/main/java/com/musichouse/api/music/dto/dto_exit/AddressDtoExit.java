@@ -11,7 +11,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddressDtoExit {
-
     private Long idAddress;
     private Long idUser;
     @JsonFormat(pattern = "yyyy-MM-dd")

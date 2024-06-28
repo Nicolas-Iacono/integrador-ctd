@@ -1,29 +1,29 @@
-# Fase de construcción
+# Usa una imagen base de Maven y Java JDK con la versión que necesitas
 FROM maven:3.8.4-openjdk-17 AS build
 
-# Establece el directorio de trabajo dentro del contenedor en /home/app
+# Establece el directorio de trabajo en /home/app
 WORKDIR /home/app
 
-# Copia el código fuente de la aplicación al contenedor
+# Copia todo el código fuente al contenedor
 COPY src src
 
-# Copia el archivo de configuración Maven (pom.xml) al contenedor
+# Copia el archivo pom.xml para descargar las dependencias
 COPY pom.xml .
 
-# Ejecuta el comando Maven para compilar y empaquetar la aplicación
+# Empaqueta la aplicación
 RUN mvn package
 
-# Fase de ejecución
+# Inicia una nueva etapa de construcción para el contenedor de la aplicación
 FROM openjdk:17.0.1-jdk
 
-# Establece el directorio de trabajo dentro del contenedor en /usr/src/app
+# Establece el directorio de trabajo en /usr/src/app
 WORKDIR /usr/src/app
 
-# Copia el archivo JAR generado en la fase de construcción al contenedor
+# Copia el archivo JAR de la aplicación al contenedor y renómbralo
 COPY --from=build /home/app/target/music-house-0.0.1-SNAPSHOT.jar music-house-1.0.0.jar
 
-# Expone el puerto 8080 para permitir el acceso a la aplicación desde fuera del contenedor
-EXPOSE 8080
+# Exponer el puerto en el que la aplicación se ejecutará
+#EXPOSE 8080
 
-# Comando para ejecutar la aplicación
+# Ejecutar la aplicación Spring Boot al iniciar el contenedor
 CMD ["java", "-jar", "music-house-1.0.0.jar"]

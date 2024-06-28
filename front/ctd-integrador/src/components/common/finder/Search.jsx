@@ -7,14 +7,20 @@ export const Search = styled('div')(({ theme }) => ({
   '&:hover': {
     backgroundColor: alpha(theme.palette.primary.main, 0.7)
   },
-  marginRight: theme.spacing(2),
+  marginRight: 0,
   marginLeft: 0,
   width: '100%',
   height: '2.5rem',
-  maxWidth: '18.375rem',
+
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(3),
-    width: '33%'
+    width: '60%'
+  },
+
+  [theme.breakpoints.up('md')]: {
+    margin: 0,
+    width: '33%',
+    maxWidth: '18.375rem'
   },
 
   '& .MuiInputBase-root': {

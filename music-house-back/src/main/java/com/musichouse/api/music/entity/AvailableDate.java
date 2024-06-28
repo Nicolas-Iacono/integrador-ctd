@@ -55,4 +55,3 @@ public class AvailableDate {
     @Column(name = "regist_date")
     private Date registDate;
 }
-

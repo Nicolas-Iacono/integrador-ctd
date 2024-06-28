@@ -30,19 +30,20 @@ import '../styles/header.styles.css'
 import background from '../../assets/background.svg'
 
 const pagesMobile = [
-  { to: '/', text: 'Inicio' },
-  { to: '/about', text: 'Acerca de' },
-  { to: '/contact', text: 'Contáctanos' },
-  { to: '/favorites', text: 'Favoritos', user: true }
+  { to: '/', text: 'Inicio', any: true },
+  { to: '/about', text: 'Acerca de', anonymous: true, user: true },
+  { to: '/favorites', text: 'Favoritos', user: true },
+  { to: '/reservations', text: 'Mis reservas', user: true }
 ]
 
 const pagesDesktop = [
-  { to: '/', text: 'Inicio' },
+  { to: '/', text: 'Inicio', any: true },
   { to: '/instruments', text: 'Instrumentos', admin: true },
   { to: '/usuarios', text: 'Usuarios', admin: true },
-  { to: '/about', text: 'Acerca de' },
-  { to: '/contact', text: 'Contáctanos' },
-  { to: '/favorites', text: 'Favoritos', user: true }
+  { to: '/categories', text: 'Categorías', admin: true },
+  { to: '/about', text: 'Acerca de', anonymous: true, user: true },
+  { to: '/favorites', text: 'Favoritos', user: true },
+  { to: '/reservations', text: 'Mis reservas', user: true }
 ]
 const settings = ['Crear Cuenta', 'Iniciar sesión']
 
@@ -53,11 +54,11 @@ export const Header = () => {
   const [isMenuUserOpen, setIsMenuUserOpen] = useState(false)
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
-  const { authGlobal, setAuthGlobal, user, setUser, isUserAdmin } =
+  const { authGlobal, setAuthGlobal, user, setUser, isUserAdmin, isUser } =
     useAuthContext()
   const { toggleHeaderVisibility } = useHeaderVisibility()
   const { pathname } = useLocation()
-  const showButtonsAndSearch = pathname === '/'
+  const isHome = pathname === '/'
   const navigate = useNavigate()
 
   const navigationTo = (location) => {
@@ -109,6 +110,7 @@ export const Header = () => {
 
   return (
     <HeaderWrapper
+      isHome={isHome}
       backgroundImageUrl={background}
       sx={{ transition: 'top 1.2s', top: visible ? '0' : '-300px' }}
     >
@@ -154,7 +156,9 @@ export const Header = () => {
             >
               {pagesMobile.map((page, index) => {
                 return [
-                  ((page.user && user) || (!page.admin && !page.user)) && (
+                  ((page.user && isUser) ||
+                    (page.anonymous && !(isUser || isUserAdmin)) ||
+                    page.any) && (
                     <MenuItem
                       key={`menu-nav-${index}`}
                       onClick={handleCloseNavMenu}
@@ -217,8 +221,9 @@ export const Header = () => {
             {pagesDesktop.map((page, index) => {
               return [
                 ((page.admin && isUserAdmin) ||
-                  (page.user && user) ||
-                  (!page.admin && !page.user)) && (
+                  (page.user && isUser) ||
+                  (page.anonymous && !(isUser || isUserAdmin)) ||
+                  page.any) && (
                   <Button
                     key={`menu-option-${index}`}
                     sx={{
@@ -238,20 +243,20 @@ export const Header = () => {
               ]
             })}
           </Box>
-          <LogoWrapper variant="h5" noWrap component="a" href="">
-            <Logo />
-          </LogoWrapper>
+          <Link to="/">
+            <LogoWrapper variant="h5" noWrap>
+              <Logo />
+            </LogoWrapper>
+          </Link>
         </UpperStyledToolbar>
         <MiddleStyledToolbar
-          sx={{ display: `${showButtonsAndSearch ? 'flex' : 'none'}` }}
+          sx={{
+            display: {
+              xs: 'none',
+              md: `${isHome ? 'flex' : 'none'}`
+            }
+          }}
         >
-          <Box
-            sx={{
-              flexGrow: 0,
-              padding: '.5rem',
-              display: { xs: 'none', md: 'block' }
-            }}
-          ></Box>
           <Box
             sx={{
               flexGrow: 0,
@@ -344,9 +349,7 @@ export const Header = () => {
             )}
           </Box>
         </MiddleStyledToolbar>
-        <LowerStyledToolbar
-          sx={{ display: `${showButtonsAndSearch ? 'flex' : 'none'}` }}
-        >
+        <LowerStyledToolbar sx={{ display: `${isHome ? 'flex' : 'none'}` }}>
           <Finder />
         </LowerStyledToolbar>
       </Container>

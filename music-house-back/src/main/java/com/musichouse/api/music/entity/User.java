@@ -1,10 +1,7 @@
 package com.musichouse.api.music.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,6 +17,7 @@ import java.util.stream.Collectors;
  */
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "USERS")
@@ -108,6 +106,12 @@ public class User implements UserDetails {
     @Column(name = "regist_date")
     private Date registDate;
 
+    /**
+     * Identificador único de Telegram del usuario.
+     */
+    @Column(name = "chat_id", nullable = true)
+    private Long telegramChatId;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles
@@ -140,6 +144,3 @@ public class User implements UserDetails {
         return true;
     }
 }
-
-
-

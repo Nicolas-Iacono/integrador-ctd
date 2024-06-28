@@ -17,7 +17,6 @@ import java.util.Date;
 @NoArgsConstructor
 @Table(name = "ROLES")
 public class Role {
-
     /**
      * Identificador único para el rol.
      */

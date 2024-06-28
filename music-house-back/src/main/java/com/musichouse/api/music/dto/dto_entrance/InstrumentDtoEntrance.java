@@ -47,5 +47,4 @@ public class InstrumentDtoEntrance {
     @NotNull(message = "Las características del instrumento deben estar presentes")
     @Valid
     private CharacteristicDtoEntrance characteristic;
-
 }

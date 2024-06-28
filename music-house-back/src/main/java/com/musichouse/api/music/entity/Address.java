@@ -23,8 +23,8 @@ import java.util.Date;
  * se debe excluir el campo "user". Esto se hace para evitar problemas de recursión infinita en las operaciones de igualdad y hashCode.
  */
 @EqualsAndHashCode(exclude = {"user"})
-public class Address {
 
+public class Address {
     /**
      * Identificador único para la dirección.
      */
@@ -85,3 +85,5 @@ public class Address {
     @Column(name = "regist_date")
     private Date registDate;
 }
+
+

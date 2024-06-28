@@ -103,15 +103,19 @@ const Login = ({ theme, onSwitch }) => {
           md={6}
           sx={{
             padding: 3,
-            width: { md: '40%', xs: '70%' },
+            width: { md: '40%', xs: '90%' },
             height: '100%',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            gap: '20px'
+            gap: '20px',
+            marginRight: { md: '5rem' }
           }}
         >
-          <Typography variant="h3" sx={{ fontWeight: 'light' }}>
+          <Typography
+            variant="h3"
+            sx={{ color: { xs: 'white', md: 'black' }, fontWeight: 'light' }}
+          >
             Iniciar Sesión
           </Typography>
           <Grid
@@ -160,12 +164,17 @@ const Login = ({ theme, onSwitch }) => {
               Iniciar Sesión
             </CustomButton>
             <Link
-              href="#"
+              href=""
               underline="always"
-              sx={{ color: 'white', marginTop: '10px' }}
+              sx={{
+                color: { xs: 'white', md: 'black' },
+                marginTop: { xs: '40px', md: '20px' }
+              }}
               onClick={onSwitch}
             >
-              {'¿No tienes una cuenta? Regístrate'}
+              <Typography sx={{ fontWeight: '600' }}>
+                No tienes una cuenta? Regístrate
+              </Typography>
             </Link>
           </ContainerBottom>
         </Grid>

@@ -1,4 +1,4 @@
-import { useGetFetch, postFetch, putFetch } from '../helpers/useFetch'
+import { useGetFetch } from '../helpers/useFetch'
 
 const URL_FIND_INSTRUMENT_AVAILABILITY =
   'https://music-house.up.railway.app/api/available-dates/find/all'

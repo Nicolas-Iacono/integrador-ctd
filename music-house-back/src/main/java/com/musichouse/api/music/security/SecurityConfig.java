@@ -56,6 +56,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/available-dates/**").permitAll()
                         // Rutas de Favoritos (todas las operaciones)
                         .requestMatchers("/api/favorite/**").permitAll()
+                        // Rutas de Politica de privacidad  (todas las operaciones)
+                        .requestMatchers("/api/privacy-policy/**").permitAll()
+                        // Rutas de Reserva  (todas las operaciones)
+                        .requestMatchers("/api/reservations/**").permitAll()
+
 
                         .anyRequest().authenticated()
                 ).sessionManagement(sessionManager -> sessionManager
@@ -65,4 +70,6 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource));
         return http.build();
     }
+
+
 }

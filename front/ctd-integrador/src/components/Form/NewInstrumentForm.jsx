@@ -40,12 +40,10 @@ const NewInstrumentForm = () => {
     }
 
     createInstrument(data)
-      .then((response) => {
-        console.log(response)
+      .then(() => {
         setMessage('Instrumento registrado exitosamente')
       })
-      .catch((error) => {
-        console.log(error)
+      .catch(() => {
         setMessage('No se pudo registrar instrumento')
       })
       .finally(() => setShowMessage(true))
@@ -60,6 +58,7 @@ const NewInstrumentForm = () => {
         isOpen={showMessage}
         buttonText="Ok"
         onClose={onClose}
+        onButtonPressed={onClose}
       />
     </>
   )

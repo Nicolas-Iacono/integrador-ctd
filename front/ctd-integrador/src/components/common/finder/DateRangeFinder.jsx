@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import { useState } from 'react'
+import { CustomPickersActionBar } from '../availability/CustomPickersActionBar'
 
 dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)
@@ -48,6 +49,10 @@ export const DateRangeFinder = ({
         onChange={handleFromDate}
         format="DD-MM-YYYY"
         value={dateFrom}
+        slots={{
+          toolbar: null,
+          actionBar: CustomPickersActionBar
+        }}
       />
       <DatePickerFinder
         defaultValue={dateTo}
@@ -55,6 +60,10 @@ export const DateRangeFinder = ({
         onChange={handleToDate}
         format="DD-MM-YYYY"
         value={dateTo}
+        slots={{
+          toolbar: null,
+          actionBar: CustomPickersActionBar
+        }}
       />
     </LocalizationProvider>
   )

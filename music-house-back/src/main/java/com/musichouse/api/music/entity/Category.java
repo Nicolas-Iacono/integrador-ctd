@@ -13,7 +13,6 @@ import java.util.Date;
 @Table(name = "CATEGORIES")
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Category {
     /**
      * Identificador único de la categoría.

@@ -1,4 +1,10 @@
-import { createContext, useContext, useReducer, useMemo } from 'react'
+import {
+  createContext,
+  useContext,
+  useReducer,
+  useMemo,
+  useEffect
+} from 'react'
 import { actions } from './actions'
 
 import alternative from '../../assets/alternative.svg'
@@ -28,7 +34,10 @@ const initialState = {
   ],
   searchOptions: {
     found: undefined
-  }
+  },
+  categoryCreated: undefined,
+  categoryUpdated: undefined,
+  bookingInfo: undefined
 }
 
 const ContextGlobal = createContext()
@@ -44,13 +53,48 @@ const appReducer = (state, action) => {
           found: action.payload.found
         }
       }
+    case actions.CATEGORY_CREATED:
+      return {
+        ...state,
+        categoryCreated: action.payload.created
+      }
+    case actions.CATEGORY_UPDATED:
+      return {
+        ...state,
+        categoryUpdated: action.payload.updated
+      }
+    case actions.BOOKING_CONFIRM:
+      return {
+        ...state,
+        bookingInfo: action.payload
+      }
+    case actions.BOOKING_UPDATE:
+      return {
+        ...state,
+        bookingInfo: action.payload
+      }
     default:
       return state
   }
 }
 
+const saveBookingInfoToStorage = (bookingInfo) => {
+  localStorage.setItem('bookingInfo', JSON.stringify(bookingInfo))
+}
+
+export const getBookingInfo = () => {
+  const data = localStorage.getItem('bookingInfo')
+  return data ? JSON.parse(data) : {}
+}
+
 export const ContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState)
+
+  useEffect(() => {
+    if (state.bookingInfo) {
+      saveBookingInfoToStorage(state.bookingInfo)
+    }
+  }, [state.bookingInfo])
 
   const data = useMemo(() => ({ state, dispatch }), [state, dispatch])
 

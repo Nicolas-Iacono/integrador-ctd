@@ -70,12 +70,19 @@ public class ThemeService implements ThemeInterface {
                 .orElseThrow(() -> new ResourceNotFoundException("Theme with id " + idTheme + " not found"));
         List<Instrument> instruments = instrumentRepository.findByTheme(themeToDelete);
         if (!instruments.isEmpty()) {
-            throw new CategoryAssociatedException
-                    ("No se puede eliminar la tematica con ID :" + idTheme + " porque está asociada con instrumentos");
+            throw new CategoryAssociatedException("Cannot delete theme with id " + idTheme +
+                    " as it is associated with instruments");
         }
 
         themeRepository.deleteById(idTheme);
     }
 
+    public List<Theme> searchTheme(String themeName) throws IllegalArgumentException {
+        if (themeName != null) {
+            return themeRepository.findBythemeNameContaining(themeName);
+        } else {
+            throw new IllegalArgumentException("Parámetro de búsqueda inválido");
+        }
+    }
 
 }

@@ -1,13 +1,13 @@
 import { styled } from '@mui/material/styles'
 import Container from '@mui/material/Container'
 
-export const MainWrapper = styled(Container)(({ theme }) => ({
+export const MainWrapper = styled(Container)(({ theme, isHome = false }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   flexWrap: 'wrap',
   gap: '.5rem',
-  paddingTop: 150,
+  paddingTop: isHome ? '20rem' : '11rem',
   paddingBottom: '3rem',
   alignItems: 'center',
 

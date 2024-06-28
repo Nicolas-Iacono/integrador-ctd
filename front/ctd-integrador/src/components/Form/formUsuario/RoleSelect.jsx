@@ -1,6 +1,7 @@
 import { Select, MenuItem } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { roleList } from '../../utils/roles/constants'
+import { Loader } from '../../common/loader/Loader'
 
 const roles = roleList()
 
@@ -35,7 +36,7 @@ export const RoleSelect = ({
   }, [selectedRole])
 
   if (loading) {
-    return <p>Loading...</p>
+    return <Loader fullSize={false} />
   }
 
   const handleRoleChange = (event) => {

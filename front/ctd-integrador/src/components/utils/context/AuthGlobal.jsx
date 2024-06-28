@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import { isAdmin } from '../roles/constants'
+import { getIsAdmin, getIsUser } from '../roles/constants'
 
 const AuthUserContext = createContext()
 
@@ -10,14 +10,16 @@ export const useAuthContext = () => {
 export const AuthContextProvider = ({ loggedUser, children }) => {
   const [authGlobal, setAuthGlobal] = useState(!!loggedUser)
   const [user, setUser] = useState(loggedUser)
-  const [isUserAdmin, setIsUserAdmin] = useState(isAdmin(loggedUser?.roles))
+  const [isUserAdmin, setIsUserAdmin] = useState(getIsAdmin(loggedUser?.roles))
+  const [isUser, setIsUser] = useState(getIsUser(loggedUser?.roles))
 
   const toggleAuthGlobal = (isAuth) => {
     setAuthGlobal(isAuth)
   }
 
   useEffect(() => {
-    setIsUserAdmin(isAdmin(user?.roles))
+    setIsUserAdmin(getIsAdmin(user?.roles))
+    setIsUser(getIsUser(user?.roles))
   }, [user])
 
   return (
@@ -27,7 +29,8 @@ export const AuthContextProvider = ({ loggedUser, children }) => {
         setAuthGlobal,
         user,
         setUser,
-        isUserAdmin
+        isUserAdmin,
+        isUser
       }}
     >
       {children}

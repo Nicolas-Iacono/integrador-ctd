@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 @AllArgsConstructor
 public class RoleService implements RoleInterface {
@@ -28,6 +29,7 @@ public class RoleService implements RoleInterface {
                 .orElseThrow(() -> {
                     return new ResourceNotFoundException("Usuario no encontrado con id: " + changeOfRole.getIdUser());
                 });
+
         Role role = rolRepository.findByRol(changeOfRole.getRol())
                 .orElseThrow(() -> {
                     return new ResourceNotFoundException("Rol no encontrado con nombre: " + changeOfRole.getRol());

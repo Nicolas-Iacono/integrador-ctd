@@ -16,20 +16,16 @@ import { useNavigate } from 'react-router-dom'
 
 const ContainerForm = styled(Grid)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'row',
   width: '100vw',
-  height: '80vh',
-  marginTop: '30px',
+  alignItems: 'center !important',
   justifyContent: 'center',
-  alignItems: 'flex-end',
   padding: '0px',
-  [theme.breakpoints.down('md')]: {
-    flexDirection: 'row'
-  }
 
-  // [theme.breakpoints.up('md')]: {
-  //   paddingTop: 320
-  // }
+  [theme.breakpoints.up('md')]: {
+    alignItems: 'flex-end !important',
+    flexDirection: 'column'
+  }
 }))
 
 const ContainerBottom = styled(Grid)(({ theme }) => ({
@@ -39,15 +35,12 @@ const ContainerBottom = styled(Grid)(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
+
   [theme.breakpoints.down('md')]: {
     flexDirection: 'column',
     width: '100%',
     marginLeft: '0px'
   }
-
-  // [theme.breakpoints.up('md')]: {
-  //   paddingTop: 320
-  // }
 }))
 
 export const UserForm = ({ onSwitch, initialFormData, onSubmit }) => {
@@ -64,12 +57,12 @@ export const UserForm = ({ onSwitch, initialFormData, onSubmit }) => {
   }
 
   const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
-    color: blue[100],
+    color: 'black',
     '&.Mui-checked': {
-      color: blue[50]
+      color: theme.palette.secondary.main
     },
     '& .MuiSvgIcon-root': {
-      fontSize: 24
+      fontSize: 32
     }
   }))
 
@@ -194,7 +187,7 @@ export const UserForm = ({ onSwitch, initialFormData, onSubmit }) => {
           md={6}
           sx={{
             padding: 3,
-            width: { md: '70%', xs: '70%' },
+            width: { md: '70%', xs: '90%' },
             height: '100%',
             display: 'flex',
             flexDirection: 'column',
@@ -202,10 +195,12 @@ export const UserForm = ({ onSwitch, initialFormData, onSubmit }) => {
             gap: '20px'
           }}
         >
-          <Typography variant="h3" sx={{ fontWeight: 'light' }}>
+          <Typography
+            variant="h3"
+            sx={{ color: { xs: 'white', md: 'black' }, fontWeight: 'light' }}
+          >
             {title}
           </Typography>
-
           <Grid
             sx={{
               width: '100%',
@@ -220,7 +215,7 @@ export const UserForm = ({ onSwitch, initialFormData, onSubmit }) => {
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center',
+                alignItems: { xs: 'center', md: 'flex-start' },
                 flexDirection: { md: 'row', xs: 'column' },
                 gap: '10px'
               }}
@@ -436,8 +431,12 @@ export const UserForm = ({ onSwitch, initialFormData, onSubmit }) => {
                     onChange={handleCheckBoxChange}
                   />
                 }
-                label="Acepto los términos y condiciones del servicio"
-                sx={{ color: blue[50], marginTop: '30px' }}
+                label={
+                  <Typography sx={{ fontWeight: 'bold' }}>
+                    Acepto los términos y condiciones del servicio
+                  </Typography>
+                }
+                sx={{ color: 'black', marginTop: '30px', marginRight: '0' }}
               />
             )}
             {errors.general && (
@@ -454,10 +453,12 @@ export const UserForm = ({ onSwitch, initialFormData, onSubmit }) => {
               <Link
                 href=""
                 underline="always"
-                sx={{ color: 'white', marginTop: '10px' }}
+                sx={{ color: 'black', marginTop: { xs: '40px', md: '20px' } }}
                 onClick={onSwitch}
               >
-                {'Ya tengo una cuenta'}
+                <Typography sx={{ fontWeight: '600' }}>
+                  Ya tengo una cuenta
+                </Typography>
               </Link>
             )}
           </ContainerBottom>

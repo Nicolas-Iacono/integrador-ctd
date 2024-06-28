@@ -70,10 +70,18 @@ public class CategoryService implements CategoryInterface {
                 .orElseThrow(() -> new ResourceNotFoundException("Category with id " + idCategory + " not found"));
         List<Instrument> instruments = instrumentRepository.findByCategory(categoryToDelete);
         if (!instruments.isEmpty()) {
-            throw new CategoryAssociatedException("No se puede eliminar la categoría con ID : " + idCategory +
-                    " porque está asociada con instrumentos");
+            throw new CategoryAssociatedException("Cannot delete category with id " + idCategory +
+                    " as it is associated with instruments");
         }
 
         categoryRepository.deleteById(idCategory);
+    }
+
+    public List<Category> searchCategory(String categoryName) throws IllegalArgumentException {
+        if (categoryName != null) {
+            return categoryRepository.findBycategoryNameContaining(categoryName);
+        } else {
+            throw new IllegalArgumentException("Parámetro de búsqueda inválido");
+        }
     }
 }

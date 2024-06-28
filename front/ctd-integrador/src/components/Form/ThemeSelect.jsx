@@ -1,6 +1,7 @@
 import { Select, MenuItem } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { getThemes } from '../../api/instruments'
+import { Loader } from '../common/loader/Loader'
 
 const ThemeSelect = ({ label, onChange, selectedThemeId = undefined }) => {
   const [loading, setLoading] = useState(true)
@@ -31,7 +32,7 @@ const ThemeSelect = ({ label, onChange, selectedThemeId = undefined }) => {
   }, [selectedTheme])
 
   if (loading) {
-    return <p>Loading...</p>
+    return <Loader fullSize={false} />
   }
 
   const handleThemeChange = (event) => {

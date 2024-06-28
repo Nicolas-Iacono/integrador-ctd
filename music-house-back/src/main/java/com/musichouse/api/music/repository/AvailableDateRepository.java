@@ -19,24 +19,29 @@ public interface AvailableDateRepository extends JpaRepository<AvailableDate, Lo
     void deleteByIdInstrumentAndIdAvailableDate(Long idInstrument, Long idAvailableDate);
 
     /**
-     *@Query("SELECT a FROM AvailableDate a WHERE a.dateAvailable = :dateAvailable AND a.available = TRUE")
+     * @Query("SELECT a FROM AvailableDate a WHERE a.dateAvailable = :dateAvailable AND a.available = TRUE")
      */
     List<AvailableDate> findByDateAvailableAndAvailableIsTrue(LocalDate dateAvailable);
 
     /**
-     *@Query("SELECT a FROM AvailableDate a WHERE a.instrument.idInstrument = :instrumentId AND a.dateAvailable = :dateAvailable")
+     * @Query("SELECT a FROM AvailableDate a WHERE a.instrument.idInstrument = :instrumentId AND a.dateAvailable = :dateAvailable")
      */
     Optional<AvailableDate> findByInstrumentIdInstrumentAndDateAvailable(Long instrumentId, LocalDate dateAvailable);
 
     /**
-     *@Query("SELECT a FROM AvailableDate a WHERE a.dateAvailable BETWEEN :startDate AND :endDate")
+     * @Query("SELECT a FROM AvailableDate a WHERE a.dateAvailable BETWEEN :startDate AND :endDate")
      */
     List<AvailableDate> findByDateAvailableBetween(LocalDate startDate, LocalDate endDate);
 
     /**
-     *@Query("SELECT a FROM AvailableDate a WHERE a.instrument.idInstrument = :idInstrument AND a.dateAvailable BETWEEN :startDate AND :endDate")
+     * @Query("SELECT a FROM AvailableDate a WHERE a.instrument.idInstrument = :idInstrument AND a.dateAvailable BETWEEN :startDate AND :endDate")
      */
     List<AvailableDate> findByInstrumentIdInstrumentAndDateAvailableBetween(Long idInstrument, LocalDate startDate, LocalDate endDate);
+
+    // Agrega este método personalizado para encontrar fechas disponibles por ID de instrumento
+    List<AvailableDate> findByInstrumentIdInstrument(Long idInstrument);
+
+    boolean existsByInstrumentIdInstrumentAndAvailableFalse(Long instrumentId);
 
     /**
      * Elimina todas las entidades AvailableDate cuya fechaAvailable sea anterior a la fecha especificada.

@@ -1,5 +1,6 @@
 package com.musichouse.api.music.dto.dto_modify;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDtoModify {
+
     @NotNull(message = "El idUser es obligatorio")
     @Positive(message = "El idUser debe ser un número positivo")
     private Long idUser;

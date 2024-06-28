@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
+import Close from '@mui/icons-material/Close'
+import { IconButton } from '@mui/material'
 import { searchInstrumentsByName } from '../../../api/instruments'
 import { Code } from '../../../api/constants'
 import { useAppStates } from '../../utils/global.context'
@@ -21,6 +23,10 @@ export const Finder = () => {
   const [found, setFound] = useState(false)
   const [dateFrom, setDateFrom] = useState(null)
   const [dateTo, setDateTo] = useState(null)
+  const inputFinderRef = useRef()
+  const suggestsLeft = inputFinderRef.current?.getBoundingClientRect().left
+  const suggestsTop = `${inputFinderRef.current?.getBoundingClientRect().top + inputFinderRef.current?.getBoundingClientRect().height + 8}px`
+  const suggestWidth = inputFinderRef.current?.getBoundingClientRect().width
   const [instruments, instrumentsSearchCode] =
     searchInstrumentsByName(searchPattern)
   const [instrumentsByDate, instrumentsByDateCode] =
@@ -62,8 +68,11 @@ export const Finder = () => {
 
   useEffect(() => {
     if (instrumentsSearchCode === Code.SUCCESS) {
+      const showSuggests = !(
+        instruments.length === 1 && instruments[0].name === searchPattern
+      )
       setFound(true)
-      setShowSugests(true)
+      setShowSugests(showSuggests)
     } else {
       setFound(false)
     }
@@ -72,30 +81,34 @@ export const Finder = () => {
 
   const handleKeyUp = (keyCode) => {
     if (keyCode === 27) {
-      setSearchPattern('')
-      setDateFrom(null)
-      setDateTo(null)
+      clearFinder()
       setSendPattern(true)
     }
   }
 
+  const handleKeyDown = (keyCode) => {
+    if (keyCode === 9) setShowSugests(false)
+  }
+
   const handleSelected = (value) => {
     setSearchPattern(value)
-    setShowSugests(true)
   }
 
   const handleSubmitSearch = () => {
     setSendPattern(true)
   }
 
+  const clearFinder = () => {
+    setSearchPattern('')
+    setDateFrom(null)
+    setDateTo(null)
+  }
+
   return (
     <Box
       sx={{
         padding: '.5rem',
-        display: {
-          xs: 'none',
-          md: 'flex'
-        },
+        display: 'flex',
         flexDirection: 'column',
         justifyContent: { md: 'center' },
         alignItems: { md: 'center' },
@@ -105,21 +118,22 @@ export const Finder = () => {
       <Box
         sx={{
           padding: '.5rem',
-          display: {
-            xs: 'none',
-            md: 'flex'
-          },
-          flexDirection: 'row',
-          justifyContent: { md: 'center' },
-          alignItems: { md: 'center' },
-          width: '100%'
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          gap: { xs: '.5rem', md: '1rem' }
         }}
       >
         <InputFinder
           label="Encuentra tu instrumento favorito"
-          onKeyup={handleKeyUp}
+          onKeyUp={handleKeyUp}
+          onKeyDown={handleKeyDown}
           value={searchPattern}
           setValue={setSearchPattern}
+          inputRef={inputFinderRef}
+          onClose={() => clearFinder()}
         />
         <DateRangeFinder
           dateFrom={dateFrom}
@@ -141,11 +155,22 @@ export const Finder = () => {
         <Box
           sx={{
             backgroundColor: 'white',
-            width: '60%',
+            width: { xs: suggestWidth, md: '60%' },
             borderRadius: '5px',
-            boxShadow: '5px 5px 10px rgba(0,0,0,0.5);'
+            boxShadow: '5px 5px 10px rgba(0,0,0,0.5);',
+            position: 'fixed',
+            left: suggestsLeft,
+            top: suggestsTop
           }}
         >
+          <Box sx={{ position: 'relative', '& svg': { height: '1.5rem' } }}>
+            <IconButton
+              sx={{ position: 'absolute', right: 3, top: 3, zIndex: 1300 }}
+              onClick={() => setShowSugests(false)}
+            >
+              <Close />
+            </IconButton>
+          </Box>
           <List>
             {instruments &&
               instruments.map((instrument, index) => (

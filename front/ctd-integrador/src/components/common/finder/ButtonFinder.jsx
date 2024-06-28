@@ -12,9 +12,15 @@ export const ButtonFinder = styled(Button)(({ theme }) => ({
     backgroundColor: alpha(theme.palette.primary.main, 0.7)
   },
   height: '2.5rem',
-  marginLeft: '0.5rem !important',
+  width: '50%',
 
   [theme.breakpoints.up('sm')]: {
+    width: '30%',
     marginLeft: theme.spacing(3)
+  },
+
+  [theme.breakpoints.up('md')]: {
+    margin: 0,
+    width: 'auto'
   }
 }))

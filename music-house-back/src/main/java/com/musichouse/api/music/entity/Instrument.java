@@ -95,6 +95,14 @@ public class Instrument {
     private Characteristics characteristics;
 
     /**
+     * Lista de fechas y horas disponibles para alquilar el instrumento.
+     */
+
+    @OneToMany(mappedBy = "instrument", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<AvailableDate> availableDates;
+
+    /**
      * Anotación que marca el campo como una fecha de creación automática.
      * Hibernate asigna automáticamente la fecha y hora actual al insertar la entidad en la base de datos.
      */

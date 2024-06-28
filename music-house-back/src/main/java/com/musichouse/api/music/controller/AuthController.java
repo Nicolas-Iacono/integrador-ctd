@@ -5,9 +5,9 @@ import com.musichouse.api.music.dto.dto_entrance.UserAdminDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.TokenDtoExit;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
+import com.musichouse.api.music.repository.UserRepository;
 import com.musichouse.api.music.service.UserService;
 import com.musichouse.api.music.util.ApiResponse;
-import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @PostMapping("/create/admin")
     public ResponseEntity<?> createUserAdmin(@RequestBody @Valid UserAdminDtoEntrance userAdminDtoEntrance) {
@@ -45,9 +46,6 @@ public class AuthController {
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse<>("El correo electrónico ingresado ya está en uso. Por favor, elija otro correo electrónico.", null));
-        } catch (MessagingException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(e.getMessage(), null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(e.getMessage(), null));
@@ -71,5 +69,3 @@ public class AuthController {
         }
     }
 }
-
-

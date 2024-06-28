@@ -1,7 +1,7 @@
 import * as React from 'react'
 import ImageList from '@mui/material/ImageList'
 import ImageListItem from '@mui/material/ImageListItem'
-import { Container } from '@mui/material'
+import { Box, Container, Typography } from '@mui/material'
 import { HeaderWrapper } from '../Layout/HeaderWrapper'
 import { MainWrapper } from './MainWrapper'
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -25,7 +25,25 @@ export const InstrumentGallery = ({ itemData }) => {
 
   return (
     <Container sx={{ backgroundColor: '#F2F2F2', height: '100%' }}>
-      <HeaderWrapper backgroundImageUrl={background} />
+      <HeaderWrapper backgroundImageUrl={background} height={200}>
+        <Box sx={{ position: 'relative', height: '100%' }}>
+          <Typography
+            sx={{
+              my: 2,
+              color: 'white',
+              display: 'block',
+              fontSize: '1.3rem',
+              fontWeight: 'bold',
+              padding: '0 .6rem',
+              position: 'absolute',
+              bottom: 3,
+              left: 10
+            }}
+          >
+            Galería de imágenes
+          </Typography>
+        </Box>
+      </HeaderWrapper>
       <MainWrapper>
         <ImageList
           sx={{
